@@ -1,17 +1,17 @@
-const articlesLikesEndpoint = "../../api/likes/top/articles";
-const articleLikesEndpoint = "../../api/likes/article";
-const articlesEndpoint = "../../api/articles";
-const likesEndpoint = "../../api/likes";
-const usersEndpoint = "../../api/users";
-const myLikesEndpoint = "../../api/likes/article/mylikes";
-const articleVisitsEndpoint = "../../api/visits/articles";
-const topArticleVisitsEndpoint = "../../api/visits/top/articles";
-const articleBookmarkEndpoint = "../../api/bookmarks/articles";
+const articlesLikesEndpoint = '../../api/likes/top/articles';
+const articleLikesEndpoint = '../../api/likes/article';
+const articlesEndpoint = '../../api/articles';
+const likesEndpoint = '../../api/likes';
+const usersEndpoint = '../../api/users';
+const myLikesEndpoint = '../../api/likes/article/mylikes';
+const articleVisitsEndpoint = '../../api/visits/articles';
+const topArticleVisitsEndpoint = '../../api/visits/top/articles';
+const articleBookmarkEndpoint = '../../api/bookmarks/articles';
 
 const intervalValue = 60000;
 
 async function issueGetVisitsForArticles(articleIds) {
-  const formattedIds = articleIds.join(",");
+  const formattedIds = articleIds.join(',');
   const visitsData = await fetch(`${articleVisitsEndpoint}?ids=${formattedIds}`, {
     headers: { ...formatHeaders(), userid: getId() },
   }).then((r) => r.json());
@@ -19,7 +19,7 @@ async function issueGetVisitsForArticles(articleIds) {
 }
 
 async function issueGetMyLikesForArticles(articleIds) {
-  const formattedIds = articleIds.join("&id=");
+  const formattedIds = articleIds.join('&id=');
   const likesData = await fetch(`${myLikesEndpoint}?id=${formattedIds}`, {
     headers: { ...formatHeaders(), userid: getId() },
   }).then((r) => r.json());
@@ -27,9 +27,9 @@ async function issueGetMyLikesForArticles(articleIds) {
 }
 
 async function issueGetLikesForArticles(articleIds) {
-  const formattedIds = articleIds.join("&id=");
+  const formattedIds = articleIds.join('&id=');
   const likesData = await fetch(`${articleLikesEndpoint}?id=${formattedIds}`, { headers: formatHeaders() }).then((r) =>
-    r.json()
+    r.json(),
   );
   return likesData.likes;
 }
@@ -42,7 +42,7 @@ async function getUsers(articlesData) {
     }
   }
   userIds.push(getId());
-  const queryId = `${userIds.join("&id=")}`;
+  const queryId = `${userIds.join('&id=')}`;
   const userUrlQuery = `${usersEndpoint}?id=${queryId}`;
 
   const users = await fetch(userUrlQuery, { headers: formatHeaders() }).then((r) => r.json());
@@ -66,7 +66,7 @@ async function getUsers(articlesData) {
       }
     }
     if (articlesData[i].user_name === undefined) {
-      articlesData[i].user_name = "Unknown user";
+      articlesData[i].user_name = 'Unknown user';
     }
   }
 
@@ -75,7 +75,7 @@ async function getUsers(articlesData) {
 
 async function getArticles(articleIds) {
   // get article
-  const articlesUrl = `${articlesEndpoint}?id=${articleIds.join("&id=")}`;
+  const articlesUrl = `${articlesEndpoint}?id=${articleIds.join('&id=')}`;
   let articleData = await fetch(articlesUrl, { headers: formatHeaders() }).then((r) => r.json());
   return articleData;
 }
@@ -86,17 +86,17 @@ async function issueGetBookmarkedArticles() {
 }
 
 async function issueGetLikes(article_id) {
-  const isEnabled = await checkIfFeatureEnabled("feature_likes");
+  const isEnabled = await checkIfFeatureEnabled('feature_likes');
   if (!isEnabled) return;
 
   const likesData = await fetch(`${articleLikesEndpoint}/${article_id}`, { headers: formatHeaders() }).then((r) =>
-    r.json()
+    r.json(),
   );
   return likesData.likes;
 }
 
 async function getTopVisitedArticles() {
-  const isEnabled = await checkIfFeatureEnabled("feature_visits");
+  const isEnabled = await checkIfFeatureEnabled('feature_visits');
   if (!isEnabled) return;
 
   const visitsData = await fetch(topArticleVisitsEndpoint, {
@@ -106,7 +106,7 @@ async function getTopVisitedArticles() {
 }
 
 async function getTopLikedArticles() {
-  const isEnabled = await checkIfFeatureEnabled("feature_likes");
+  const isEnabled = await checkIfFeatureEnabled('feature_likes');
   if (!isEnabled) return;
 
   const likesData = await fetch(articlesLikesEndpoint, {
@@ -116,7 +116,7 @@ async function getTopLikedArticles() {
 }
 
 const getImagesHTML = (image) => {
-  let htmlData = "";
+  let htmlData = '';
   if (image !== undefined) {
     htmlData += `<div align="center" ><img src="${image}" /></div>`;
   }
@@ -124,8 +124,8 @@ const getImagesHTML = (image) => {
 };
 
 const displayPostsData = (data) => {
-  const container = document.querySelector("#container");
-  container.innerHTML = "";
+  const container = document.querySelector('#container');
+  container.innerHTML = '';
   for (let item of data) {
     displayItem(item, container);
   }
@@ -151,13 +151,13 @@ const formatArticleHtml = (item) => {
   }" style="display: flex;min-height:100px !important;margin:0px 20px 20px 0px !important;">
   <div style="flex: 1; text-align: left;">
       <a href="article.html?id=${item.id}" id="gotoArticle${item.id}" data-testid="article-${
-    item.id
-  }-link">${getImagesHTML(item.image)}</a>
+        item.id
+      }-link">${getImagesHTML(item.image)}</a>
   </div>
   <div style="flex: 2; text-align: left;">
       <div align="center" data-testid="article-${item.id}-title"><strong><a href="article.html?id=${item.id}">${
-    item.title
-  }</a></strong></div>
+        item.title
+      }</a></strong></div>
   <div align="center" style="" class="visits-container" id="visits-container-${
     item.id
   }" style="visibility: visible;"></div>
@@ -165,14 +165,14 @@ const formatArticleHtml = (item) => {
     <tr>
       <td ><label style="width:10px !important; font-size:14px">user:</label>&nbsp&nbsp</td>
       <td><span><a href="user.html?id=${item.user_id}" id="gotoUser${item.user_id}-${item.id}" data-testid="article-${
-    item.id
-  }-user">${item.user_name}</a></span></td>
+        item.id
+      }-user">${item.user_name}</a></span></td>
       <td rowspan="2" style="padding:0px !important" class="bookmark-container" id="bookmark-container-${item.id}"></td>
     </tr>
     
     <tr>
       <td ><label style="width:10px !important; font-size:14px">date:</label>&nbsp&nbsp</td>
-      <td ><span data-testid="article-${item.id}-date">${item.date.replace("T", " ").replace("Z", "")}</span></td>
+      <td ><span data-testid="article-${item.id}-date">${item.date.replace('T', ' ').replace('Z', '')}</span></td>
     </tr>
   </table><br>
     <div class="labels-container" id="labels-container-${item.id}" ></div>
@@ -189,18 +189,18 @@ const formatArticleHtml = (item) => {
 };
 
 async function updateBookmarkElements() {
-  const isEnabled = await checkIfFeatureEnabled("feature_user_bookmark_articles");
+  const isEnabled = await checkIfFeatureEnabled('feature_user_bookmark_articles');
   if (!isEnabled) return;
 
-  const elements = document.querySelectorAll(".bookmark-container");
+  const elements = document.querySelectorAll('.bookmark-container');
   const ids = [];
   elements.forEach((element) => {
-    ids.push(element.id.split("-").slice(-1)[0]);
+    ids.push(element.id.split('-').slice(-1)[0]);
   });
   issueGetBookmarkedArticles().then((aricleIds) => {
     const stringArticleIds = aricleIds.map(String);
     elements.forEach((element) => {
-      const id = element.id.split("-").slice(-1)[0];
+      const id = element.id.split('-').slice(-1)[0];
       element.innerHTML = formatBookmarkArticle(stringArticleIds.includes(id.toString()), id);
     });
   });
@@ -211,10 +211,10 @@ async function bookmarkArticle(articleId) {
     article_id: articleId,
   };
   fetch(articleBookmarkEndpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
       userid: getId(),
     },
@@ -228,17 +228,17 @@ async function bookmarkArticle(articleId) {
 }
 
 async function updateVisitsElements() {
-  const isEnabled = await checkIfFeatureEnabled("feature_visits");
+  const isEnabled = await checkIfFeatureEnabled('feature_visits');
   if (!isEnabled) return;
 
-  const elements = document.querySelectorAll(".visits-container");
+  const elements = document.querySelectorAll('.visits-container');
   const ids = [];
   elements.forEach((element) => {
-    ids.push(element.id.split("-").slice(-1)[0]);
+    ids.push(element.id.split('-').slice(-1)[0]);
   });
   issueGetVisitsForArticles(ids).then((visits) => {
     elements.forEach((element) => {
-      const id = element.id.split("-").slice(-1)[0];
+      const id = element.id.split('-').slice(-1)[0];
       const visitsNumber = visits[id];
 
       element.innerHTML = formatVisits(visitsNumber, id);
@@ -252,10 +252,10 @@ async function likeArticle(articleId) {
     user_id: getId(),
   };
   fetch(likesEndpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
       userid: getId(),
     },
@@ -298,7 +298,7 @@ async function displayArticles(articleIds, likesData, myLikes) {
 async function makeRequest(type) {
   const element = document.querySelector(`#title`);
 
-  if (type === "visited") {
+  if (type === 'visited') {
     element.innerHTML = `10 Most visited articles`;
     getTopVisitedArticles().then((visitsData) => {
       const articleIds = Object.keys(visitsData).sort((a, b) => visitsData[a] - visitsData[b]);
@@ -308,7 +308,7 @@ async function makeRequest(type) {
         });
       });
     });
-  } else if (type === "liked") {
+  } else if (type === 'liked') {
     element.innerHTML = `10 Most liked articles`;
     getTopLikedArticles()
       .then((likesData) => {
@@ -318,9 +318,9 @@ async function makeRequest(type) {
         });
       })
       .catch((err) => {
-        console.log("Error", err);
+        console.log('Error', err);
       });
-  } else if (type === "bookmarked") {
+  } else if (type === 'bookmarked') {
     element.innerHTML = `Bookmarked articles`;
     issueGetBookmarkedArticles()
       .then((articleIds) => {
@@ -331,12 +331,12 @@ async function makeRequest(type) {
         });
       })
       .catch((err) => {
-        console.log("Error", err);
+        console.log('Error', err);
       });
   }
 }
 
-const type = getParams()["type"] ?? "liked";
+const type = getParams()['type'] ?? 'liked';
 
 setInterval(() => makeRequest(type), intervalValue);
 

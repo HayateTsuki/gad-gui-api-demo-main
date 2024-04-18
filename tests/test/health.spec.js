@@ -1,7 +1,7 @@
-const { gracefulQuit, setupEnv } = require("../helpers/helpers.js");
-const { baseApiUrl, request, expect } = require("../config.js");
+const { gracefulQuit, setupEnv } = require('../helpers/helpers.js');
+const { baseApiUrl, request, expect } = require('../config.js');
 
-describe("Endpoints /health, /about and /ping", async () => {
+describe('Endpoints /health, /about and /ping', async () => {
   const baseUrl = baseApiUrl;
 
   before(async () => {
@@ -12,9 +12,9 @@ describe("Endpoints /health, /about and /ping", async () => {
     gracefulQuit();
   });
 
-  it("GET /about", async () => {
+  it('GET /about', async () => {
     // Act:
-    const response = await request.get(baseUrl + "/about");
+    const response = await request.get(baseUrl + '/about');
 
     // Assert:
     expect(response.status).to.equal(200);
@@ -25,37 +25,37 @@ describe("Endpoints /health, /about and /ping", async () => {
     expect(response.body.repository, `repository in ${JSON.stringify(response.body)}`).not.to.equal(undefined);
   });
 
-  it("GET /ping", async () => {
+  it('GET /ping', async () => {
     // Act:
-    const response = await request.get(baseUrl + "/ping");
+    const response = await request.get(baseUrl + '/ping');
 
     // Assert:
     expect(response.status).to.equal(200);
   });
 
-  it("GET /health/run", async () => {
+  it('GET /health/run', async () => {
     // Act:
-    const response = await request.get(baseUrl + "/health/check");
+    const response = await request.get(baseUrl + '/health/check');
 
     // Assert:
     expect(response.status).to.equal(200);
   });
 
-  it("GET /health", async () => {
+  it('GET /health', async () => {
     // Act:
-    const response = await request.get(baseUrl + "/health");
+    const response = await request.get(baseUrl + '/health');
 
     // Assert:
     expect(response.status).to.equal(200);
     expect(response.body.health, `health in ${JSON.stringify(response.body)}`).not.to.equal(undefined);
     expect(response.body.health.memoryUsageMB, `memoryUsageMB in ${JSON.stringify(response.body)}`).not.to.equal(
-      undefined
+      undefined,
     );
   });
 
-  it("GET /health/memory", async () => {
+  it('GET /health/memory', async () => {
     // Act:
-    const response = await request.get(baseUrl + "/health/memory");
+    const response = await request.get(baseUrl + '/health/memory');
 
     // Assert:
     expect(response.status).to.equal(200);
@@ -66,18 +66,18 @@ describe("Endpoints /health, /about and /ping", async () => {
     expect(response.body.arrayBuffers, `arrayBuffers in ${JSON.stringify(response.body)}`).to.be.greaterThan(0);
   });
 
-  it("GET /health/uptime", async () => {
+  it('GET /health/uptime', async () => {
     // Act:
-    const response = await request.get(baseUrl + "/health/uptime");
+    const response = await request.get(baseUrl + '/health/uptime');
 
     // Assert:
     expect(response.status).to.equal(200);
     expect(response.body.uptime, `uptime in ${JSON.stringify(response.body)}`).to.be.greaterThan(0);
   });
 
-  it("GET /health/db", async () => {
+  it('GET /health/db', async () => {
     // Act:
-    const response = await request.get(baseUrl + "/health/db");
+    const response = await request.get(baseUrl + '/health/db');
 
     // Assert:
     expect(response.status).to.equal(200);

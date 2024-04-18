@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-var express = require("express");
-var _ = require("lodash");
-var pluralize = require("pluralize");
-var write = require("./write");
-var getFullURL = require("./get-full-url");
-var utils = require("../utils");
-var delay = require("./delay");
+var express = require('express');
+var _ = require('lodash');
+var pluralize = require('pluralize');
+var write = require('./write');
+var getFullURL = require('./get-full-url');
+var utils = require('../utils');
+var delay = require('./delay');
 
 module.exports = function (db, name, opts) {
   // Create router
@@ -76,8 +76,8 @@ module.exports = function (db, name, opts) {
       for (var i in arr) {
         if (
           _.has(arr[i], query) ||
-          query === "callback" ||
-          query === "_" ||
+          query === 'callback' ||
+          query === '_' ||
           /_lte$/.test(query) ||
           /_gte$/.test(query) ||
           /_ne$/.test(query) ||
@@ -109,7 +109,7 @@ module.exports = function (db, name, opts) {
     Object.keys(req.query).forEach(function (key) {
       // Don't take into account JSONP query parameters
       // jQuery adds a '_' query parameter too
-      if (key !== "callback" && key !== "_") {
+      if (key !== 'callback' && key !== '_') {
         // Always use an array, in case req.query is an array
         var arr = [].concat(req.query[key]);
 
@@ -119,7 +119,7 @@ module.exports = function (db, name, opts) {
               var isDifferent = /_ne$/.test(key);
               var isRange = /_lte$/.test(key) || /_gte$/.test(key);
               var isLike = /_like$/.test(key);
-              var path = key.replace(/(_lte|_gte|_ne|_like)$/, "");
+              var path = key.replace(/(_lte|_gte|_ne|_like)$/, '');
               // get item value based on path
               // i.e post.title -> 'foo'
               var elementValue = _.get(element, path);
@@ -136,7 +136,7 @@ module.exports = function (db, name, opts) {
               } else if (isDifferent) {
                 return value !== elementValue.toString();
               } else if (isLike) {
-                return new RegExp(value, "i").test(elementValue.toString());
+                return new RegExp(value, 'i').test(elementValue.toString());
               } else {
                 return value === elementValue.toString();
               }
@@ -150,8 +150,8 @@ module.exports = function (db, name, opts) {
 
     // Sort
     if (_sort) {
-      var _sortSet = _sort.split(",");
-      var _orderSet = (_order || "").split(",").map(function (s) {
+      var _sortSet = _sort.split(',');
+      var _orderSet = (_order || '').split(',').map(function (s) {
         return s.toLowerCase();
       });
       chain = chain.orderBy(_sortSet, _orderSet);
@@ -159,8 +159,8 @@ module.exports = function (db, name, opts) {
 
     // Slice result
     if (_end || _limit || _page) {
-      res.setHeader("X-Total-Count", chain.size());
-      res.setHeader("Access-Control-Expose-Headers", `X-Total-Count${_page ? ", Link" : ""}`);
+      res.setHeader('X-Total-Count', chain.size());
+      res.setHeader('Access-Control-Expose-Headers', `X-Total-Count${_page ? ', Link' : ''}`);
     }
 
     if (_page) {
@@ -239,7 +239,7 @@ module.exports = function (db, name, opts) {
   function create(req, res, next) {
     var resource = db.get(name).insert(req.body).value();
 
-    res.setHeader("Access-Control-Expose-Headers", "Location");
+    res.setHeader('Access-Control-Expose-Headers', 'Location');
 
     if (getFullURL(req).endsWith(resource.id)) {
       res.location(`${getFullURL(req)}`);
@@ -259,7 +259,7 @@ module.exports = function (db, name, opts) {
     var id = req.params.id;
     var chain = db.get(name);
 
-    chain = req.method === "PATCH" ? chain.updateById(id, req.body) : chain.replaceById(id, req.body);
+    chain = req.method === 'PATCH' ? chain.updateById(id, req.body) : chain.replaceById(id, req.body);
 
     var resource = chain.value();
 
@@ -289,9 +289,9 @@ module.exports = function (db, name, opts) {
 
   var w = write(db);
 
-  router.route("/").get(list).post(create, w);
+  router.route('/').get(list).post(create, w);
 
-  router.route("/:id").get(show).put(update, w).patch(update, w).delete(destroy, w);
+  router.route('/:id').get(show).put(update, w).patch(update, w).delete(destroy, w);
 
   return router;
 };

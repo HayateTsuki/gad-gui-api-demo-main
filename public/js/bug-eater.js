@@ -1,50 +1,50 @@
 const boardSize = 20;
 const cellSize = 20;
-const gameBoard = document.getElementById("game-board");
-const startButton = document.getElementById("start-button");
+const gameBoard = document.getElementById('game-board');
+const startButton = document.getElementById('start-button');
 let snake = [{ x: 10, y: 10 }];
 let bug = { x: 15, y: 10 };
-let direction = "right";
+let direction = 'right';
 let score = 0;
 let gameInterval;
 const baseInterval = 200;
 const intervalStep = 10;
 
-const bugEaterScoreEndpoint = "../../api/bug-eater/score";
+const bugEaterScoreEndpoint = '../../api/bug-eater/score';
 
 async function issuePostScoreRequest(score) {
   fetch(bugEaterScoreEndpoint, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({ score }),
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
   });
 }
 
 function createCell(x, y, className) {
-  const cell = document.createElement("div");
+  const cell = document.createElement('div');
   cell.className = className;
   cell.style.left = `${x * cellSize}px`;
   cell.style.top = `${y * cellSize}px`;
 
-  if (className === "cell bug") {
-    cell.textContent = "🐛";
+  if (className === 'cell bug') {
+    cell.textContent = '🐛';
   }
   return cell;
 }
 
 function drawBoard() {
-  gameBoard.innerHTML = "";
+  gameBoard.innerHTML = '';
   for (let x = 0; x < boardSize; x++) {
     for (let y = 0; y < boardSize; y++) {
       const className = snake.some((segment) => segment.x === x && segment.y === y)
-        ? "cell snake"
+        ? 'cell snake'
         : bug.x === x && bug.y === y
-        ? "cell bug"
-        : "cell";
+          ? 'cell bug'
+          : 'cell';
       const cell = createCell(x, y, className);
       gameBoard.appendChild(cell);
     }
@@ -54,16 +54,16 @@ function drawBoard() {
 function moveSnake() {
   const head = { ...snake[0] };
   switch (direction) {
-    case "up":
+    case 'up':
       head.y--;
       break;
-    case "down":
+    case 'down':
       head.y++;
       break;
-    case "left":
+    case 'left':
       head.x--;
       break;
-    case "right":
+    case 'right':
       head.x++;
       break;
   }
@@ -107,13 +107,13 @@ function isGameOver() {
 
 function resetGame() {
   snake = [{ x: 10, y: 10 }];
-  direction = "right";
+  direction = 'right';
   score = 0;
   drawBoard();
   startButton.disabled = false;
 }
 
-startButton.addEventListener("click", () => {
+startButton.addEventListener('click', () => {
   if (gameInterval) {
     clearInterval(gameInterval);
   }
@@ -123,26 +123,26 @@ startButton.addEventListener("click", () => {
   startButton.disabled = true;
 });
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener('keydown', (event) => {
   switch (event.key) {
-    case "ArrowUp":
-      if (direction !== "down") {
-        direction = "up";
+    case 'ArrowUp':
+      if (direction !== 'down') {
+        direction = 'up';
       }
       break;
-    case "ArrowDown":
-      if (direction !== "up") {
-        direction = "down";
+    case 'ArrowDown':
+      if (direction !== 'up') {
+        direction = 'down';
       }
       break;
-    case "ArrowLeft":
-      if (direction !== "right") {
-        direction = "left";
+    case 'ArrowLeft':
+      if (direction !== 'right') {
+        direction = 'left';
       }
       break;
-    case "ArrowRight":
-      if (direction !== "left") {
-        direction = "right";
+    case 'ArrowRight':
+      if (direction !== 'left') {
+        direction = 'right';
       }
       break;
   }

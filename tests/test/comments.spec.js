@@ -1,14 +1,14 @@
-const { request, expect, baseCommentsUrl, faker } = require("../config.js");
+const { request, expect, baseCommentsUrl, faker } = require('../config.js');
 const {
   authUser,
   validExistingComment,
   prepareUniqueComment,
   generateValidCommentData,
   prepareUniqueArticle,
-} = require("../helpers/data.helpers.js");
-const { gracefulQuit, setupEnv } = require("../helpers/helpers.js");
+} = require('../helpers/data.helpers.js');
+const { gracefulQuit, setupEnv } = require('../helpers/helpers.js');
 
-describe("Endpoint /comments", () => {
+describe('Endpoint /comments', () => {
   const baseUrl = baseCommentsUrl;
 
   before(async () => {
@@ -19,8 +19,8 @@ describe("Endpoint /comments", () => {
     gracefulQuit();
   });
 
-  describe("Without auth", () => {
-    it("GET /comments", async () => {
+  describe('Without auth', () => {
+    it('GET /comments', async () => {
       // Act:
       const response = await request.get(baseUrl);
 
@@ -29,7 +29,7 @@ describe("Endpoint /comments", () => {
       expect(response.body.length).to.be.greaterThan(1);
     });
 
-    it("GET /comments/:id", async () => {
+    it('GET /comments/:id', async () => {
       // Arrange:
       const expectedData = validExistingComment;
 
@@ -41,7 +41,7 @@ describe("Endpoint /comments", () => {
       expect(response.body).to.deep.equal(expectedData);
     });
 
-    it("GET /comments/:id - non existing comment", async () => {
+    it('GET /comments/:id - non existing comment', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/112312312`);
 
@@ -49,40 +49,40 @@ describe("Endpoint /comments", () => {
       expect(response.status).to.equal(404);
     });
 
-    it("POST /comments", () => {
+    it('POST /comments', () => {
       return request.post(baseUrl).send({}).expect(401);
     });
 
-    it("PUT /comments", () => {
+    it('PUT /comments', () => {
       return request.put(baseUrl).send({}).expect(401);
     });
 
-    it("PUT /comments/:id", () => {
+    it('PUT /comments/:id', () => {
       return request.put(`${baseUrl}/1`).send({}).expect(401);
     });
 
-    it("PATCH /comments/:id", () => {
+    it('PATCH /comments/:id', () => {
       return request.patch(`${baseUrl}/1`).send({}).expect(401);
     });
 
-    it("PATCH /comments", () => {
+    it('PATCH /comments', () => {
       return request.patch(baseUrl).send({}).expect(401);
     });
 
-    it("DELETE /comments/:id", () => {
+    it('DELETE /comments/:id', () => {
       return request.delete(`${baseUrl}/1`).expect(401);
     });
 
-    it("DELETE /comments", () => {
+    it('DELETE /comments', () => {
       return request.delete(baseUrl).expect(401);
     });
 
-    it("HEAD /comments", () => {
+    it('HEAD /comments', () => {
       return request.head(`${baseUrl}/1`).expect(200);
     });
   });
 
-  describe("MODIFY /comments", async () => {
+  describe('MODIFY /comments', async () => {
     let headers;
     let userId;
     let articleId;
@@ -105,7 +105,7 @@ describe("Endpoint /comments", () => {
       testCommentData.user_id = userId;
     });
 
-    it("PUT /comments", async () => {
+    it('PUT /comments', async () => {
       // Act:
       const response = await request.put(baseUrl).set(headers).send(testCommentData);
 
@@ -113,7 +113,7 @@ describe("Endpoint /comments", () => {
       expect(response.status).to.equal(201);
     });
 
-    it("PUT /comments/:id - update", async () => {
+    it('PUT /comments/:id - update', async () => {
       // Act:
       const response = await request.put(`${baseUrl}/${commentId}`).set(headers).send(testCommentData);
 
@@ -123,7 +123,7 @@ describe("Endpoint /comments", () => {
       expect(response.body).to.deep.equal(testCommentData);
     });
 
-    it("PUT /comments/:id - update different comment", async () => {
+    it('PUT /comments/:id - update different comment', async () => {
       // Act:
       const response = await request.put(`${baseUrl}/1`).set(headers).send(testCommentData);
 
@@ -131,7 +131,7 @@ describe("Endpoint /comments", () => {
       expect(response.status).to.equal(401);
     });
 
-    it("PATCH /comments/:id - full update with invalid fields", async () => {
+    it('PATCH /comments/:id - full update with invalid fields', async () => {
       const newData = { ...testCommentData };
       newData.body = faker.string.alphanumeric(10001);
       // Act:
@@ -141,7 +141,7 @@ describe("Endpoint /comments", () => {
       expect(response.status).to.equal(422);
     });
 
-    it("PATCH /comments/:id - full update", async () => {
+    it('PATCH /comments/:id - full update', async () => {
       // Act:
       const response = await request.patch(`${baseUrl}/${commentId}`).set(headers).send(testCommentData);
 
@@ -151,7 +151,7 @@ describe("Endpoint /comments", () => {
       expect(response.body).to.deep.equal(testCommentData);
     });
 
-    it("PATCH /comments/:id - full update different comment", async () => {
+    it('PATCH /comments/:id - full update different comment', async () => {
       // Act:
       const response = await request.patch(`${baseUrl}/1`).set(headers).send(testCommentData);
 
@@ -159,7 +159,7 @@ describe("Endpoint /comments", () => {
       expect(response.status).to.equal(401);
     });
 
-    it("PATCH /comments", async () => {
+    it('PATCH /comments', async () => {
       // Act:
       const response = await request.patch(baseUrl).set(headers).send(testCommentData);
 
@@ -168,7 +168,7 @@ describe("Endpoint /comments", () => {
     });
   });
 
-  describe("DELETE /comments", async () => {
+  describe('DELETE /comments', async () => {
     let headers;
     let userId;
     let articleId;
@@ -184,7 +184,7 @@ describe("Endpoint /comments", () => {
       commentId = commentData.commentId;
     });
 
-    it("DELETE /comments/:id", async () => {
+    it('DELETE /comments/:id', async () => {
       // Act:
       const response = await request.delete(`${baseUrl}/${commentId}`).set(headers);
 
@@ -198,7 +198,7 @@ describe("Endpoint /comments", () => {
       expect(responseGet.status).to.equal(404);
     });
 
-    it("DELETE /comments/:id - non existing comment", async () => {
+    it('DELETE /comments/:id - non existing comment', async () => {
       // Act:
       const response = await request.delete(`${baseUrl}/1234213`).set(headers);
 
@@ -206,7 +206,7 @@ describe("Endpoint /comments", () => {
       expect(response.status).to.equal(401);
     });
 
-    it("DELETE /comments/:id - not my comment", async () => {
+    it('DELETE /comments/:id - not my comment', async () => {
       // Act:
       const response = await request.delete(`${baseUrl}/1`).set(headers);
 
@@ -215,7 +215,7 @@ describe("Endpoint /comments", () => {
     });
   });
 
-  describe("With auth", () => {
+  describe('With auth', () => {
     let headers;
     let userId;
 
@@ -225,7 +225,7 @@ describe("Endpoint /comments", () => {
       userId = data.userId;
     });
 
-    it("POST /comments - create valid comment", async () => {
+    it('POST /comments - create valid comment', async () => {
       const testData = generateValidCommentData();
       testData.user_id = undefined;
       testData.article_id = 1;
@@ -240,7 +240,7 @@ describe("Endpoint /comments", () => {
       expect(response.body).to.deep.equal(testData);
     });
 
-    describe("PUT", () => {
+    describe('PUT', () => {
       let commentId;
       const articleId = 1;
 
@@ -263,7 +263,7 @@ describe("Endpoint /comments", () => {
         expect(responseGet.status, JSON.stringify(responseGet.body)).to.equal(200);
       });
 
-      it("PUT /comments - should update valid comment", async () => {
+      it('PUT /comments - should update valid comment', async () => {
         // Arrange:
         const testData = generateValidCommentData();
         testData.user_id = userId;
@@ -275,13 +275,13 @@ describe("Endpoint /comments", () => {
         // Assert:
         expect(
           response.status,
-          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`
+          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`,
         ).to.equal(200);
         testData.id = response.body.id;
         expect(response.body).to.deep.equal(testData);
       });
 
-      it("PUT /comments - should not update comment without user_id", async () => {
+      it('PUT /comments - should not update comment without user_id', async () => {
         // Arrange:
         const testData = generateValidCommentData();
         testData.user_id = undefined;
@@ -293,11 +293,11 @@ describe("Endpoint /comments", () => {
         // Assert:
         expect(
           response.status,
-          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`
+          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`,
         ).to.equal(422);
       });
 
-      it("PUT /comments - should not update not Your own comment", async () => {
+      it('PUT /comments - should not update not Your own comment', async () => {
         // Arrange:
         const testData = generateValidCommentData();
         testData.user_id = userId;
@@ -309,11 +309,11 @@ describe("Endpoint /comments", () => {
         // Assert:
         expect(
           response.status,
-          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`
+          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`,
         ).to.equal(401);
       });
 
-      it("PUT /comments - should create comment if not exist", async () => {
+      it('PUT /comments - should create comment if not exist', async () => {
         // Arrange:
         const testData = generateValidCommentData();
         testData.user_id = userId;
@@ -325,11 +325,11 @@ describe("Endpoint /comments", () => {
         // Assert:
         expect(
           response.status,
-          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`
+          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`,
         ).to.equal(201);
       });
 
-      it("PUT /comments - should create comment", async () => {
+      it('PUT /comments - should create comment', async () => {
         // Arrange:
         const testData = generateValidCommentData();
         testData.user_id = userId;
@@ -341,12 +341,12 @@ describe("Endpoint /comments", () => {
         // Assert:
         expect(
           response.status,
-          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`
+          `updating commentId: ${commentId} -> received: ${JSON.stringify(response.body)}`,
         ).to.equal(201);
       });
     });
 
-    it("POST /comments - create valid comment (with id in body)", async () => {
+    it('POST /comments - create valid comment (with id in body)', async () => {
       const testData = generateValidCommentData();
       testData.user_id = userId;
       testData.article_id = 1;
@@ -361,7 +361,7 @@ describe("Endpoint /comments", () => {
       expect(response.body).to.deep.equal(testData);
     });
 
-    ["article_id", "body", "date"].forEach((field) => {
+    ['article_id', 'body', 'date'].forEach((field) => {
       it(`POST /comments - missing mandatory field - ${field}`, async () => {
         // Arrange:
         const testData = generateValidCommentData();
@@ -377,7 +377,7 @@ describe("Endpoint /comments", () => {
       });
     });
 
-    ["user_id", "article_id", "body", "date"].forEach((field) => {
+    ['user_id', 'article_id', 'body', 'date'].forEach((field) => {
       it(`POST /comments - length of field exceeded - ${field}`, async () => {
         // Arrange:
         const testData = generateValidCommentData();
@@ -393,7 +393,7 @@ describe("Endpoint /comments", () => {
       });
     });
 
-    it("GET /comments", async () => {
+    it('GET /comments', async () => {
       // Act:
       const response = await request.get(baseUrl).set(headers);
 
@@ -402,7 +402,7 @@ describe("Endpoint /comments", () => {
       expect(response.body.length).to.be.greaterThan(1);
     });
 
-    it("GET /comments/:id", async () => {
+    it('GET /comments/:id', async () => {
       // Arrange:
       const expectedData = validExistingComment;
 
@@ -414,7 +414,7 @@ describe("Endpoint /comments", () => {
       expect(response.body).to.deep.equal(expectedData);
     });
 
-    it("HEAD /comments", () => {
+    it('HEAD /comments', () => {
       return request.head(`${baseUrl}/1`).set(headers).expect(200);
     });
   });

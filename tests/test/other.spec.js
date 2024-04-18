@@ -1,7 +1,7 @@
-const { expect, request, baseApiUrl } = require("../config");
-const { gracefulQuit, setupEnv } = require("../helpers/helpers");
+const { expect, request, baseApiUrl } = require('../config');
+const { gracefulQuit, setupEnv } = require('../helpers/helpers');
 
-describe("Endpoint /other", () => {
+describe('Endpoint /other', () => {
   const baseUrl = baseApiUrl;
 
   before(async () => {
@@ -12,8 +12,8 @@ describe("Endpoint /other", () => {
     gracefulQuit();
   });
 
-  describe("Without auth", () => {
-    it("GET /images/user", async () => {
+  describe('Without auth', () => {
+    it('GET /images/user', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/images/user`);
 
@@ -22,7 +22,7 @@ describe("Endpoint /other", () => {
       expect(response.body.length).to.be.greaterThan(1);
     });
 
-    it("GET /images/posts", async () => {
+    it('GET /images/posts', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/images/posts`);
 
@@ -31,7 +31,7 @@ describe("Endpoint /other", () => {
       expect(response.body.length).to.be.greaterThan(1);
     });
 
-    it("GET /restoreEmptyDB", async () => {
+    it('GET /restoreEmptyDB', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/restoreEmptyDB`);
 
@@ -39,7 +39,7 @@ describe("Endpoint /other", () => {
       expect(response.status).to.equal(201);
     });
 
-    it("GET /restoreDB", async () => {
+    it('GET /restoreDB', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/restoreDB`);
 

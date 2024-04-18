@@ -1,4 +1,4 @@
-const fullName = "Experience in Test Automation";
+const fullName = 'Experience in Test Automation';
 const type = 2;
 const description = {
   base: `This survey is about experience in test automation.`,

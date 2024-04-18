@@ -1,8 +1,8 @@
-const { request, expect, baseLikesUrl, sleepTime } = require("../config.js");
-const { authUser, generateLikesBody } = require("../helpers/data.helpers.js");
-const { setupEnv, gracefulQuit, sleep } = require("../helpers/helpers.js");
+const { request, expect, baseLikesUrl, sleepTime } = require('../config.js');
+const { authUser, generateLikesBody } = require('../helpers/data.helpers.js');
+const { setupEnv, gracefulQuit, sleep } = require('../helpers/helpers.js');
 
-describe("Endpoint /likes", () => {
+describe('Endpoint /likes', () => {
   const baseUrl = baseLikesUrl;
 
   before(async () => {
@@ -13,8 +13,8 @@ describe("Endpoint /likes", () => {
     gracefulQuit();
   });
 
-  describe("Without auth", () => {
-    it("GET /likes", async () => {
+  describe('Without auth', () => {
+    it('GET /likes', async () => {
       // Act:
       const response = await request.get(baseUrl);
 
@@ -22,40 +22,40 @@ describe("Endpoint /likes", () => {
       expect(response.status).to.equal(405);
     });
 
-    it("POST /likes", () => {
+    it('POST /likes', () => {
       return request.post(baseUrl).send({}).expect(401);
     });
 
-    it("PUT /likes", () => {
+    it('PUT /likes', () => {
       return request.put(baseUrl).send({}).expect(401);
     });
 
-    it("PUT /likes/:id", () => {
+    it('PUT /likes/:id', () => {
       return request.put(`${baseUrl}/1`).send({}).expect(401);
     });
 
-    it("PATCH /likes", () => {
+    it('PATCH /likes', () => {
       return request.patch(baseUrl).send({}).expect(401);
     });
 
-    it("PATCH /likes/:id", () => {
+    it('PATCH /likes/:id', () => {
       return request.patch(`${baseUrl}/1`).send({}).expect(401);
     });
 
-    it("DELETE /likes", () => {
+    it('DELETE /likes', () => {
       return request.delete(baseUrl).expect(401);
     });
 
-    it("DELETE /likes/:id", () => {
+    it('DELETE /likes/:id', () => {
       return request.delete(`${baseUrl}/1`).expect(401);
     });
 
-    it("HEAD /likes/:id", () => {
+    it('HEAD /likes/:id', () => {
       return request.head(`${baseUrl}/1`).expect(200);
     });
   });
 
-  describe("With auth", () => {
+  describe('With auth', () => {
     let headers;
     let userId;
 
@@ -63,18 +63,18 @@ describe("Endpoint /likes", () => {
       const data = await authUser();
       headers = data.headers;
       userId = data.userId;
-      headers["userid"] = userId;
+      headers['userid'] = userId;
     });
 
-    describe("e2e", () => {
+    describe('e2e', () => {
       beforeEach(async () => {
         await setupEnv();
-        await request.get("/restoreDB");
+        await request.get('/restoreDB');
       });
 
       [
-        ["comment", 1, undefined],
-        ["article", undefined, 1],
+        ['comment', 1, undefined],
+        ['article', undefined, 1],
       ].forEach((dataSet) => {
         it(`POST /likes - ${dataSet[0]} and one more like`, async () => {
           // Arrange:
@@ -102,8 +102,8 @@ describe("Endpoint /likes", () => {
       });
 
       [
-        ["comment", 1, undefined],
-        ["article", undefined, 1],
+        ['comment', 1, undefined],
+        ['article', undefined, 1],
       ].forEach((dataSet) => {
         it(`POST /likes - ${dataSet[0]} liked by same user (unlike) - ${dataSet}`, async () => {
           // Arrange:
@@ -140,8 +140,8 @@ describe("Endpoint /likes", () => {
       });
     });
 
-    describe("GET", () => {
-      it("GET /likes", async () => {
+    describe('GET', () => {
+      it('GET /likes', async () => {
         // Act:
         const response = await request.get(baseUrl).set(headers);
 
@@ -149,7 +149,7 @@ describe("Endpoint /likes", () => {
         expect(response.status).to.equal(405);
       });
 
-      it("GET /likes/:id", async () => {
+      it('GET /likes/:id', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/1`).set(headers);
 
@@ -157,7 +157,7 @@ describe("Endpoint /likes", () => {
         expect(response.status, JSON.stringify(response.body)).to.equal(405);
       });
 
-      it("GET /likes/article", async () => {
+      it('GET /likes/article', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/article`).set(headers);
 
@@ -165,7 +165,7 @@ describe("Endpoint /likes", () => {
         expect(response.status).to.equal(405);
       });
 
-      it("GET /likes/article/:id", async () => {
+      it('GET /likes/article/:id', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/article/1`).set(headers);
 
@@ -174,7 +174,7 @@ describe("Endpoint /likes", () => {
         expect(response.body.likes, JSON.stringify(response.body)).to.be.greaterThan(0);
       });
 
-      it("GET /likes/comment", async () => {
+      it('GET /likes/comment', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/comment`).set(headers);
 
@@ -182,7 +182,7 @@ describe("Endpoint /likes", () => {
         expect(response.status).to.equal(405);
       });
 
-      it("GET /likes/comment/:id", async () => {
+      it('GET /likes/comment/:id', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/comment/1`).set(headers);
 
@@ -192,8 +192,8 @@ describe("Endpoint /likes", () => {
       });
     });
 
-    describe("POST", () => {
-      it("POST /likes - empty body", async () => {
+    describe('POST', () => {
+      it('POST /likes - empty body', async () => {
         // Act:
         const response = await request.post(baseUrl).set(headers).send({});
 
@@ -201,7 +201,7 @@ describe("Endpoint /likes", () => {
         expect(response.status).to.equal(422);
       });
 
-      it("POST /likes - valid body for comment", async () => {
+      it('POST /likes - valid body for comment', async () => {
         // Assert:
         const likedBody = generateLikesBody(userId, 1, undefined);
 
@@ -212,7 +212,7 @@ describe("Endpoint /likes", () => {
         expect(response.status).to.equal(201);
       });
 
-      it("POST /likes - valid body for article", async () => {
+      it('POST /likes - valid body for article', async () => {
         // Assert:
         const likedBody = generateLikesBody(userId, 1, undefined);
 
@@ -223,7 +223,7 @@ describe("Endpoint /likes", () => {
         expect(response.status).to.equal(201);
       });
 
-      it("POST /likes - invalid body - article and comment", async () => {
+      it('POST /likes - invalid body - article and comment', async () => {
         // Assert:
         const likedBody = generateLikesBody(userId, 1, 1);
 
@@ -234,7 +234,7 @@ describe("Endpoint /likes", () => {
         expect(response.status).to.equal(422);
       });
 
-      it("POST /likes - invalid body - neither article nor comment", async () => {
+      it('POST /likes - invalid body - neither article nor comment', async () => {
         // Assert:
         const likedBody = generateLikesBody(userId, 1, 1);
 
@@ -246,7 +246,7 @@ describe("Endpoint /likes", () => {
       });
     });
 
-    it("PUT /likes", async () => {
+    it('PUT /likes', async () => {
       // Act:
       const response = await request.put(baseUrl).set(headers).send({});
 
@@ -254,7 +254,7 @@ describe("Endpoint /likes", () => {
       expect(response.status).to.equal(405);
     });
 
-    it("PUT /likes/:id", async () => {
+    it('PUT /likes/:id', async () => {
       // Act:
       const response = await request.put(`${baseUrl}/1`).set(headers).send({});
 
@@ -262,7 +262,7 @@ describe("Endpoint /likes", () => {
       expect(response.status).to.equal(405);
     });
 
-    it("PATCH /likes", async () => {
+    it('PATCH /likes', async () => {
       // Act:
       const response = await request.patch(baseUrl).set(headers).send({});
 
@@ -270,7 +270,7 @@ describe("Endpoint /likes", () => {
       expect(response.status, response.body).to.equal(405);
     });
 
-    it("PATCH /likes/:id", async () => {
+    it('PATCH /likes/:id', async () => {
       // Act:
       const response = await request.patch(`${baseUrl}/1`).set(headers).send({});
 
@@ -278,7 +278,7 @@ describe("Endpoint /likes", () => {
       expect(response.status).to.equal(405);
     });
 
-    it("DELETE /likes", async () => {
+    it('DELETE /likes', async () => {
       // Act:
       const response = await request.delete(baseUrl).set(headers);
 
@@ -286,7 +286,7 @@ describe("Endpoint /likes", () => {
       expect(response.status).to.equal(405);
     });
 
-    it("DELETE /likes/:id", async () => {
+    it('DELETE /likes/:id', async () => {
       // Act:
       const response = await request.delete(`${baseUrl}/1`).set(headers);
 
@@ -294,7 +294,7 @@ describe("Endpoint /likes", () => {
       expect(response.status).to.equal(401);
     });
 
-    it("HEAD /likes", async () => {
+    it('HEAD /likes', async () => {
       // Act:
       const response = await request.head(`${baseUrl}/1`).set(headers);
 

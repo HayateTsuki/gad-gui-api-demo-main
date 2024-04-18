@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-var nanoid = require("nanoid");
-var pluralize = require("pluralize");
+var nanoid = require('nanoid');
+var pluralize = require('pluralize');
 
 module.exports = {
   getRemovable,
@@ -20,7 +20,7 @@ function getRemovable(db, opts) {
         if (new RegExp(`${opts.foreignKeySuffix}$`).test(key)) {
           // Remove foreign key suffix and pluralize it
           // Example postId -> posts
-          var refName = pluralize.plural(key.replace(new RegExp(`${opts.foreignKeySuffix}$`), ""));
+          var refName = pluralize.plural(key.replace(new RegExp(`${opts.foreignKeySuffix}$`), ''));
           // Test if table exists
           if (db[refName]) {
             // Test if references is defined in table

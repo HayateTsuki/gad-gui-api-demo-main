@@ -7,25 +7,25 @@ const cookieBanner = `<div class="cookies-infobar">
 </div>`;
 
 function hideInfobar() {
-  var infoBar = document.querySelector(".cookies-infobar");
+  var infoBar = document.querySelector('.cookies-infobar');
 
   if (infoBar !== null) {
-    infoBar.className = infoBar.classList.value + " cookies-accepted";
+    infoBar.className = infoBar.classList.value + ' cookies-accepted';
   }
 }
 
 function wasAccepted() {
-  return checkCookie() === "1";
+  return checkCookie() === '1';
 }
 
 function checkCookie() {
-  let name = "bannerCookie=";
-  let cookies = document.cookie.split(";");
-  let found = "";
+  let name = 'bannerCookie=';
+  let cookies = document.cookie.split(';');
+  let found = '';
 
   for (let i = 0; i < cookies.length; i++) {
     let cookie = cookies[i];
-    while (cookie.charAt(0) == " ") {
+    while (cookie.charAt(0) == ' ') {
       cookie = cookie.substring(1);
     }
 
@@ -43,27 +43,27 @@ function saveCookieAcceptInCookies(daysOfValidity) {
 
   newTime = newTime.toUTCString();
 
-  document.cookie = "bannerCookie=1; expires=" + newTime + "; SameSite=Lax; path=/";
+  document.cookie = 'bannerCookie=1; expires=' + newTime + '; SameSite=Lax; path=/';
 }
 
 function displayBanner() {
   if (!wasAccepted()) {
-    document.body.insertAdjacentHTML("beforeend", cookieBanner);
+    document.body.insertAdjacentHTML('beforeend', cookieBanner);
   }
   if (wasAccepted()) {
     hideInfobar();
     return;
   }
 
-  var btnAccept = document.querySelector("#cookies-infobar-accept");
-  btnAccept.addEventListener("click", function (e) {
+  var btnAccept = document.querySelector('#cookies-infobar-accept');
+  btnAccept.addEventListener('click', function (e) {
     e.preventDefault();
     hideInfobar();
     saveCookieAcceptInCookies(1);
   });
 
-  var btnReject = document.querySelector("#cookies-infobar-reject");
-  btnReject.addEventListener("click", function (e) {
+  var btnReject = document.querySelector('#cookies-infobar-reject');
+  btnReject.addEventListener('click', function (e) {
     e.preventDefault();
     hideInfobar();
     saveCookieAcceptInCookies(0.01);

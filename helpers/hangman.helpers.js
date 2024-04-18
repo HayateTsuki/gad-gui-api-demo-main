@@ -1,7 +1,7 @@
-const { shuffleArray } = require("./helpers");
-const { getConfigValue } = require("../config/config-manager");
-const { ConfigKeys } = require("../config/enums");
-const { hangmanDb } = require("./db.helpers");
+const { shuffleArray } = require('./helpers');
+const { getConfigValue } = require('../config/config-manager');
+const { ConfigKeys } = require('../config/enums');
+const { hangmanDb } = require('./db.helpers');
 
 function getWords() {
   let words = hangmanDb(getConfigValue(ConfigKeys.HANGMAN_DATA_PATH));

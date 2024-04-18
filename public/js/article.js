@@ -1,13 +1,13 @@
-const articlesEndpoint = "../../api/articles";
-const usersEndpoint = "../../api/users";
-const commentsEndpoint = "../../api/comments";
-const randomArticleEndpoint = "../../api/random/article";
-const articleLikesEndpoint = "../../api/likes/article";
-const myLikesEndpoint = "../../api/likes/article/mylikes";
-const likesEndpoint = "../../api/likes";
-const visitsEndpoint = "../../api/visits/articles";
-const articleBookmarkEndpoint = "../../api/bookmarks/articles";
-let user_name = "Unknown";
+const articlesEndpoint = '../../api/articles';
+const usersEndpoint = '../../api/users';
+const commentsEndpoint = '../../api/comments';
+const randomArticleEndpoint = '../../api/random/article';
+const articleLikesEndpoint = '../../api/likes/article';
+const myLikesEndpoint = '../../api/likes/article/mylikes';
+const likesEndpoint = '../../api/likes';
+const visitsEndpoint = '../../api/visits/articles';
+const articleBookmarkEndpoint = '../../api/bookmarks/articles';
+let user_name = 'Unknown';
 let article_id = undefined;
 let articleData;
 let articleDataForExport;
@@ -34,7 +34,7 @@ async function issueGetBookmarkedArticles() {
 
 async function issueGetRandomRequest() {
   const articlesData = await Promise.all(
-    [randomArticleEndpoint].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json()))
+    [randomArticleEndpoint].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json())),
   );
   articleData = articlesData[0];
   return articleData;
@@ -49,7 +49,7 @@ async function issueGetMyLikesForArticle(articleId) {
 
 async function issueGetLikes(article_id) {
   const likesData = await fetch(`${articleLikesEndpoint}/${article_id}`, { headers: formatHeaders() }).then((r) =>
-    r.json()
+    r.json(),
   );
   return likesData.likes;
 }
@@ -60,10 +60,10 @@ async function likeArticle(articleId) {
     user_id: getId(),
   };
   fetch(likesEndpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
       userid: getId(),
     },
@@ -85,12 +85,12 @@ async function issueGetRequest(article_id) {
 
   let wasDisplayed = issueGetRequestArticles(article_id).catch((error) => {
     console.log(error);
-    displayArticlesData(undefined, "Error loading comments. Please contact administrator");
+    displayArticlesData(undefined, 'Error loading comments. Please contact administrator');
   });
 
   issueGetRequestComments(article_id).catch((error) => {
     console.log(error);
-    displayCommentsData(undefined, "Error loading comments. Please contact administrator");
+    displayCommentsData(undefined, 'Error loading comments. Please contact administrator');
   });
 
   return wasDisplayed;
@@ -135,11 +135,11 @@ async function addUserNameToComments(comments) {
   }
 
   userIds.push(getId());
-  const queryId = `${userIds.join("&id=")}`;
+  const queryId = `${userIds.join('&id=')}`;
   const userUrlQuery = `${usersEndpoint}?id=${queryId}`;
 
   const data = await Promise.all(
-    [userUrlQuery].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json()))
+    [userUrlQuery].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json())),
   );
   const usersData = data[0];
 
@@ -151,7 +151,7 @@ async function addUserNameToComments(comments) {
 
     let user_name;
     if (userData === undefined || userData.firstname === undefined) {
-      user_name = "Unknown user";
+      user_name = 'Unknown user';
     } else {
       user_name = `${userData.firstname} ${userData.lastname}`;
     }
@@ -162,11 +162,11 @@ async function addUserNameToComments(comments) {
 async function addUserNameToArticle(item) {
   const userUrl = `${usersEndpoint}/${item.user_id}`;
   const usersData = await Promise.all(
-    [userUrl].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json()))
+    [userUrl].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json())),
   );
   const userData = usersData[0];
   if (userData.firstname === undefined) {
-    user_name = "Unknown user";
+    user_name = 'Unknown user';
   } else {
     user_name = `${userData.firstname} ${userData.lastname}`;
   }
@@ -175,7 +175,7 @@ async function addUserNameToArticle(item) {
 }
 
 const getImagesHTML = (image) => {
-  let htmlData = "";
+  let htmlData = '';
   if (image !== undefined) {
     htmlData += `<div align="center" ><img id="article-image" src="${image}" /></div>`;
     //        for (image of images) {
@@ -191,22 +191,22 @@ const getImagesHTML = (image) => {
 const getItemHTML = (item) => {
   // @GAD-R07-01
   if (item.title === undefined || item.title.length === 0) {
-    item.title = "[No title]";
+    item.title = '[No title]';
   }
   if (item.body === undefined || item.body.length === 0) {
-    item.body = "[No body]";
+    item.body = '[No body]';
   }
 
-  let controls = "";
+  let controls = '';
 
-  if (item.id !== undefined && item.id !== "undefined") {
+  if (item.id !== undefined && item.id !== 'undefined') {
     controls = `<div class="controls" >
             <i class="fas fa-edit edit" disabled data-testid="edit" id="${item.id}"></i>
             <i class="fas fa-trash delete" disabled data-testid="delete" id="${item.id}"></i>
         </div>`;
   }
 
-  const body = item.body?.replaceAll("\n", "<br/><br/>");
+  const body = item.body?.replaceAll('\n', '<br/><br/>');
   return `<div>
         ${controls}<br>
         ${getImagesHTML(item.image)}
@@ -225,13 +225,13 @@ const getItemHTML = (item) => {
         <tr>
           <td style="padding: 0px;"><label style="width:50px !important">user:</label>&nbsp&nbsp</td>
           <td style="padding: 0px;"><span><a href="user.html?id=${item.user_id}" data-testid="user-name">${
-    item.user_name
-  }</a></span></td>
+            item.user_name
+          }</a></span></td>
         </tr>
         
         <tr>
           <td style="padding: 0px ;"><label style="width:10px !important">date:</label>&nbsp&nbsp</td>
-          <td style="padding: 0px ;"><span>${item?.date?.replace("T", " ").replace("Z", "")}</span></td>
+          <td style="padding: 0px ;"><span>${item?.date?.replace('T', ' ').replace('Z', '')}</span></td>
         </tr>
       </table>
         <div class="labels-container" id="labels-container" ></div>
@@ -253,18 +253,18 @@ function generatePDF() {
   const element = document.documentElement;
   var opt = {
     margin: 1,
-    filename: "article.pdf",
-    image: { type: "jpeg", quality: 0.98 },
+    filename: 'article.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 1 },
-    jsPDF: { unit: "mm", format: "a3", orientation: "portrait" },
+    jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' },
   };
   // Docs: https://github.com/eKoopmans/html2pdf.js
   html2pdf().set(opt).from(element).save();
 }
 
 const getCommentsHTML = (comments, error) => {
-  let htmlData = "";
-  let errorMsg = error ?? "No Comments";
+  let htmlData = '';
+  let errorMsg = error ?? 'No Comments';
   if (comments === undefined || comments?.length == 0) {
     htmlData = `<div class="comment-container">
         <span>${errorMsg}</span><br>
@@ -280,28 +280,28 @@ const getCommentsHTML = (comments, error) => {
 
 const getCommentHTML = (comments) => {
   if (comments.body === undefined || comments.body.length === 0) {
-    comments.body = "<i>[Comment was removed]</i>";
+    comments.body = '<i>[Comment was removed]</i>';
   }
 
   return `<div class="comment-container">
         <label>id:</label><span class="super-style">${comments.id}</span><br>
         <label>author:</label><span><a href="user.html?id=${comments.user_id}" id="gotoUser${comments.id}-${
-    comments.user_id
-  }">${comments.user_name}</a></span><br>
-        <label>date:</label><span>${comments.date.replace("T", " ").replace("Z", "")}</span><br>
+          comments.user_id
+        }">${comments.user_name}</a></span><br>
+        <label>date:</label><span>${comments.date.replace('T', ' ').replace('Z', '')}</span><br>
         <label>comment:</label><span>${comments.body}</span><br>
         <span><a href="comment.html?id=${comments.id}" id="gotoComment${comments.id}">See More...</a></span><br>
     </div>`;
 };
 
 const displayArticlesData = (data, error) => {
-  const container = document.querySelector("#container");
-  container.innerHTML = "";
-  const errorMsg = error ?? "Invalid article ID or article does not exist";
+  const container = document.querySelector('#container');
+  container.innerHTML = '';
+  const errorMsg = error ?? 'Invalid article ID or article does not exist';
   if (data === undefined || data.id === undefined) {
     container.innerHTML = `<div align="center"><h1 style="text-align: center;" data-testid="no-results">No data</h1><div data-testid="no-results-details">${errorMsg}</div></div>`;
-    const containerComments = document.querySelector("#containerComments");
-    containerComments.innerHTML = "";
+    const containerComments = document.querySelector('#containerComments');
+    containerComments.innerHTML = '';
     return false;
   }
 
@@ -310,8 +310,8 @@ const displayArticlesData = (data, error) => {
 };
 
 const displayCommentsData = (comments, error) => {
-  const containerComments = document.querySelector("#containerComments");
-  containerComments.innerHTML = "";
+  const containerComments = document.querySelector('#containerComments');
+  containerComments.innerHTML = '';
   displayComments(comments, containerComments, error);
   return true;
 };
@@ -332,15 +332,15 @@ const displayItem = (item, container) => {
   }
 };
 
-let alertElement = document.querySelector(".alert");
+let alertElement = document.querySelector('.alert');
 
 const showMessage = (message, isError = false) => {
   alertElement.innerHTML = message;
-  alertElement.classList.remove("alert-error", "alert-success");
+  alertElement.classList.remove('alert-error', 'alert-success');
   if (isError) {
-    alertElement.classList.add("alert-error");
+    alertElement.classList.add('alert-error');
   } else {
-    alertElement.classList.add("alert-success");
+    alertElement.classList.add('alert-success');
   }
   var newMessageElement = alertElement.cloneNode(true);
   alertElement.parentNode.replaceChild(newMessageElement, alertElement);
@@ -349,18 +349,18 @@ const showMessage = (message, isError = false) => {
 
 const issuePatchRequest = (id, data, responseHandler) => {
   // update data on the server:
-  const url = articlesEndpoint + "/" + id;
+  const url = articlesEndpoint + '/' + id;
   fetch(url, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
   })
     .then((response) => {
-      showResponseOnUpdate(response, "Article");
+      showResponseOnUpdate(response, 'Article');
       return response.json();
     })
     .then(responseHandler);
@@ -368,18 +368,18 @@ const issuePatchRequest = (id, data, responseHandler) => {
 
 const issuePutRequest = (id, data, responseHandler) => {
   // update data on the server:
-  const url = articlesEndpoint + "/" + id;
+  const url = articlesEndpoint + '/' + id;
   fetch(url, {
-    method: "put",
+    method: 'put',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
   })
     .then((response) => {
-      showResponseOnUpdate(response, "Article");
+      showResponseOnUpdate(response, 'Article');
       return response.json();
     })
     .then(responseHandler);
@@ -421,10 +421,10 @@ const showResponseOnlyOnFailure = (response, item) => {
 // If You add new article with this ID - it will have comments from deleted article
 const issueDeleteRequest = (id, responseHandler) => {
   // delete data on the server:
-  const url = articlesEndpoint + "/" + id;
-  fetch(url, { method: "delete", headers: formatHeaders() })
+  const url = articlesEndpoint + '/' + id;
+  fetch(url, { method: 'delete', headers: formatHeaders() })
     .then((response) => {
-      showResponseOnDelete(response, "Article");
+      showResponseOnDelete(response, 'Article');
       return response.json();
     })
     .then(responseHandler);
@@ -433,10 +433,10 @@ const issueDeleteRequest = (id, responseHandler) => {
 const issueArticlePostRequest = (data, responseHandler) => {
   // create data on the server:
   fetch(articlesEndpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
@@ -445,39 +445,39 @@ const issueArticlePostRequest = (data, responseHandler) => {
 const issueCommentPostRequest = (data, responseHandler) => {
   // create data on the server:
   fetch(commentsEndpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
   })
     .then((response) => {
-      showResponseOnCreate(response, "Comment");
+      showResponseOnCreate(response, 'Comment');
       return response.json();
     })
     .then(responseHandler);
 };
 
 const handleUpdate = (ev) => {
-  const id = ev.target.getAttribute("data-id");
+  const id = ev.target.getAttribute('data-id');
   const container = ev.target.parentElement.parentElement;
   const data = {
-    title: container.querySelector("#title").value,
-    body: container.querySelector("#body").value,
-    user_id: container.querySelector("#user_id").value,
-    date: container.querySelector("#date").value,
-    image: container.querySelector("#image").value,
+    title: container.querySelector('#title').value,
+    body: container.querySelector('#body').value,
+    user_id: container.querySelector('#user_id').value,
+    date: container.querySelector('#date').value,
+    image: container.querySelector('#image').value,
   };
   const callback = (item) => {
-    if (item["error"] === undefined) {
+    if (item['error'] === undefined) {
       item.user_name = user_name;
       container.innerHTML = getItemHTML(item);
 
       if (labelsEditEnabled === true) {
         issueUpdateLabels(articleLabelId, article_id, selectedLabels).then((response) => {
-          showResponseOnlyOnFailure(response, "Article labels");
+          showResponseOnlyOnFailure(response, 'Article labels');
           handleLabelsRefresh().then((x) => {
             if (labelsEnabled === true) {
               for (let index = 0; index < assignedLabels.length; index++) {
@@ -502,13 +502,13 @@ const handleUpdate = (ev) => {
 };
 
 const handleUpdateName = (ev) => {
-  const id = ev.target.getAttribute("data-id");
+  const id = ev.target.getAttribute('data-id');
   const container = ev.target.parentElement.parentElement;
   const data = {
-    title: container.querySelector("#title").value,
+    title: container.querySelector('#title').value,
   };
   const callback = (item) => {
-    if (item["error"] === undefined) {
+    if (item['error'] === undefined) {
       item.user_name = user_name;
       container.innerHTML = getItemHTML(item);
 
@@ -524,31 +524,31 @@ const handleUpdateName = (ev) => {
 };
 function pad(num, size = 2) {
   num = num.toString();
-  while (num.length < size) num = "0" + num;
+  while (num.length < size) num = '0' + num;
   return num;
 }
 
 const handleCommentCreate = () => {
-  const container = document.querySelector(".add-new-panel");
+  const container = document.querySelector('.add-new-panel');
   const today = new Date();
 
   const date = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}T${pad(
-    today.getHours()
+    today.getHours(),
   )}:${pad(today.getMinutes())}:${pad(today.getSeconds())}Z`;
 
   const id = parseInt(getCookieId());
   const data = {
     article_id: article_id,
-    body: container.querySelector("#body").value,
+    body: container.querySelector('#body').value,
     date: date,
   };
   issueCommentPostRequest(data, issueGetRequest(article_id));
-  document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.add-new-panel').classList.remove('active');
 };
 
 const handleDelete = (ev) => {
   const id = ev.target.id;
-  const areYouSure = confirm("Are you sure that you want to delete item #" + id + "?");
+  const areYouSure = confirm('Are you sure that you want to delete item #' + id + '?');
   if (!areYouSure) {
     return;
   }
@@ -556,146 +556,146 @@ const handleDelete = (ev) => {
 };
 
 const actionAfterDelete = () => {
-  location.href = "./articles.html";
+  location.href = './articles.html';
 };
 
 const addCommentArticleButton = () => {
-  if (document.querySelector("#add-new")) {
-    document.querySelector("#add-new").onclick = () => {
+  if (document.querySelector('#add-new')) {
+    document.querySelector('#add-new').onclick = () => {
       window.scrollTo(0, 0);
-      const container = document.querySelector(".add-new-panel");
-      container.querySelector(".body").value = "";
-      container.querySelector("#body").value = "";
-      container.classList.add("active");
+      const container = document.querySelector('.add-new-panel');
+      container.querySelector('.body').value = '';
+      container.querySelector('#body').value = '';
+      container.classList.add('active');
     };
   }
-  if (document.querySelector("#add-new-comment")) {
-    document.querySelector("#add-new-comment").onclick = () => {
+  if (document.querySelector('#add-new-comment')) {
+    document.querySelector('#add-new-comment').onclick = () => {
       window.scrollTo(0, 0);
-      const container = document.querySelector(".add-new-panel");
-      container.querySelector(".body").value = "";
-      container.querySelector("#body").value = "";
-      container.classList.add("active");
+      const container = document.querySelector('.add-new-panel');
+      container.querySelector('.body').value = '';
+      container.querySelector('#body').value = '';
+      container.classList.add('active');
     };
   }
-  document.querySelector(".close").onclick = () => {
-    document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.close').onclick = () => {
+    document.querySelector('.add-new-panel').classList.remove('active');
   };
-  document.querySelector(".add-new-panel .cancel").onclick = () => {
-    document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.add-new-panel .cancel').onclick = () => {
+    document.querySelector('.add-new-panel').classList.remove('active');
     location.reload();
   };
-  document.querySelector(".update.save").onclick = handleCommentCreate;
+  document.querySelector('.update.save').onclick = handleCommentCreate;
 };
 
-const attachEventHandlers = (id = "") => {
+const attachEventHandlers = (id = '') => {
   if (getId()) {
     appendMenu(articleAdditionalMenu);
-    const btn = document.querySelector("#add-new-comment");
-    const btn2 = document.querySelector("#add-new");
+    const btn = document.querySelector('#add-new-comment');
+    const btn2 = document.querySelector('#add-new');
 
     // TODO:INVOKE_BUG: remove if to have a Bug - button Add Comment is duplicated
     if (btn2 === undefined || btn2 === null) {
-      appendElementOnTop(articleAdditionalMenuOnPage, "containerCommentsQuickMenu");
+      appendElementOnTop(articleAdditionalMenuOnPage, 'containerCommentsQuickMenu');
     }
 
     // TODO:INVOKE_BUG: remove if to have a Bug - button Add Comment is duplicated
     if (btn === undefined || btn === null) {
-      appendElementOnTop(articleAdditionalMenuOnPage, "containerComments");
+      appendElementOnTop(articleAdditionalMenuOnPage, 'containerComments');
     }
 
-    if (document.querySelector("#add-new")) {
-      document.querySelector("#add-new").disabled = false;
+    if (document.querySelector('#add-new')) {
+      document.querySelector('#add-new').disabled = false;
     }
-    if (document.querySelector("#add-new-comment")) {
-      document.querySelector("#add-new-comment").disabled = false;
+    if (document.querySelector('#add-new-comment')) {
+      document.querySelector('#add-new-comment').disabled = false;
     }
   }
   if (!isAuthorized(id)) {
     // TODO: remove icons and methods if user is not logged
-    for (let elem of document.querySelectorAll(".editName")) {
+    for (let elem of document.querySelectorAll('.editName')) {
       elem.disabled = true;
-      elem.style.visibility = "hidden";
+      elem.style.visibility = 'hidden';
     }
-    for (let elem of document.querySelectorAll(".delete")) {
+    for (let elem of document.querySelectorAll('.delete')) {
       elem.disabled = true;
-      elem.style.visibility = "hidden";
+      elem.style.visibility = 'hidden';
     }
-    for (let elem of document.querySelectorAll(".edit")) {
+    for (let elem of document.querySelectorAll('.edit')) {
       elem.disabled = true;
-      elem.style.visibility = "hidden";
+      elem.style.visibility = 'hidden';
     }
-    if (document.querySelector("#btnDownloadCsv")) {
-      document.querySelector("#btnDownloadCsv").disabled = true;
+    if (document.querySelector('#btnDownloadCsv')) {
+      document.querySelector('#btnDownloadCsv').disabled = true;
     }
-    if (document.querySelector("#btnDownloadJson")) {
-      document.querySelector("#btnDownloadJson").disabled = true;
+    if (document.querySelector('#btnDownloadJson')) {
+      document.querySelector('#btnDownloadJson').disabled = true;
     }
-    if (document.querySelector("#btnDownloadPdf")) {
-      document.querySelector("#btnDownloadPdf").disabled = true;
+    if (document.querySelector('#btnDownloadPdf')) {
+      document.querySelector('#btnDownloadPdf').disabled = true;
     }
     if (getId()) {
       addCommentArticleButton();
     }
     return;
   } else {
-    for (let elem of document.querySelectorAll(".delete")) {
+    for (let elem of document.querySelectorAll('.delete')) {
       elem.onclick = handleDelete;
       elem.disabled = false;
     }
-    for (let elem of document.querySelectorAll(".edit")) {
+    for (let elem of document.querySelectorAll('.edit')) {
       elem.onclick = showEditForm;
       elem.disabled = false;
     }
-    for (let elem of document.querySelectorAll(".editName")) {
+    for (let elem of document.querySelectorAll('.editName')) {
       elem.onclick = showEditNameForm;
       elem.disabled = false;
     }
     addCommentArticleButton();
 
-    if (document.querySelector("#btnDownloadCsv")) {
-      document.querySelector("#btnDownloadCsv").onclick = () => {
-        download("article_data.csv");
+    if (document.querySelector('#btnDownloadCsv')) {
+      document.querySelector('#btnDownloadCsv').onclick = () => {
+        download('article_data.csv');
       };
     }
-    if (document.querySelector("#btnDownloadJson")) {
-      document.querySelector("#btnDownloadJson").onclick = () => {
-        download("article_data.json");
+    if (document.querySelector('#btnDownloadJson')) {
+      document.querySelector('#btnDownloadJson').onclick = () => {
+        download('article_data.json');
       };
     }
   }
 
-  if (document.querySelector("#btnDownloadCsv")) {
-    document.querySelector("#btnDownloadCsv").disabled = false;
+  if (document.querySelector('#btnDownloadCsv')) {
+    document.querySelector('#btnDownloadCsv').disabled = false;
   }
-  if (document.querySelector("#btnDownloadJson")) {
-    document.querySelector("#btnDownloadJson").disabled = false;
+  if (document.querySelector('#btnDownloadJson')) {
+    document.querySelector('#btnDownloadJson').disabled = false;
   }
-  if (document.querySelector("#btnDownloadPdf")) {
-    document.querySelector("#btnDownloadPdf").disabled = false;
+  if (document.querySelector('#btnDownloadPdf')) {
+    document.querySelector('#btnDownloadPdf').disabled = false;
   }
 };
 
 const download = (filename) => {
-  let text = "NO DATA";
-  if (filename.includes("csv")) {
+  let text = 'NO DATA';
+  if (filename.includes('csv')) {
     text = jsonToCSV(articleDataForExport);
-  } else if (filename.includes("json")) {
+  } else if (filename.includes('json')) {
     text = JSON.stringify(articleDataForExport, null, 4);
   }
 
-  var element = document.createElement("a");
-  element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-  element.setAttribute("download", filename);
-  element.style.display = "none";
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
 };
 
 const attachFormEventHandlers = (item, container) => {
-  container.querySelector(".update").onclick = handleUpdate;
-  container.querySelector(".cancel").onclick = () => {
+  container.querySelector('.update').onclick = handleUpdate;
+  container.querySelector('.cancel').onclick = () => {
     container.innerHTML = getItemHTML(item);
     location.reload();
     attachEventHandlers(articleUserId);
@@ -703,8 +703,8 @@ const attachFormEventHandlers = (item, container) => {
 };
 
 const attachNameFormEventHandlers = (item, container) => {
-  container.querySelector(".updateName").onclick = handleUpdateName;
-  container.querySelector(".cancel").onclick = () => {
+  container.querySelector('.updateName').onclick = handleUpdateName;
+  container.querySelector('.cancel').onclick = () => {
     container.innerHTML = getItemHTML(item);
     location.reload();
     attachEventHandlers(articleUserId);
@@ -712,7 +712,7 @@ const attachNameFormEventHandlers = (item, container) => {
 };
 const showEditForm = (ev) => {
   const id = ev.target.id;
-  const url = articlesEndpoint + "/" + id;
+  const url = articlesEndpoint + '/' + id;
   const cardElement = ev.target.parentElement.parentElement;
   fetch(url, { headers: formatHeaders() })
     .then((response) => response.json())
@@ -724,8 +724,8 @@ const showEditForm = (ev) => {
 };
 const showEditNameForm = (ev) => {
   const id = ev.target.id;
-  const url = articlesEndpoint + "/" + id;
-  const cardElement = document.querySelector(".card-wrapper-wide");
+  const url = articlesEndpoint + '/' + id;
+  const cardElement = document.querySelector('.card-wrapper-wide');
   fetch(url, { headers: formatHeaders() })
     .then((response) => response.json())
     .then((item) => {
@@ -738,13 +738,13 @@ const showEditNameForm = (ev) => {
 const displayForm = (item, container) => {
   // @GAD-R07-01
   if (item.title === undefined || item.title.length === 0) {
-    item.title = "[No title]";
+    item.title = '[No title]';
   }
   if (item.body === undefined || item.body.length === 0) {
-    item.body = "[No body]";
+    item.body = '[No body]';
   }
 
-  let labelsElement = "";
+  let labelsElement = '';
   if (labelsEditEnabled === true) {
     labelsElement = `
       <div style="position: relative;">
@@ -807,36 +807,36 @@ const displayNameForm = (item, container) => {
     `;
 };
 
-article_id = getParams()["id"];
-const is_random = getParams()["random"];
-const msg = getParams()["msg"];
+article_id = getParams()['id'];
+const is_random = getParams()['random'];
+const msg = getParams()['msg'];
 
-if (`${is_random}` === "1" || `${is_random}`.toLowerCase() === "true" || `${article_id}`.toLowerCase() === "random") {
+if (`${is_random}` === '1' || `${is_random}`.toLowerCase() === 'true' || `${article_id}`.toLowerCase() === 'random') {
   issueGetRandomRequest().then((article) => {
     issueGetRequest(article.id).then(() => {
-      injectLink(`./article.html?id=${article.id}`, "title");
+      injectLink(`./article.html?id=${article.id}`, 'title');
     });
   });
 } else if (article_id !== undefined) {
   issueGetRequest(article_id).then((wasDisplayed) => {
-    checkIfFeatureEnabled("feature_likes").then((isEnabled) => {
+    checkIfFeatureEnabled('feature_likes').then((isEnabled) => {
       if (!isEnabled) return;
       issueGetLikes(article_id).then((likes) => {
         issueGetMyLikesForArticle(article_id).then((myLikes) => {
-          const container = document.querySelector("#likes-container");
+          const container = document.querySelector('#likes-container');
           container.innerHTML = formatLike(myLikes[article_id], likes, article_id);
         });
       });
     });
-    checkIfFeatureEnabled("feature_visits").then((isEnabled) => {
+    checkIfFeatureEnabled('feature_visits').then((isEnabled) => {
       if (!isEnabled) return;
       issueGetVisitsForArticle(article_id).then((visits) => {
-        const container = document.querySelector(".visits-container");
+        const container = document.querySelector('.visits-container');
         container.innerHTML = formatVisits(visits[article_id], article_id);
       });
     });
     handleLabelsRefresh();
-    checkIfFeatureEnabled("feature_user_bookmark_articles").then((isEnabled) => {
+    checkIfFeatureEnabled('feature_user_bookmark_articles').then((isEnabled) => {
       if (!isEnabled) return;
       issueGetBookmarkedArticles(article_id).then((article_ids) => {
         const element = document.querySelector(`#bookmark-container`);
@@ -845,13 +845,13 @@ if (`${is_random}` === "1" || `${is_random}`.toLowerCase() === "true" || `${arti
     });
   });
 } else {
-  const container = document.querySelector("#container");
+  const container = document.querySelector('#container');
   container.innerHTML =
     '<div align="center"><h1 style="text-align: center;" data-testid="no-results">No data</h1><div data-testid="no-results-details">Invalid article ID or article does not exist</div></div>';
 }
 
 async function handleLabelsRefresh() {
-  checkIfFeatureEnabled("feature_labels").then((isEnabled) => {
+  checkIfFeatureEnabled('feature_labels').then((isEnabled) => {
     if (!isEnabled) return;
 
     labelsEnabled = isEnabled;
@@ -867,8 +867,8 @@ async function handleLabelsRefresh() {
       articleLabelId = labelsData.labels[article_id].id;
       const labelIds = [...new Set(Object.values(labelsData.labels).flatMap((item) => item.label_ids || []))];
       issueGetLabels(labelIds).then((labelData) => {
-        const container = document.querySelector("#labels-container");
-        container.innerHTML = "";
+        const container = document.querySelector('#labels-container');
+        container.innerHTML = '';
         assignedLabels = labelData;
         labelIds.forEach((labelId) => {
           const label = labelData.find((lbl) => lbl.id === labelId);
@@ -888,10 +888,10 @@ async function bookmarkArticle(articleId) {
     article_id: articleId,
   };
   fetch(articleBookmarkEndpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
       userid: getId(),
     },
@@ -905,55 +905,55 @@ async function bookmarkArticle(articleId) {
 }
 
 async function updateBookmarkElements() {
-  const isEnabled = await checkIfFeatureEnabled("feature_user_bookmark_articles");
+  const isEnabled = await checkIfFeatureEnabled('feature_user_bookmark_articles');
   if (!isEnabled) return;
 
-  const elements = document.querySelectorAll(".bookmark-container");
+  const elements = document.querySelectorAll('.bookmark-container');
   const ids = [];
   elements.forEach((element) => {
-    ids.push(element.id.split("-").slice(-1)[0]);
+    ids.push(element.id.split('-').slice(-1)[0]);
   });
   issueGetBookmarkedArticles().then((aricleIds) => {
     const stringArticleIds = aricleIds.map(String);
     elements.forEach((element) => {
-      const id = element.id.split("-").slice(-1)[0];
+      const id = element.id.split('-').slice(-1)[0];
       element.innerHTML = formatBookmarkArticle(stringArticleIds.includes(id.toString()), id);
     });
   });
 }
 
 function updateMatchingLabels() {
-  const input = document.getElementById("labelInput");
+  const input = document.getElementById('labelInput');
   const inputValue = input.value.trim().toLowerCase();
-  const matchingLabelsDropdown = document.getElementById("matchingLabelsDropdown");
-  matchingLabelsDropdown.innerHTML = "";
+  const matchingLabelsDropdown = document.getElementById('matchingLabelsDropdown');
+  matchingLabelsDropdown.innerHTML = '';
 
   let matchedLabels = labelOptions.filter((label) => label.toLowerCase().includes(inputValue));
 
   if (matchedLabels.length > 0) {
-    matchingLabelsDropdown.style.display = "block";
+    matchingLabelsDropdown.style.display = 'block';
     matchedLabels = [...new Set(matchedLabels)];
     matchedLabels.forEach((matchedLabel) => {
-      const labelLink = document.createElement("a");
+      const labelLink = document.createElement('a');
       labelLink.textContent = matchedLabel;
-      labelLink.setAttribute("name", matchedLabel);
-      labelLink.addEventListener("click", () => selectMatchingLabel(matchedLabel));
+      labelLink.setAttribute('name', matchedLabel);
+      labelLink.addEventListener('click', () => selectMatchingLabel(matchedLabel));
       matchingLabelsDropdown.appendChild(labelLink);
     });
   } else {
-    matchingLabelsDropdown.style.display = "none";
+    matchingLabelsDropdown.style.display = 'none';
   }
 }
 
 function handleKeyPress(event) {
-  const matchingLabelsDropdown = document.getElementById("matchingLabelsDropdown");
-  const selectedLabel = matchingLabelsDropdown.querySelector(".selected");
+  const matchingLabelsDropdown = document.getElementById('matchingLabelsDropdown');
+  const selectedLabel = matchingLabelsDropdown.querySelector('.selected');
 
-  if (event.key === "Enter") {
+  if (event.key === 'Enter') {
     if (selectedLabel) {
       addLabel(selectedLabel.textContent, true);
     } else {
-      const input = document.getElementById("labelInput");
+      const input = document.getElementById('labelInput');
       const customLabel = input.value.trim();
       if (customLabel) {
         addLabel(customLabel, true);
@@ -961,42 +961,42 @@ function handleKeyPress(event) {
     }
   }
 
-  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault();
     handleArrowKeyPress(event.key);
   }
 }
 
 function handleArrowKeyPress(key) {
-  const matchingLabelsDropdown = document.getElementById("matchingLabelsDropdown");
-  const selectedLabel = matchingLabelsDropdown.querySelector(".selected");
+  const matchingLabelsDropdown = document.getElementById('matchingLabelsDropdown');
+  const selectedLabel = matchingLabelsDropdown.querySelector('.selected');
 
-  const labelLinks = matchingLabelsDropdown.querySelectorAll("a");
+  const labelLinks = matchingLabelsDropdown.querySelectorAll('a');
   const currentIndex = selectedLabel ? Array.from(labelLinks).indexOf(selectedLabel) : -1;
   let nextIndex;
 
-  if (key === "ArrowDown") {
+  if (key === 'ArrowDown') {
     nextIndex = currentIndex < labelLinks.length - 1 ? currentIndex + 1 : 0;
-  } else if (key === "ArrowUp") {
+  } else if (key === 'ArrowUp') {
     nextIndex = currentIndex > 0 ? currentIndex - 1 : labelLinks.length - 1;
   }
 
   labelLinks.forEach((labelLink, index) => {
-    labelLink.classList.remove("selected");
+    labelLink.classList.remove('selected');
     if (index === nextIndex) {
-      labelLink.classList.add("selected");
+      labelLink.classList.add('selected');
     }
   });
 }
 
 function selectMatchingLabel(label) {
-  const input = document.getElementById("labelInput");
+  const input = document.getElementById('labelInput');
   input.value = label;
   updateMatchingLabels();
 }
 
 function addLabel(selectedLabel, showRemoveButton) {
-  const labelContainer = document.getElementById("labels-container");
+  const labelContainer = document.getElementById('labels-container');
 
   if ([...labelContainer.children].length >= 3) {
     return false;
@@ -1028,35 +1028,35 @@ function addLabel(selectedLabel, showRemoveButton) {
     selectedLabels.push(selectedLabelObject.id);
   }
 
-  const labelInput = document.getElementById("labelInput");
+  const labelInput = document.getElementById('labelInput');
   if (labelInput) {
-    labelInput.value = "";
+    labelInput.value = '';
   }
 
-  const matchingLabelsDropdown = document.getElementById("matchingLabelsDropdown");
+  const matchingLabelsDropdown = document.getElementById('matchingLabelsDropdown');
   if (matchingLabelsDropdown) {
-    matchingLabelsDropdown.innerHTML = "";
+    matchingLabelsDropdown.innerHTML = '';
   }
 
   return true;
 }
 
-window.addEventListener("click", function (event) {
-  const matchingLabelsDropdown = document.getElementById("matchingLabelsDropdown");
-  if (!event.target.matches("#labelInput") && event.target.matches("a") && matchingLabelsDropdown !== null) {
+window.addEventListener('click', function (event) {
+  const matchingLabelsDropdown = document.getElementById('matchingLabelsDropdown');
+  if (!event.target.matches('#labelInput') && event.target.matches('a') && matchingLabelsDropdown !== null) {
     const wasAdded = addLabel(matchingLabelsDropdown.textContent.trim(), true);
-    matchingLabelsDropdown.style.display = "none";
-    const labelInput = document.getElementById("labelInput");
+    matchingLabelsDropdown.style.display = 'none';
+    const labelInput = document.getElementById('labelInput');
     if (labelInput) {
-      labelInput.value = "";
+      labelInput.value = '';
     }
     if (!wasAdded) {
-      const labelContainer = document.getElementById("labels-container");
+      const labelContainer = document.getElementById('labels-container');
       if ([...labelContainer.children].length >= 3) {
         showMessage(`Only 3 labels can be added`, true);
       }
     }
   } else if (matchingLabelsDropdown !== null) {
-    matchingLabelsDropdown.style.display = "none";
+    matchingLabelsDropdown.style.display = 'none';
   }
 });

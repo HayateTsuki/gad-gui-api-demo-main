@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-const { getConfigValue } = require("../config/config-manager");
-const { ConfigKeys, LogLevels } = require("../config/enums");
-const { getCurrentDateTime } = require("./datetime.helpers");
-const { LimitedList } = require("./limited-list");
+const { getConfigValue } = require('../config/config-manager');
+const { ConfigKeys, LogLevels } = require('../config/enums');
+const { getCurrentDateTime } = require('./datetime.helpers');
+const { LimitedList } = require('./limited-list');
 
 const logList = new LimitedList(getConfigValue(ConfigKeys.LOGS_LIMIT));
 
@@ -26,9 +26,9 @@ function logInsane(msg, obj) {
   if (getConfigValue(ConfigKeys.CURRENT_LOG_LEVEL) < LogLevels.INSANE) return;
 
   if (obj === undefined) {
-    logMsg("[INSANE]", msg);
+    logMsg('[INSANE]', msg);
   } else {
-    logMsgAndData("[INSANE]", msg, obj);
+    logMsgAndData('[INSANE]', msg, obj);
   }
 }
 
@@ -36,9 +36,9 @@ function logTrace(msg, obj) {
   if (getConfigValue(ConfigKeys.CURRENT_LOG_LEVEL) < LogLevels.TRACE) return;
 
   if (obj === undefined) {
-    logMsg("[TRACE]", msg);
+    logMsg('[TRACE]', msg);
   } else {
-    logMsgAndData("[TRACE]", msg, obj);
+    logMsgAndData('[TRACE]', msg, obj);
   }
 }
 
@@ -46,9 +46,9 @@ function logDebug(msg, obj) {
   if (getConfigValue(ConfigKeys.CURRENT_LOG_LEVEL) < LogLevels.DEBUG) return;
 
   if (obj === undefined) {
-    logMsg("[DEBUG]", msg);
+    logMsg('[DEBUG]', msg);
   } else {
-    logMsgAndData("[DEBUG]", msg, obj);
+    logMsgAndData('[DEBUG]', msg, obj);
   }
 }
 
@@ -56,9 +56,9 @@ function logError(msg, obj) {
   if (getConfigValue(ConfigKeys.CURRENT_LOG_LEVEL) < LogLevels.ERROR) return;
 
   if (obj === undefined) {
-    logMsg("[ERROR]", msg);
+    logMsg('[ERROR]', msg);
   } else {
-    logMsgAndData("[ERROR]", msg, obj);
+    logMsgAndData('[ERROR]', msg, obj);
   }
 }
 
@@ -66,9 +66,9 @@ function logWarn(msg, obj) {
   if (getConfigValue(ConfigKeys.CURRENT_LOG_LEVEL) < LogLevels.WARNING) return;
 
   if (obj === undefined) {
-    logMsg("[WARN]", msg);
+    logMsg('[WARN]', msg);
   } else {
-    logMsgAndData("[WARN]", msg, obj);
+    logMsgAndData('[WARN]', msg, obj);
   }
 }
 

@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-var express = require("express");
-var pluralize = require("pluralize");
-var delay = require("./delay");
+var express = require('express');
+var pluralize = require('pluralize');
+var delay = require('./delay');
 
 module.exports = function (opts) {
   var router = express.Router();
@@ -24,5 +24,5 @@ module.exports = function (opts) {
     next();
   }
 
-  return router.get("/:resource/:id/:nested", get).post("/:resource/:id/:nested", post);
+  return router.get('/:resource/:id/:nested', get).post('/:resource/:id/:nested', post);
 };

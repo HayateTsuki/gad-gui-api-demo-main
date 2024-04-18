@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-const db = require("../../db/db-base-v2.json");
-const { faker } = require("@faker-js/faker");
-const fs = require("fs");
-const path = require("path");
-const { getRandomInt } = require("../../helpers/generators/random-data.generator");
-const images = fs.readdirSync(path.join(__dirname, "../../public/data/users"));
+const db = require('../../db/db-base-v2.json');
+const { faker } = require('@faker-js/faker');
+const fs = require('fs');
+const path = require('path');
+const { getRandomInt } = require('../../helpers/generators/random-data.generator');
+const images = fs.readdirSync(path.join(__dirname, '../../public/data/users'));
 
-const faceAvatars = images.filter((img) => img.includes("face_") && !img.includes("admin"));
+const faceAvatars = images.filter((img) => img.includes('face_') && !img.includes('admin'));
 
 const users = db.users;
 
@@ -24,7 +24,7 @@ function createUser(id, email, firstname, lastname, password, avatar) {
 }
 
 const baseLength = users.length;
-console.log("-----------------------------------------------------------");
+console.log('-----------------------------------------------------------');
 
 const generatedUsers = [];
 
@@ -33,7 +33,7 @@ for (let index = 0; index < numberOfUsersToGenerate; index++) {
 
   const firstname = faker.person.firstName(gender);
   const lastname = faker.person.lastName(gender);
-  const email = faker.internet.email({ firstName: firstname, lastName: lastname, provider: "test.test.dev" });
+  const email = faker.internet.email({ firstName: firstname, lastName: lastname, provider: 'test.test.dev' });
   const pass = faker.internet.password({ length: 5 });
 
   const maxAttempts = 10;
@@ -42,12 +42,12 @@ for (let index = 0; index < numberOfUsersToGenerate; index++) {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const faceAvatarsGender = faceAvatars.filter(
       (img) =>
-        (gender.toLowerCase() === "male" && img.includes("_m")) ||
-        (gender.toLowerCase() === "female" && img.includes("_f"))
+        (gender.toLowerCase() === 'male' && img.includes('_m')) ||
+        (gender.toLowerCase() === 'female' && img.includes('_f')),
     );
     console.log(gender);
     const image = faceAvatarsGender[getRandomInt(0, faceAvatarsGender.length)];
-    const imageName = image.split("/").pop();
+    const imageName = image.split('/').pop();
 
     const foundUsers = users.filter((user) => user.avatar.includes(imageName));
 
@@ -63,6 +63,6 @@ for (let index = 0; index < numberOfUsersToGenerate; index++) {
   }
 }
 
-console.log("Generated: ", generatedUsers.length);
-console.log("-----");
+console.log('Generated: ', generatedUsers.length);
+console.log('-----');
 console.log(generatedUsers);

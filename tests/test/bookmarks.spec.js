@@ -1,8 +1,8 @@
-const { request, expect, baseBookmarksUrl } = require("../config.js");
-const { authUser, authUser2 } = require("../helpers/data.helpers.js");
-const { setupEnv, gracefulQuit, sleep } = require("../helpers/helpers.js");
+const { request, expect, baseBookmarksUrl } = require('../config.js');
+const { authUser, authUser2 } = require('../helpers/data.helpers.js');
+const { setupEnv, gracefulQuit, sleep } = require('../helpers/helpers.js');
 
-describe("Endpoint /bookmarks", async () => {
+describe('Endpoint /bookmarks', async () => {
   const baseUrl = baseBookmarksUrl;
 
   before(async () => {
@@ -13,8 +13,8 @@ describe("Endpoint /bookmarks", async () => {
     gracefulQuit();
   });
 
-  describe("Without auth", async () => {
-    it("GET /bookmarks", async () => {
+  describe('Without auth', async () => {
+    it('GET /bookmarks', async () => {
       // Act:
       const response = await request.get(baseUrl);
 
@@ -22,40 +22,40 @@ describe("Endpoint /bookmarks", async () => {
       expect(response.status).to.equal(404);
     });
 
-    it("POST /bookmarks", () => {
+    it('POST /bookmarks', () => {
       return request.post(baseUrl).send({}).expect(404);
     });
 
-    it("PUT /bookmarks", () => {
+    it('PUT /bookmarks', () => {
       return request.put(baseUrl).send({}).expect(404);
     });
 
-    it("PUT /bookmarks/:id", () => {
+    it('PUT /bookmarks/:id', () => {
       return request.put(`${baseUrl}/1`).send({}).expect(404);
     });
 
-    it("PATCH /bookmarks", () => {
+    it('PATCH /bookmarks', () => {
       return request.patch(baseUrl).send({}).expect(404);
     });
 
-    it("PATCH /bookmarks/:id", () => {
+    it('PATCH /bookmarks/:id', () => {
       return request.patch(`${baseUrl}/1`).send({}).expect(404);
     });
 
-    it("DELETE /bookmarks", () => {
+    it('DELETE /bookmarks', () => {
       return request.delete(baseUrl).expect(404);
     });
 
-    it("DELETE /bookmarks/:id", () => {
+    it('DELETE /bookmarks/:id', () => {
       return request.delete(`${baseUrl}/1`).expect(404);
     });
 
-    it("HEAD /bookmarks", () => {
+    it('HEAD /bookmarks', () => {
       return request.head(`${baseUrl}/1`).expect(404);
     });
   });
 
-  describe("With auth /bookmarks/articles", async () => {
+  describe('With auth /bookmarks/articles', async () => {
     let headers;
     let userId;
 
@@ -63,13 +63,13 @@ describe("Endpoint /bookmarks", async () => {
       const data = await authUser2();
       headers = data.headers;
       userId = data.userId;
-      headers["userid"] = userId;
+      headers['userid'] = userId;
     });
 
     it(`POST /bookmarks - invalid article_id`, async () => {
       // Arrange:
       const bookmarksBody = {
-        article_id: "abc",
+        article_id: 'abc',
       };
       const expectedBookmarkedArticles = undefined;
 
@@ -85,10 +85,10 @@ describe("Endpoint /bookmarks", async () => {
       expect(articleIdsAfter, JSON.stringify(responseGetAfter.body)).to.eql(expectedBookmarkedArticles);
     });
 
-    describe("e2e", async () => {
+    describe('e2e', async () => {
       beforeEach(async () => {
         await setupEnv();
-        await request.get("/api/restoreDB");
+        await request.get('/api/restoreDB');
       });
 
       it(`POST /bookmarks - add a brand new bookmark`, async () => {
@@ -111,7 +111,7 @@ describe("Endpoint /bookmarks", async () => {
 
         expect(
           responseGetAfter.status,
-          `GET /articles after creation: ${JSON.stringify(responseGetAfter.body)}`
+          `GET /articles after creation: ${JSON.stringify(responseGetAfter.body)}`,
         ).to.equal(200);
         const articleIdsAfter = responseGetAfter.body.article_ids;
         expect(articleIdsAfter, JSON.stringify(responseGetAfter.body)).to.eql(expectedBookmarkedArticles);

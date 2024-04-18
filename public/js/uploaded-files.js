@@ -1,10 +1,10 @@
-const uploadedFilesEndpoint = "../../api/files/articles/uploaded";
-const uploadedPublicFilesEndpoint = "../../api/files/articles/uploaded/public";
-const downloadPublicFilesEndpoint = "../../api/files/articles/download/";
+const uploadedFilesEndpoint = '../../api/files/articles/uploaded';
+const uploadedPublicFilesEndpoint = '../../api/files/articles/uploaded/public';
+const downloadPublicFilesEndpoint = '../../api/files/articles/download/';
 
 const intervalValue = 20000;
-const userTable = document.getElementById("userFileTable");
-const publicTable = document.getElementById("publicFileTable");
+const userTable = document.getElementById('userFileTable');
+const publicTable = document.getElementById('publicFileTable');
 
 async function getUserUploadedFiles() {
   const url = `${uploadedFilesEndpoint}?userId=${getId()}`;
@@ -28,10 +28,10 @@ async function downloadFile(fileName) {
 }
 
 const download = (filename, data) => {
-  var element = document.createElement("a");
-  element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(data));
-  element.setAttribute("download", filename);
-  element.style.display = "none";
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
@@ -54,24 +54,24 @@ function populateTable(table, data, addDownloadLink) {
     } else {
       nameCell.innerHTML = item.name;
     }
-    nameCell.style.textAlign = "center";
-    nameCell.style.fontSize = "14px";
+    nameCell.style.textAlign = 'center';
+    nameCell.style.fontSize = '14px';
 
     const sizeCell = row.insertCell(1);
     sizeCell.textContent = item.size;
-    sizeCell.style.textAlign = "center";
-    sizeCell.style.fontSize = "14px";
+    sizeCell.style.textAlign = 'center';
+    sizeCell.style.fontSize = '14px';
 
     const dateCell = row.insertCell(2);
     const lastModified = new Date(item.lastModified);
     dateCell.textContent = lastModified.toISOString();
-    dateCell.style.textAlign = "center";
-    dateCell.style.fontSize = "14px";
+    dateCell.style.textAlign = 'center';
+    dateCell.style.fontSize = '14px';
     if (addDownloadLink) {
       const downloadCell = row.insertCell(3);
       downloadCell.textContent = item.size;
-      downloadCell.style.textAlign = "center";
-      downloadCell.style.fontSize = "14px";
+      downloadCell.style.textAlign = 'center';
+      downloadCell.style.fontSize = '14px';
       downloadCell.innerHTML = `<div class="fileDownloadLink" onclick="downloadFile('${item.name}')" >📥</div>`;
     }
   });
@@ -80,7 +80,7 @@ function populateTable(table, data, addDownloadLink) {
 async function makeRequest() {
   getUserUploadedFiles()
     .then((filesData) => {
-      console.log("Obtained:", filesData.length);
+      console.log('Obtained:', filesData.length);
       if (filesData.length === undefined) {
         filesData = [];
       }
@@ -88,11 +88,11 @@ async function makeRequest() {
       populateTable(userTable, filesData);
     })
     .catch((err) => {
-      console.log("Error", err);
+      console.log('Error', err);
     });
   getPublicUploadedFiles()
     .then((filesData) => {
-      console.log("Obtained:", filesData.length);
+      console.log('Obtained:', filesData.length);
       if (filesData.length === undefined) {
         filesData = [];
       }
@@ -100,7 +100,7 @@ async function makeRequest() {
       populateTable(publicTable, filesData, true);
     })
     .catch((err) => {
-      console.log("Error", err);
+      console.log('Error', err);
     });
 }
 

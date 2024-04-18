@@ -1,34 +1,34 @@
-const { getFeatureFlagConfigValue } = require("../config/config-manager");
-const { FeatureFlagConfigKeys } = require("../config/enums");
-const { isUndefined } = require("../helpers/compare.helpers");
+const { getFeatureFlagConfigValue } = require('../config/config-manager');
+const { FeatureFlagConfigKeys } = require('../config/enums');
+const { isUndefined } = require('../helpers/compare.helpers');
 const {
   searchForUserWithToken,
   searchForArticleLabels,
   searchForUserWithOnlyToken,
   searchForArticle,
-} = require("../helpers/db-operation.helpers");
+} = require('../helpers/db-operation.helpers');
 const {
   formatMissingFieldErrorResponse,
   formatInvalidTokenErrorResponse,
   formatInvalidFieldErrorResponse,
   getUniqueValues,
   formatTooManyValuesErrorResponse,
-} = require("../helpers/helpers");
-const { logTrace, logDebug } = require("../helpers/logger-api");
+} = require('../helpers/helpers');
+const { logTrace, logDebug } = require('../helpers/logger-api');
 const {
   HTTP_NOT_FOUND,
   HTTP_UNPROCESSABLE_ENTITY,
   HTTP_UNAUTHORIZED,
   HTTP_METHOD_NOT_ALLOWED,
   HTTP_OK,
-} = require("../helpers/response.helpers");
+} = require('../helpers/response.helpers');
 const {
   areMandatoryFieldsPresent,
   mandatory_non_empty_fields_labels,
   mandatory_non_empty_fields_article_labels,
   areAllFieldsPresent,
   verifyAccessToken,
-} = require("../helpers/validation.helpers");
+} = require('../helpers/validation.helpers');
 
 function handleLabels(req, res, isAdmin) {
   const isFeatureEnabled = getFeatureFlagConfigValue(FeatureFlagConfigKeys.FEATURE_LABELS);
@@ -36,25 +36,25 @@ function handleLabels(req, res, isAdmin) {
     res.status(HTTP_NOT_FOUND).json({});
     return false;
   }
-  const verifyTokenResult = verifyAccessToken(req, res, "labels", req.url);
+  const verifyTokenResult = verifyAccessToken(req, res, 'labels', req.url);
 
-  const urlEnds = req.url.replace(/\/\/+/g, "/");
+  const urlEnds = req.url.replace(/\/\/+/g, '/');
 
-  if (req.method === "DELETE" && urlEnds.endsWith("/api/labels") && !isAdmin) {
+  if (req.method === 'DELETE' && urlEnds.endsWith('/api/labels') && !isAdmin) {
     res.status(HTTP_METHOD_NOT_ALLOWED).send({});
     return false;
   }
 
   // get labels
-  if (req.method === "GET" && urlEnds.endsWith("/api/labels")) {
+  if (req.method === 'GET' && urlEnds.endsWith('/api/labels')) {
     return true;
   }
 
   // get article labels
-  if (req.method === "GET" && urlEnds.includes("/api/article-labels/articles/")) {
-    const articleId = urlEnds.split("/").slice(-1)[0];
+  if (req.method === 'GET' && urlEnds.includes('/api/article-labels/articles/')) {
+    const articleId = urlEnds.split('/').slice(-1)[0];
     const foundArticle = searchForArticleLabels(articleId);
-    logDebug("article-labels/articles:", articleId, foundArticle);
+    logDebug('article-labels/articles:', articleId, foundArticle);
     if (isUndefined(foundArticle)) {
       res.status(HTTP_NOT_FOUND).send({});
       return false;
@@ -64,15 +64,15 @@ function handleLabels(req, res, isAdmin) {
   }
 
   // get article labels via query
-  if (req.method === "GET" && urlEnds.includes("/api/article-labels/articles?id=")) {
-    const articleIdsRaw = urlEnds.split("?id=").slice(-1)[0];
-    const user_id = req.headers["userid"];
+  if (req.method === 'GET' && urlEnds.includes('/api/article-labels/articles?id=')) {
+    const articleIdsRaw = urlEnds.split('?id=').slice(-1)[0];
+    const user_id = req.headers['userid'];
     if (isUndefined(articleIdsRaw)) {
       res.status(HTTP_NOT_FOUND).json({});
       return;
     }
 
-    const articleIds = articleIdsRaw.split("&id=");
+    const articleIds = articleIdsRaw.split('&id=');
 
     const labels = {};
     for (let index = 0; index < articleIds.length; index++) {
@@ -82,24 +82,24 @@ function handleLabels(req, res, isAdmin) {
         labels[articleId] = foundLabels;
       }
     }
-    logTrace("handleLabels: labels articles", { articleIds, user_id, labels });
+    logTrace('handleLabels: labels articles', { articleIds, user_id, labels });
     res.status(HTTP_OK).json({ labels });
     return true;
   }
 
   if (
-    (req.method === "PATCH" || req.method === "DELETE" || req.method === "POST") &&
-    urlEnds.endsWith("/api/article-labels")
+    (req.method === 'PATCH' || req.method === 'DELETE' || req.method === 'POST') &&
+    urlEnds.endsWith('/api/article-labels')
   ) {
     res.status(HTTP_METHOD_NOT_ALLOWED).send({});
     return false;
   }
 
   // create or remove labels for articles
-  if (req.method === "PUT" && urlEnds.includes("/api/article-labels")) {
-    let articleId = req.body["article_id"];
+  if (req.method === 'PUT' && urlEnds.includes('/api/article-labels')) {
+    let articleId = req.body['article_id'];
     const foundUser = searchForUserWithOnlyToken(verifyTokenResult);
-    logTrace("handleArticleLabels: foundUser:", { method: req.method, urlEnds, foundUser });
+    logTrace('handleArticleLabels: foundUser:', { method: req.method, urlEnds, foundUser });
 
     if (isUndefined(foundUser)) {
       res.status(HTTP_UNAUTHORIZED).send(formatInvalidTokenErrorResponse());
@@ -107,7 +107,7 @@ function handleLabels(req, res, isAdmin) {
     }
 
     const foundArticle = searchForArticle(articleId);
-    logTrace("handleArticleLabels: foundArticle:", { articleId, foundArticle });
+    logTrace('handleArticleLabels: foundArticle:', { articleId, foundArticle });
 
     if (`${foundArticle.user_id}` !== `${foundUser.id}`) {
       res.status(HTTP_UNAUTHORIZED).send(formatInvalidTokenErrorResponse());
@@ -135,23 +135,23 @@ function handleLabels(req, res, isAdmin) {
     }
 
     if (isUndefined(req.body.label_ids) || req.body.label_ids?.length > 3) {
-      res.status(HTTP_UNPROCESSABLE_ENTITY).send(formatTooManyValuesErrorResponse("labels"));
+      res.status(HTTP_UNPROCESSABLE_ENTITY).send(formatTooManyValuesErrorResponse('labels'));
       return false;
     }
 
     const foundArticleLabels = searchForArticleLabels(articleId);
 
-    if (articleId === "articles") {
-      articleId = "";
+    if (articleId === 'articles') {
+      articleId = '';
     }
 
-    logTrace("handleArticleLabels:PUT:", { method: req.method, articleId });
+    logTrace('handleArticleLabels:PUT:', { method: req.method, articleId });
 
     if (isUndefined(foundArticleLabels)) {
-      req.method = "POST";
-      req.url = "/api/article-labels";
+      req.method = 'POST';
+      req.url = '/api/article-labels';
       req.body.id = undefined;
-      logTrace("handleArticleLabels:PUT -> POST:", {
+      logTrace('handleArticleLabels:PUT -> POST:', {
         method: req.method,
         url: req.url,
         body: req.body,
@@ -161,7 +161,7 @@ function handleLabels(req, res, isAdmin) {
     return true;
   }
 
-  if (req.method === "POST" && urlEnds.endsWith("/api/labels")) {
+  if (req.method === 'POST' && urlEnds.endsWith('/api/labels')) {
     if (!areMandatoryFieldsPresent(req.body, mandatory_non_empty_fields_labels)) {
       res.status(HTTP_UNPROCESSABLE_ENTITY).send(formatMissingFieldErrorResponse(mandatory_non_empty_fields_labels));
       return false;
@@ -172,9 +172,9 @@ function handleLabels(req, res, isAdmin) {
       return false;
     }
 
-    let userId = req.body["user_id"];
+    let userId = req.body['user_id'];
     const foundUser = searchForUserWithToken(userId, verifyTokenResult);
-    logTrace("handleLabels:", { method: req.method, urlEnds, foundUser, userId });
+    logTrace('handleLabels:', { method: req.method, urlEnds, foundUser, userId });
 
     if (isUndefined(foundUser)) {
       res.status(HTTP_UNAUTHORIZED).send(formatInvalidTokenErrorResponse());

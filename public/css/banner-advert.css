@@ -18,7 +18,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, calc(-50% + 50px));
-  font-family: "Raleway", sans-serif;
+  font-family: 'Raleway', sans-serif;
   color: #fff;
   padding: 12px 0;
   box-shadow: 0 6px 55px -10px rgba(0, 0, 0, 0.7);

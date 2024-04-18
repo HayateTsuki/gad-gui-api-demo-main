@@ -3,18 +3,18 @@ const mineCount = 15;
 let board = [];
 let revealedCells = 0;
 let blockBoard = false;
-const minesweeperScoreEndpoint = "../../api/minesweeper/score";
+const minesweeperScoreEndpoint = '../../api/minesweeper/score';
 let finalScore = 0;
 const winningBonus = 10;
-const resetBtn = document.getElementById("resetBtn");
+const resetBtn = document.getElementById('resetBtn');
 
 async function issuePostScoreRequest(score) {
   fetch(minesweeperScoreEndpoint, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({ score }),
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
   });
@@ -38,7 +38,7 @@ function calculateScore(isWinner) {
 }
 
 function updateScore(score) {
-  const scoreElement = document.getElementById("score");
+  const scoreElement = document.getElementById('score');
   scoreElement.textContent = score;
 }
 
@@ -54,8 +54,8 @@ function initializeBoard() {
   calculateNeighborCounts();
   renderBoard();
   blockBoard = false;
-  const scoreElement = document.getElementById("score");
-  scoreElement.textContent = "";
+  const scoreElement = document.getElementById('score');
+  scoreElement.textContent = '';
 }
 
 function placeMines() {
@@ -92,24 +92,24 @@ function calculateNeighborCounts() {
 }
 
 function renderBoard() {
-  const boardElement = document.getElementById("board");
-  boardElement.innerHTML = "";
+  const boardElement = document.getElementById('board');
+  boardElement.innerHTML = '';
 
   for (let i = 0; i < boardSize; i++) {
     for (let j = 0; j < boardSize; j++) {
-      const cell = document.createElement("div");
-      cell.className = `cell ${board[i][j].revealed ? "cell-open" : "cell-hidden"} ${board[i][j].mine ? "mine" : ""} ${
-        board[i][j].flagged ? "flag" : ""
+      const cell = document.createElement('div');
+      cell.className = `cell ${board[i][j].revealed ? 'cell-open' : 'cell-hidden'} ${board[i][j].mine ? 'mine' : ''} ${
+        board[i][j].flagged ? 'flag' : ''
       }`;
       cell.textContent = board[i][j].revealed
         ? board[i][j].mine
-          ? "💣"
-          : board[i][j].count || ""
+          ? '💣'
+          : board[i][j].count || ''
         : board[i][j].flagged
-        ? "🚩"
-        : "";
-      cell.addEventListener("click", () => handleCellClick(i, j));
-      cell.addEventListener("contextmenu", (event) => handleRightClick(i, j, event));
+          ? '🚩'
+          : '';
+      cell.addEventListener('click', () => handleCellClick(i, j));
+      cell.addEventListener('contextmenu', (event) => handleRightClick(i, j, event));
 
       boardElement.appendChild(cell);
     }
@@ -198,14 +198,14 @@ function resetGame() {
 function startGame() {
   const token = getBearerToken();
   if (token === undefined) {
-    resetBtn.style.display = "none";
-    const scoreElement = document.getElementById("score");
-    scoreElement.innerHTML = "<strong>⛔ Please log in and return to this page ⛔</strong>";
+    resetBtn.style.display = 'none';
+    const scoreElement = document.getElementById('score');
+    scoreElement.innerHTML = '<strong>⛔ Please log in and return to this page ⛔</strong>';
   } else {
-    resetBtn.style.display = "block";
+    resetBtn.style.display = 'block';
     initializeBoard();
   }
 }
 
-resetBtn.addEventListener("click", resetGame);
+resetBtn.addEventListener('click', resetGame);
 startGame();

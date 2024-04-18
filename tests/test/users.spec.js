@@ -1,13 +1,13 @@
-const { gracefulQuit, setupEnv, sleep } = require("../helpers/helpers.js");
-const { baseUsersUrl, request, expect, faker, sleepTime } = require("../config.js");
+const { gracefulQuit, setupEnv, sleep } = require('../helpers/helpers.js');
+const { baseUsersUrl, request, expect, faker, sleepTime } = require('../config.js');
 const {
   prepareUniqueLoggedUser,
   authUser,
   validExistingUser,
   generateValidUserData,
-} = require("../helpers/data.helpers.js");
+} = require('../helpers/data.helpers.js');
 
-describe("Endpoint /users", async () => {
+describe('Endpoint /users', async () => {
   const baseUrl = baseUsersUrl;
 
   before(async () => {
@@ -18,8 +18,8 @@ describe("Endpoint /users", async () => {
     gracefulQuit();
   });
 
-  describe("Without auth", async () => {
-    it("GET /users - should get all users", async () => {
+  describe('Without auth', async () => {
+    it('GET /users - should get all users', async () => {
       // Act:
       const response = await request.get(baseUrl);
 
@@ -28,7 +28,7 @@ describe("Endpoint /users", async () => {
       expect(response.body.length).to.be.greaterThan(1);
     });
 
-    it("GET /users/:id - should get existing user", async () => {
+    it('GET /users/:id - should get existing user', async () => {
       // Arrange:
       const expectedData = validExistingUser;
 
@@ -38,10 +38,10 @@ describe("Endpoint /users", async () => {
       // Assert:
       expect(response.status).to.equal(200);
       expect(response.body).to.deep.equal(expectedData);
-      expect(response.body.email).to.deep.equal("****");
+      expect(response.body.email).to.deep.equal('****');
     });
 
-    it("GET /users/:id - should not get non existing user", async () => {
+    it('GET /users/:id - should not get non existing user', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/112312312`);
 
@@ -49,12 +49,12 @@ describe("Endpoint /users", async () => {
       expect(response.status).to.equal(404);
     });
 
-    describe("POST /users (register)", () => {
-      it("empty payload", () => {
+    describe('POST /users (register)', () => {
+      it('empty payload', () => {
         return request.post(baseUrl).send({}).expect(422);
       });
 
-      it("valid registration - should register user", async () => {
+      it('valid registration - should register user', async () => {
         // Arrange:
         const testUserData = generateValidUserData();
 
@@ -67,7 +67,7 @@ describe("Endpoint /users", async () => {
         expect(response.body).to.deep.equal(testUserData);
       });
 
-      it("valid registration - should register user (uppercase email)", async () => {
+      it('valid registration - should register user (uppercase email)', async () => {
         // Arrange:
         const testUserData = generateValidUserData();
         testUserData.email = testUserData.email.toUpperCase();
@@ -81,7 +81,7 @@ describe("Endpoint /users", async () => {
         expect(response.body).to.deep.equal(testUserData);
       });
 
-      it("invalid registration - should not register with same email", async () => {
+      it('invalid registration - should not register with same email', async () => {
         // Arrange:
         const testUserData = generateValidUserData();
         const response = await request.post(baseUrl).send(testUserData);
@@ -96,7 +96,7 @@ describe("Endpoint /users", async () => {
         expect(responseAgain.status).to.equal(409);
       });
 
-      it("invalid registration - should not register with same email (uppercase)", async () => {
+      it('invalid registration - should not register with same email (uppercase)', async () => {
         // Arrange:
         const testUserData = generateValidUserData();
         testUserData.email = testUserData.email.toUpperCase();
@@ -112,10 +112,10 @@ describe("Endpoint /users", async () => {
         expect(responseAgain.status).to.equal(409);
       });
 
-      it("should not register with invalid email", async () => {
+      it('should not register with invalid email', async () => {
         // Arrange:
         const testUserData = generateValidUserData();
-        testUserData.email = "abcd";
+        testUserData.email = 'abcd';
 
         // Act:
         const response = await request.post(baseUrl).send(testUserData);
@@ -124,7 +124,7 @@ describe("Endpoint /users", async () => {
         expect(response.status).to.equal(422);
       });
 
-      it("should not register with empty data", async () => {
+      it('should not register with empty data', async () => {
         // Arrange:
         const testUserData = {};
 
@@ -135,9 +135,9 @@ describe("Endpoint /users", async () => {
         expect(response.status).to.equal(422);
       });
 
-      it("should not register with invalid data", async () => {
+      it('should not register with invalid data', async () => {
         // Arrange:
-        const testUserData = "12bs";
+        const testUserData = '12bs';
 
         // Act:
         const response = await request.post(baseUrl).send(testUserData);
@@ -146,7 +146,7 @@ describe("Endpoint /users", async () => {
         expect(response.status).to.equal(422);
       });
 
-      ["firstname", "lastname", "email", "avatar"].forEach((field) => {
+      ['firstname', 'lastname', 'email', 'avatar'].forEach((field) => {
         it(`should not register with missing mandatory field - ${field}`, async () => {
           // Arrange:
           const testUserData = generateValidUserData();
@@ -161,12 +161,12 @@ describe("Endpoint /users", async () => {
         });
       });
 
-      ["firstname", "lastname", "email", "avatar"].forEach((field) => {
+      ['firstname', 'lastname', 'email', 'avatar'].forEach((field) => {
         it(`length of field exceeded - ${field}`, async () => {
           // Arrange:
           const testUserData = generateValidUserData();
 
-          testUserData[field] = faker.string.alphanumeric(5000) + "@test." + faker.string.alphanumeric(4995);
+          testUserData[field] = faker.string.alphanumeric(5000) + '@test.' + faker.string.alphanumeric(4995);
 
           // Act:
           const response = await request.post(baseUrl).send(testUserData);
@@ -177,36 +177,36 @@ describe("Endpoint /users", async () => {
       });
     });
 
-    it("PUT /users", () => {
+    it('PUT /users', () => {
       return request.put(baseUrl).send({}).expect(401);
     });
 
-    it("PUT /users/:id", () => {
+    it('PUT /users/:id', () => {
       return request.put(`${baseUrl}/1`).send({}).expect(401);
     });
 
-    it("PATCH /users/:id", () => {
+    it('PATCH /users/:id', () => {
       return request.patch(`${baseUrl}/1`).send({}).expect(401);
     });
 
-    it("PATCH /users", () => {
+    it('PATCH /users', () => {
       return request.patch(baseUrl).send({}).expect(401);
     });
 
-    it("DELETE /users", () => {
+    it('DELETE /users', () => {
       return request.delete(baseUrl).expect(401);
     });
 
-    it("DELETE /users/:id", () => {
+    it('DELETE /users/:id', () => {
       return request.delete(`${baseUrl}/1`).expect(401);
     });
 
-    it("HEAD /users", () => {
+    it('HEAD /users', () => {
       return request.head(`${baseUrl}/1`).expect(200);
     });
   });
 
-  describe("With auth", async () => {
+  describe('With auth', async () => {
     let headers;
 
     beforeEach(async () => {
@@ -214,7 +214,7 @@ describe("Endpoint /users", async () => {
       headers = data.headers;
     });
 
-    it("GET /users", async () => {
+    it('GET /users', async () => {
       // Act:
       const response = await request.get(baseUrl).set(headers);
 
@@ -223,7 +223,7 @@ describe("Endpoint /users", async () => {
       expect(response.body.length).to.be.greaterThan(1);
     });
 
-    it("GET /users/:id - should get user", async () => {
+    it('GET /users/:id - should get user', async () => {
       // Arrange:
       const expectedData = validExistingUser;
 
@@ -235,7 +235,7 @@ describe("Endpoint /users", async () => {
       expect(response.body).to.deep.equal(expectedData);
     });
 
-    it("POST /users - should create valid user", async () => {
+    it('POST /users - should create valid user', async () => {
       // Arrange:
       const testUserData = generateValidUserData();
 
@@ -248,7 +248,7 @@ describe("Endpoint /users", async () => {
       expect(response.body).to.deep.equal(testUserData);
     });
 
-    it("POST /users - should create valid user (with id in body)", async () => {
+    it('POST /users - should create valid user (with id in body)', async () => {
       // Arrange:
       const testUserData = generateValidUserData();
       testUserData.id = 1;
@@ -262,12 +262,12 @@ describe("Endpoint /users", async () => {
       expect(response.body).to.deep.equal(testUserData);
     });
 
-    it("HEAD /users", () => {
+    it('HEAD /users', () => {
       return request.head(`${baseUrl}/1`).set(headers).expect(200);
     });
   });
 
-  describe("MODIFY /users", async () => {
+  describe('MODIFY /users', async () => {
     let headers;
     let userId;
     let baseUserData;
@@ -283,7 +283,7 @@ describe("Endpoint /users", async () => {
       testUserData.id = userId;
     });
 
-    it("PUT /users - should create user", async () => {
+    it('PUT /users - should create user', async () => {
       // Act:
       const response = await request.put(baseUrl).set(headers).send(testUserData);
 
@@ -291,7 +291,7 @@ describe("Endpoint /users", async () => {
       expect(response.status).to.equal(401);
     });
 
-    it("PUT /users/:id - should update user", async () => {
+    it('PUT /users/:id - should update user', async () => {
       // Act:
       const response = await request.put(`${baseUrl}/${userId}`).set(headers).send(testUserData);
 
@@ -301,7 +301,7 @@ describe("Endpoint /users", async () => {
       expect(response.body).to.deep.equal(testUserData);
     });
 
-    ["firstname", "lastname", "email", "avatar"].forEach((field) => {
+    ['firstname', 'lastname', 'email', 'avatar'].forEach((field) => {
       it(`PUT /users/:id - should not update with missing mandatory field - ${field}`, async () => {
         // Arrange:
         const testUserData = generateValidUserData();
@@ -316,7 +316,7 @@ describe("Endpoint /users", async () => {
       });
     });
 
-    it("PUT /users/:id - should not update different user", async () => {
+    it('PUT /users/:id - should not update different user', async () => {
       // Act:
       const response = await request.put(`${baseUrl}/1`).set(headers).send(testUserData);
 
@@ -324,7 +324,7 @@ describe("Endpoint /users", async () => {
       expect(response.status).to.equal(401);
     });
 
-    it("PATCH /users/:id - should do full update", async () => {
+    it('PATCH /users/:id - should do full update', async () => {
       // Act:
       const response = await request.patch(`${baseUrl}/${userId}`).set(headers).send(testUserData);
 
@@ -334,7 +334,7 @@ describe("Endpoint /users", async () => {
       expect(response.body).to.deep.equal(testUserData);
     });
 
-    it("PATCH /users/:id - should not full update different user", async () => {
+    it('PATCH /users/:id - should not full update different user', async () => {
       // Act:
       const response = await request.patch(`${baseUrl}/1`).set(headers).send(testUserData);
 
@@ -342,7 +342,7 @@ describe("Endpoint /users", async () => {
       expect(response.status).to.equal(401);
     });
 
-    it("PATCH /users/:id - should do partial update", async () => {
+    it('PATCH /users/:id - should do partial update', async () => {
       // Arrange:
       const testPartialUserData = { firstname: testUserData.firstname };
 
@@ -356,9 +356,9 @@ describe("Endpoint /users", async () => {
       expect(response.body).to.deep.equal(baseUserData);
     });
 
-    it("PATCH /users/:id - should do partial update", async () => {
+    it('PATCH /users/:id - should do partial update', async () => {
       // Arrange:
-      const testPartialUserData = { password: "1234" };
+      const testPartialUserData = { password: '1234' };
 
       // Act:
       const response = await request.patch(`${baseUrl}/${userId}`).set(headers).send(testPartialUserData);
@@ -370,7 +370,7 @@ describe("Endpoint /users", async () => {
       expect(response.body).to.deep.equal(baseUserData);
     });
 
-    it("PATCH /users/:id - should not update partial with invalid data", async () => {
+    it('PATCH /users/:id - should not update partial with invalid data', async () => {
       // Arrange:
       const testPartialUserData = { firstname: faker.string.alphanumeric(10001) };
 
@@ -386,7 +386,7 @@ describe("Endpoint /users", async () => {
       expect(responseGet.body.firstname).to.deep.equal(baseUserData.firstname);
     });
 
-    it("PATCH /users/:id - should not partial update different user", async () => {
+    it('PATCH /users/:id - should not partial update different user', async () => {
       // Arrange:
       const testPartialUserData = { firstname: testUserData.firstname };
 
@@ -398,7 +398,7 @@ describe("Endpoint /users", async () => {
     });
   });
 
-  describe("DELETE /users", () => {
+  describe('DELETE /users', () => {
     let headers;
     let userId;
 
@@ -408,7 +408,7 @@ describe("Endpoint /users", async () => {
       userId = data.userId;
     });
 
-    it("DELETE /users/:id - should do self delete", async () => {
+    it('DELETE /users/:id - should do self delete', async () => {
       // Act:
       const responseDel = await request.delete(`${baseUrl}/${userId}`).set(headers);
 
@@ -416,7 +416,7 @@ describe("Endpoint /users", async () => {
       expect(responseDel.status).to.equal(200);
     });
 
-    it("DELETE /users/:id - should not delete other user", async () => {
+    it('DELETE /users/:id - should not delete other user', async () => {
       // Act:
       const responseDel = await request.delete(`${baseUrl}/1`).set(headers);
 
@@ -424,7 +424,7 @@ describe("Endpoint /users", async () => {
       expect(responseDel.status).to.equal(401);
     });
 
-    it("DELETE /users/:id - should not delete not existing user", async () => {
+    it('DELETE /users/:id - should not delete not existing user', async () => {
       // Act:
       const responseDel = await request.delete(`${baseUrl}/112323212`).set(headers);
 

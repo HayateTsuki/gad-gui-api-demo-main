@@ -1,4 +1,4 @@
-const { isNumber, isUndefined } = require("../helpers/compare.helpers");
+const { isNumber, isUndefined } = require('../helpers/compare.helpers');
 const {
   searchForUser,
   getGameNameById,
@@ -6,21 +6,21 @@ const {
   searchForUserWithEmail,
   getUserScore,
   getGameScores,
-} = require("../helpers/db-operation.helpers");
-const { formatErrorResponse } = require("../helpers/helpers");
-const { logDebug } = require("../helpers/logger-api");
+} = require('../helpers/db-operation.helpers');
+const { formatErrorResponse } = require('../helpers/helpers');
+const { logDebug } = require('../helpers/logger-api');
 const {
   HTTP_NOT_FOUND,
   HTTP_OK,
   HTTP_UNAUTHORIZED,
   HTTP_UNPROCESSABLE_ENTITY,
-} = require("../helpers/response.helpers");
-const { verifyAccessToken } = require("../helpers/validation.helpers");
+} = require('../helpers/response.helpers');
+const { verifyAccessToken } = require('../helpers/validation.helpers');
 
-const gameName = "sudoku";
+const gameName = 'sudoku';
 
 function handleSudoku(req, res) {
-  if (req.method === "GET" && req.url.endsWith("/api/sudoku/highscores")) {
+  if (req.method === 'GET' && req.url.endsWith('/api/sudoku/highscores')) {
     const gameId = getGameIdByName(gameName);
     const scores = getGameScores(gameId);
     const parsedScores = scores.map((score) => {
@@ -32,36 +32,36 @@ function handleSudoku(req, res) {
       };
     });
 
-    logDebug("handleSudoku:sudoku highScores:", { parsedScores });
+    logDebug('handleSudoku:sudoku highScores:', { parsedScores });
     res.status(HTTP_OK).json({ highScore: parsedScores });
-  } else if (req.method === "POST" && req.url.endsWith("/api/sudoku/score")) {
-    const verifyTokenResult = verifyAccessToken(req, res, "sudoku/score", req.url);
+  } else if (req.method === 'POST' && req.url.endsWith('/api/sudoku/score')) {
+    const verifyTokenResult = verifyAccessToken(req, res, 'sudoku/score', req.url);
     if (isUndefined(verifyTokenResult)) {
-      res.status(HTTP_UNAUTHORIZED).send(formatErrorResponse("Access token not provided!"));
+      res.status(HTTP_UNAUTHORIZED).send(formatErrorResponse('Access token not provided!'));
       return;
     }
     const score = req.body;
     const email = verifyTokenResult?.email;
     if (isUndefined(score) || isUndefined(score.score) || !isNumber(score.score)) {
-      res.status(HTTP_UNPROCESSABLE_ENTITY).json(formatErrorResponse("Score was not provided"));
+      res.status(HTTP_UNPROCESSABLE_ENTITY).json(formatErrorResponse('Score was not provided'));
     }
     const gameId = getGameIdByName(gameName);
     const user = searchForUserWithEmail(email);
     const previousUserScore = getUserScore(user.id, gameId);
 
-    logDebug("handleSudoku:sudoku highScores:", { previousUserScore, currentScore: score });
+    logDebug('handleSudoku:sudoku highScores:', { previousUserScore, currentScore: score });
     if (!isUndefined(previousUserScore) && previousUserScore.score >= score.score) {
       res.status(HTTP_OK).json({ game_id: gameId, user_id: user.id, score: score.score });
     } else {
       if (!isUndefined(previousUserScore?.id)) {
-        req.method = "PUT";
+        req.method = 'PUT';
         req.url = `/api/scores/${previousUserScore.id}`;
       } else {
-        req.method = "POST";
+        req.method = 'POST';
         req.url = `/api/scores`;
       }
       req.body = { game_id: gameId, user_id: user.id, score: score.score };
-      logDebug("handleSudoku:stop -> PUT/POST scores:", {
+      logDebug('handleSudoku:stop -> PUT/POST scores:', {
         method: req.method,
         url: req.url,
         body: req.body,

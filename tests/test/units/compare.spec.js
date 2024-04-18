@@ -1,13 +1,13 @@
-const { compareDbObjects } = require("../../../helpers/compare.helpers");
-const { expect } = require("../../config.js");
-const { gracefulQuit } = require("../../helpers/helpers.js");
+const { compareDbObjects } = require('../../../helpers/compare.helpers');
+const { expect } = require('../../config.js');
+const { gracefulQuit } = require('../../helpers/helpers.js');
 
-describe("compareDbObjects", () => {
+describe('compareDbObjects', () => {
   after(() => {
     gracefulQuit();
   });
 
-  it("should return false - object missing key", async () => {
+  it('should return false - object missing key', async () => {
     const obj1 = { a: 1, b: 2, c: 3 };
     const obj2 = { a: 1, b: 2 };
 
@@ -17,7 +17,7 @@ describe("compareDbObjects", () => {
     // Assert:
     expect(result.areEqual, result).to.equal(false);
   });
-  it("should return true - objects have same keys", async () => {
+  it('should return true - objects have same keys', async () => {
     const obj1 = { a: 1, b: 2, c: 3 };
     const obj2 = { a: 1, b: 2, c: 4 };
 
@@ -27,7 +27,7 @@ describe("compareDbObjects", () => {
     // Assert:
     expect(result.areEqual, result).to.equal(true);
   });
-  it("should return true - nested objects have same keys", async () => {
+  it('should return true - nested objects have same keys', async () => {
     const obj1 = { a: 1, b: 2, c: { c1: 5 } };
     const obj2 = { a: 1, b: 2, c: { c1: 4 } };
 
@@ -37,7 +37,7 @@ describe("compareDbObjects", () => {
     // Assert:
     expect(result.areEqual, result).to.equal(true);
   });
-  it("should return true - nested object lists have same keys", async () => {
+  it('should return true - nested object lists have same keys', async () => {
     const obj1 = { a: [{ a1: 5 }, { a1: 15 }] };
     const obj2 = { a: [{ a1: 4 }, { a1: 25 }] };
 
@@ -47,7 +47,7 @@ describe("compareDbObjects", () => {
     // Assert:
     expect(result.areEqual, result).to.equal(true);
   });
-  it("should return true - nested object lists have same keys (skips optional values)", async () => {
+  it('should return true - nested object lists have same keys (skips optional values)', async () => {
     const obj1 = { a: [{ a1: 5 }, { a1: 15, b1: 33 }] };
     const obj2 = { a: [{ a1: 4 }, { a1: 25 }] };
 
@@ -57,7 +57,7 @@ describe("compareDbObjects", () => {
     // Assert:
     expect(result.areEqual, result).to.equal(true);
   });
-  it("should return false - nested objects have missing keys", async () => {
+  it('should return false - nested objects have missing keys', async () => {
     const obj1 = { a: 1, b: 2, c: { c1: 5 } };
     const obj2 = { a: 1, b: 2, c: { c2: 4 } };
 
@@ -67,7 +67,7 @@ describe("compareDbObjects", () => {
     // Assert:
     expect(result.areEqual, result).to.equal(false);
   });
-  it("should return true - double nested objects have missing keys", async () => {
+  it('should return true - double nested objects have missing keys', async () => {
     const obj1 = { a: 1, b: 2, c: { c1: 5, c2: { c21: 11 } } };
     const obj2 = { a: 1, b: 2, c: { c1: 4, c2: { c22: 12 } } };
 

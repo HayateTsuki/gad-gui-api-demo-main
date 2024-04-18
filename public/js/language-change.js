@@ -1,5 +1,5 @@
-const translationsEndpoint = "../../api/languages/translations";
-const languagesEndpoint = "../../api/languages";
+const translationsEndpoint = '../../api/languages/translations';
+const languagesEndpoint = '../../api/languages';
 
 let translationsStored = {};
 let languagesStored = {};
@@ -19,20 +19,20 @@ async function issueGetLanguages() {
 }
 
 function getPrevLanguageCookie() {
-  return getCookie("langPrev=");
+  return getCookie('langPrev=');
 }
 
 function getLanguageCookie() {
-  return getCookie("lang=");
+  return getCookie('lang=');
 }
 
 function getCookie(cookieName) {
   let lang = undefined;
-  const cookies = document.cookie.split(";");
+  const cookies = document.cookie.split(';');
   for (let cookie of cookies) {
     cookie = cookie.trim();
     if (cookie.startsWith(cookieName)) {
-      lang = cookie.split("=")[1];
+      lang = cookie.split('=')[1];
     }
   }
   return lang;
@@ -43,18 +43,18 @@ function addCookie(cookieName, value) {
 }
 
 function addPrevLanguageCookie(value) {
-  addCookie("langPrev", value);
+  addCookie('langPrev', value);
 }
 
 function addLanguageCookie(value) {
-  addCookie("lang", value);
+  addCookie('lang', value);
 }
 
 function toggleDirAttribute(element, language) {
-  if (language === "fa") {
-    element.setAttribute("dir", "rtl");
+  if (language === 'fa') {
+    element.setAttribute('dir', 'rtl');
   } else {
-    element.removeAttribute("dir");
+    element.removeAttribute('dir');
   }
 }
 
@@ -79,8 +79,8 @@ function getTranslatedText(elementId) {
 
 function changeLanguage(newLanguage) {
   addPrevLanguageCookie(getLanguageCookie());
-  if (newLanguage === undefined || newLanguage === "" || newLanguage === null || newLanguage === "undefined") {
-    newLanguage = "en";
+  if (newLanguage === undefined || newLanguage === '' || newLanguage === null || newLanguage === 'undefined') {
+    newLanguage = 'en';
   }
   addLanguageCookie(newLanguage);
 
@@ -107,9 +107,9 @@ function translateToLanguage(oldLanguage, newLanguage) {
       }
     });
 
-    const elements = document.querySelectorAll("*");
+    const elements = document.querySelectorAll('*');
     changeElementText(elements, oldLanguage, newLanguage);
-    changeElementText(elements, "en", newLanguage);
+    changeElementText(elements, 'en', newLanguage);
   }
 }
 
@@ -122,7 +122,7 @@ function changeElementText(elements, oldLanguage, newLanguage) {
   elements.forEach((element) => {
     if (element.innerHTML === element.textContent) {
       const text = element.textContent.trim();
-      if (text !== undefined && text !== "") {
+      if (text !== undefined && text !== '') {
         const replacementText = mergedData[text];
 
         if (replacementText !== undefined) {
@@ -145,7 +145,7 @@ issueGetTranslations().then((translations) => {
   issueGetLanguages().then((languages) => {
     languagesStored = languages;
     translationsStored = translations;
-    addPrevLanguageCookie("en");
+    addPrevLanguageCookie('en');
     addLanguageSelect(languagesStored, getLanguageCookie());
     translateToLanguage(getPrevLanguageCookie(), getLanguageCookie());
     detectDomChange((mutationList) => {

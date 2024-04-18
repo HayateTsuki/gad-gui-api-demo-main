@@ -22,14 +22,14 @@ const showResponseOnUpdate = (response, item) => {
   }
 };
 
-let alertElement = document.querySelector(".alert");
+let alertElement = document.querySelector('.alert');
 const showMessage = (message, isError = false) => {
   alertElement.innerHTML = message;
-  alertElement.classList.remove("alert-error", "alert-success");
+  alertElement.classList.remove('alert-error', 'alert-success');
   if (isError) {
-    alertElement.classList.add("alert-error");
+    alertElement.classList.add('alert-error');
   } else {
-    alertElement.classList.add("alert-success");
+    alertElement.classList.add('alert-success');
   }
   var newMessageElement = alertElement.cloneNode(true);
   alertElement.parentNode.replaceChild(newMessageElement, alertElement);

@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var pause = require("connect-pause");
+var pause = require('connect-pause');
 
 module.exports = function delay(req, res, next) {
   // NOTE: for some reason unknown to me, if the default is 0, the tests seems to add 2 seconds

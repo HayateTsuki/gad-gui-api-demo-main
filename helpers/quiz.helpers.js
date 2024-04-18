@@ -1,9 +1,9 @@
-const { logWarn } = require("./logger-api");
-const { shuffleArray } = require("./helpers");
-const { getConfigValue } = require("../config/config-manager");
-const { ConfigKeys } = require("../config/enums");
-const { quizQuestionsDb } = require("./db.helpers");
-const { isUndefined } = require("./compare.helpers");
+const { logWarn } = require('./logger-api');
+const { shuffleArray } = require('./helpers');
+const { getConfigValue } = require('../config/config-manager');
+const { ConfigKeys } = require('../config/enums');
+const { quizQuestionsDb } = require('./db.helpers');
+const { isUndefined } = require('./compare.helpers');
 
 function arraysEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) return false;
@@ -15,12 +15,12 @@ function arraysEqual(arr1, arr2) {
 
 function checkAnswer(selectedAnswers, questionText) {
   if (isUndefined(selectedAnswers) || isUndefined(questionText)) {
-    logWarn("checkAnswer: selectedAnswers or questionText is empty!", { selectedAnswers, questionText });
+    logWarn('checkAnswer: selectedAnswers or questionText is empty!', { selectedAnswers, questionText });
     return false;
   }
   const questionObj = findQuestion(questionText);
   if (isUndefined(questionObj)) {
-    logWarn("checkAnswer: question was not found!", { questionText });
+    logWarn('checkAnswer: question was not found!', { questionText });
     return false;
   }
   return arraysEqual(selectedAnswers, questionObj.correctAnswers);

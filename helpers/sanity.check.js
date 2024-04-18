@@ -1,9 +1,9 @@
-const { compareDbObjects } = require("./compare.helpers");
-const { fullDb, fullBaseDb } = require("./db.helpers");
-const { logDebug, logError } = require("./logger-api");
+const { compareDbObjects } = require('./compare.helpers');
+const { fullDb, fullBaseDb } = require('./db.helpers');
+const { logDebug, logError } = require('./logger-api');
 
 function checkDatabase() {
-  logDebug("> Checking database integrity...");
+  logDebug('> Checking database integrity...');
 
   try {
     const dbData = fullDb();
@@ -13,19 +13,19 @@ function checkDatabase() {
 
     result.isOk = result.areEqual === true || (result.areTablesEqual === true && result.isCurrentDbEmpty === true);
     if (result.isOk === true) {
-      logDebug("> Database integrity is correct");
+      logDebug('> Database integrity is correct');
     } else {
-      logError("> 🔥 DATABASE IS INCORRECT!", result);
+      logError('> 🔥 DATABASE IS INCORRECT!', result);
     }
 
     return result;
   } catch (error) {
-    logError("Fatal error. Please contact administrator.", {
-      route: "checkDatabase",
+    logError('Fatal error. Please contact administrator.', {
+      route: 'checkDatabase',
       error,
       stack: error.stack,
     });
-    return { isOk: false, error: "DataBase is corrupted." };
+    return { isOk: false, error: 'DataBase is corrupted.' };
   }
 }
 

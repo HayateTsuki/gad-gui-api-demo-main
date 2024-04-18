@@ -1,14 +1,14 @@
-const sudokuScoreEndpoint = "../../api/sudoku/score";
+const sudokuScoreEndpoint = '../../api/sudoku/score';
 let scoreValue = 0;
 const difficulty = 0.5;
 
 async function issuePostScoreRequest(score) {
   const data = fetch(sudokuScoreEndpoint, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify({ score }),
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
   }).then((r) => r.json());
@@ -80,43 +80,43 @@ function generateSudokuGrid() {
 }
 
 function displaySudokuGrid(grid, difficulty) {
-  const tbody = document.querySelector("#game-container");
+  const tbody = document.querySelector('#game-container');
 
   for (let i = 0; i < 9; i++) {
-    const row = document.createElement("tr");
+    const row = document.createElement('tr');
     for (let j = 0; j < 9; j++) {
-      const cell = document.createElement("td");
-      const input = document.createElement("input");
-      input.style.width = "40px";
-      input.style.height = "40px";
-      cell.style.border = "1px solid grey";
-      cell.style.width = "40px";
-      cell.style.height = "40px";
-      input.type = "number";
+      const cell = document.createElement('td');
+      const input = document.createElement('input');
+      input.style.width = '40px';
+      input.style.height = '40px';
+      cell.style.border = '1px solid grey';
+      cell.style.width = '40px';
+      cell.style.height = '40px';
+      input.type = 'number';
       input.min = 1;
       input.max = 9;
 
       if (Math.random() <= difficulty) {
         input.disabled = true;
-        input.style.fontWeight = "bold";
-        input.style.fontSize = "20px";
-        input.style.color = "black";
-        input.value = grid[i][j] !== 0 ? grid[i][j] : "";
+        input.style.fontWeight = 'bold';
+        input.style.fontSize = '20px';
+        input.style.color = 'black';
+        input.value = grid[i][j] !== 0 ? grid[i][j] : '';
       } else {
-        input.value = "";
+        input.value = '';
       }
       cell.appendChild(input);
       row.appendChild(cell);
 
       if ((i + 1) % 3 === 0 && (j + 1) % 3 === 0 && j < 8 && i < 8) {
-        cell.style.borderRight = "4px solid black";
-        cell.style.borderBottom = "4px solid black";
+        cell.style.borderRight = '4px solid black';
+        cell.style.borderBottom = '4px solid black';
       } else if ((i + 1) % 3 === 0 && i < 8) {
-        cell.style.borderBottom = "4px solid black";
+        cell.style.borderBottom = '4px solid black';
       } else if ((j + 1) % 3 === 0 && j < 8) {
-        cell.style.borderRight = "4px solid black";
+        cell.style.borderRight = '4px solid black';
       }
-      cell.classList.add("grid");
+      cell.classList.add('grid');
     }
     tbody.appendChild(row);
   }
@@ -126,25 +126,25 @@ function checkUniqueValues(grid) {
   let result = true;
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
-      grid[row][col].style.backgroundColor = "white";
+      grid[row][col].style.backgroundColor = 'white';
       const value = parseInt(grid[row][col].value);
 
       if (value < 1 || value > 9) {
-        grid[row][col].style.backgroundColor = "#ffcccb";
+        grid[row][col].style.backgroundColor = '#ffcccb';
         result = false;
       }
 
       if (!checkUniqueValue(grid, row, col, value)) {
         if (grid[row][col].disabled === true) {
-          grid[row][col].style.backgroundColor = "#ff817f";
+          grid[row][col].style.backgroundColor = '#ff817f';
         } else {
-          grid[row][col].style.backgroundColor = "#ff3633";
+          grid[row][col].style.backgroundColor = '#ff3633';
         }
 
         result = false;
       }
       if (isNaN(value)) {
-        grid[row][col].style.backgroundColor = "#ffcccb";
+        grid[row][col].style.backgroundColor = '#ffcccb';
         result = false;
       }
     }
@@ -171,7 +171,7 @@ function checkUniqueValue(grid, row, col, value) {
 }
 
 function checkSudoku() {
-  const inputs = document.querySelectorAll("input");
+  const inputs = document.querySelectorAll('input');
   const grid = [];
 
   inputs.forEach((input, index) => {
@@ -186,20 +186,20 @@ function checkSudoku() {
   });
 
   const isCorrect = checkUniqueValues(grid);
-  const status = document.querySelector("#status");
+  const status = document.querySelector('#status');
 
   if (isCorrect) {
-    status.textContent = "Congratulations! You solved the Sudoku puzzle.";
+    status.textContent = 'Congratulations! You solved the Sudoku puzzle.';
     scoreValue += difficulty * 10000;
 
     checkButton.disabled = true;
     issuePostScoreRequest(scoreValue);
   } else {
-    status.textContent = "Incorrect numbers. Please try again.";
+    status.textContent = 'Incorrect numbers. Please try again.';
     scoreValue -= 1;
   }
 
-  const score = document.querySelector("#score");
+  const score = document.querySelector('#score');
   score.textContent = `Score: ${scoreValue}`;
   return;
 }
@@ -208,17 +208,17 @@ function startGame() {
   const grid = generateSudokuGrid();
   displaySudokuGrid(grid, difficulty);
   scoreValue = 0;
-  const startButton = document.querySelector("#start");
+  const startButton = document.querySelector('#start');
   startButton.disabled = true;
-  const status = document.querySelector("#status");
-  status.textContent = "Good luck!";
-  const checkButton = document.querySelector("#check");
+  const status = document.querySelector('#status');
+  status.textContent = 'Good luck!';
+  const checkButton = document.querySelector('#check');
   checkButton.disabled = false;
   return;
 }
 
-const startButton = document.querySelector("#start");
-startButton.addEventListener("click", startGame);
+const startButton = document.querySelector('#start');
+startButton.addEventListener('click', startGame);
 
-const checkButton = document.querySelector("#check");
-checkButton.addEventListener("click", checkSudoku);
+const checkButton = document.querySelector('#check');
+checkButton.addEventListener('click', checkSudoku);

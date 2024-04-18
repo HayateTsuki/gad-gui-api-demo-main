@@ -1,21 +1,21 @@
-const userstatsEndpoint = "../../api/stats/users";
+const userstatsEndpoint = '../../api/stats/users';
 let results;
 
 async function issueGetRequest() {
   // get data from the server:
   results = await Promise.all(
-    [userstatsEndpoint].map((url) => fetch(url + `?chartType=${chartType}`).then((r) => r.json()))
+    [userstatsEndpoint].map((url) => fetch(url + `?chartType=${chartType}`).then((r) => r.json())),
   );
 
   google.charts.setOnLoadCallback(displayData);
 }
 
 const displayData = () => {
-  const articlesDataForChart = results[0]["articlesDataForChart"];
-  const commentsDataForChart = results[0]["commentsDataForChart"];
-  const userIdToName = results[0]["userIdToName"];
-  const articlesPerUser = results[0]["articlesPerUser"];
-  const commentsPerUser = results[0]["commentsPerUser"];
+  const articlesDataForChart = results[0]['articlesDataForChart'];
+  const commentsDataForChart = results[0]['commentsDataForChart'];
+  const userIdToName = results[0]['userIdToName'];
+  const articlesPerUser = results[0]['articlesPerUser'];
+  const commentsPerUser = results[0]['commentsPerUser'];
 
   let articlesOptions;
   let commentsOptions;
@@ -24,58 +24,58 @@ const displayData = () => {
   let typeIsCharts = false;
   let typeIsTable = false;
 
-  if (chartType === "pie") {
-    articlesChart = new google.visualization.PieChart(document.getElementById("articlesPerUserChart"));
-    commentsChart = new google.visualization.PieChart(document.getElementById("commentsPerUserChart"));
+  if (chartType === 'pie') {
+    articlesChart = new google.visualization.PieChart(document.getElementById('articlesPerUserChart'));
+    commentsChart = new google.visualization.PieChart(document.getElementById('commentsPerUserChart'));
 
     articlesOptions = {
-      title: "Number of articles",
+      title: 'Number of articles',
       width: 400,
       height: 400,
       vAxis: {
         minValue: 0,
-        format: "0",
+        format: '0',
       },
-      legend: { position: "left", textStyle: { fontSize: 10 } },
+      legend: { position: 'left', textStyle: { fontSize: 10 } },
     };
     commentsOptions = {
-      title: "Number of comments",
+      title: 'Number of comments',
       width: 400,
       height: 400,
       vAxis: {
         minValue: 0,
-        format: "0",
+        format: '0',
       },
-      legend: { position: "left", textStyle: { fontSize: 10 } },
+      legend: { position: 'left', textStyle: { fontSize: 10 } },
     };
     articlesOptions.chartArea = { left: 20, right: 20, top: 40, bottom: 20 };
     commentsOptions.chartArea = { left: 20, right: 20, top: 40, bottom: 20 };
     typeIsCharts = true;
-  } else if (chartType === "table") {
+  } else if (chartType === 'table') {
     typeIsTable = true;
   } else {
-    articlesChart = new google.visualization.ColumnChart(document.getElementById("articlesPerUserChart"));
-    commentsChart = new google.visualization.ColumnChart(document.getElementById("commentsPerUserChart"));
+    articlesChart = new google.visualization.ColumnChart(document.getElementById('articlesPerUserChart'));
+    commentsChart = new google.visualization.ColumnChart(document.getElementById('commentsPerUserChart'));
 
     articlesOptions = {
-      title: "Number of articles",
+      title: 'Number of articles',
       width: 400,
       height: 400,
       vAxis: {
         minValue: 0,
-        format: "0",
+        format: '0',
       },
-      legend: { position: "none" },
+      legend: { position: 'none' },
     };
     commentsOptions = {
-      title: "Number of comments",
+      title: 'Number of comments',
       width: 400,
       height: 400,
       vAxis: {
         minValue: 0,
-        format: "0",
+        format: '0',
       },
-      legend: { position: "none" },
+      legend: { position: 'none' },
     };
     typeIsCharts = true;
   }
@@ -88,28 +88,28 @@ const displayData = () => {
     articlesChart.draw(articlesDataTable, articlesOptions);
     commentsChart.draw(commentsDataTable, commentsOptions);
 
-    document.querySelector("#btnDownloadArticlesDataCsv").onclick = () => {
-      download("articles_data.csv", articlesDataForChart);
+    document.querySelector('#btnDownloadArticlesDataCsv').onclick = () => {
+      download('articles_data.csv', articlesDataForChart);
     };
-    document.querySelector("#btnDownloadCommentsDataCsv").onclick = () => {
-      download("comments_data.csv", commentsDataForChart);
+    document.querySelector('#btnDownloadCommentsDataCsv').onclick = () => {
+      download('comments_data.csv', commentsDataForChart);
     };
-    document.querySelector("#btnDownloadArticlesDataJson").onclick = () => {
-      download("articles_data.json", articlesDataForChart);
+    document.querySelector('#btnDownloadArticlesDataJson').onclick = () => {
+      download('articles_data.json', articlesDataForChart);
     };
-    document.querySelector("#btnDownloadCommentsDataJson").onclick = () => {
-      download("comments_data.json", commentsDataForChart);
+    document.querySelector('#btnDownloadCommentsDataJson').onclick = () => {
+      download('comments_data.json', commentsDataForChart);
     };
-    document.querySelector("#btnDownloadArticlesDataCsv").disabled = false;
-    document.querySelector("#btnDownloadCommentsDataCsv").disabled = false;
-    document.querySelector("#btnDownloadArticlesDataJson").disabled = false;
-    document.querySelector("#btnDownloadCommentsDataJson").disabled = false;
-    document.querySelector("#tableChart").style.visibility = "visible";
-    document.querySelector("#tableArea").style.visibility = "collapse";
+    document.querySelector('#btnDownloadArticlesDataCsv').disabled = false;
+    document.querySelector('#btnDownloadCommentsDataCsv').disabled = false;
+    document.querySelector('#btnDownloadArticlesDataJson').disabled = false;
+    document.querySelector('#btnDownloadCommentsDataJson').disabled = false;
+    document.querySelector('#tableChart').style.visibility = 'visible';
+    document.querySelector('#tableArea').style.visibility = 'collapse';
   }
   if (typeIsTable) {
-    const tableDataForCsv = [["User", "Articles", "Comments"]];
-    const tableElement = document.getElementById("tableDataBody");
+    const tableDataForCsv = [['User', 'Articles', 'Comments']];
+    const tableElement = document.getElementById('tableDataBody');
     for (const user_id in userIdToName) {
       let userName = userIdToName[user_id];
       let userLink = `<a href="user.html?id=${user_id}">${userName}</a>`;
@@ -120,29 +120,29 @@ const displayData = () => {
                 <td data-testid="comments-count-${user_id}" style="text-align: center">${commentsCount}</td></tr>`;
       tableDataForCsv.push([userName, articlesCount, commentsCount]);
     }
-    document.querySelector("#tableArea").style.visibility = "visible";
-    document.querySelector("#tableChart").style.visibility = "collapse";
-    document.querySelector("#btnDownloadTableDataCsv").onclick = () => {
-      download("user_table_data.csv", tableDataForCsv);
+    document.querySelector('#tableArea').style.visibility = 'visible';
+    document.querySelector('#tableChart').style.visibility = 'collapse';
+    document.querySelector('#btnDownloadTableDataCsv').onclick = () => {
+      download('user_table_data.csv', tableDataForCsv);
     };
-    document.querySelector("#btnDownloadTableDataJson").onclick = () => {
-      download("user_table_data.json", tableDataForCsv);
+    document.querySelector('#btnDownloadTableDataJson').onclick = () => {
+      download('user_table_data.json', tableDataForCsv);
     };
-    document.querySelector("#btnDownloadTableDataXlsx").onclick = () => {
-      downloadXlsx("user_table_data.xlsx", tableDataForCsv);
+    document.querySelector('#btnDownloadTableDataXlsx').onclick = () => {
+      downloadXlsx('user_table_data.xlsx', tableDataForCsv);
     };
-    document.querySelector("#btnDownloadTableDataCsv").disabled = false;
-    document.querySelector("#btnDownloadTableDataJson").disabled = false;
-    document.querySelector("#btnDownloadTableDataXlsx").disabled = false;
+    document.querySelector('#btnDownloadTableDataCsv').disabled = false;
+    document.querySelector('#btnDownloadTableDataJson').disabled = false;
+    document.querySelector('#btnDownloadTableDataXlsx').disabled = false;
   }
 };
 
 function generateChartPDF(filename) {
-  generatePDF(filename, "tableChart");
+  generatePDF(filename, 'tableChart');
 }
 
 // Load google charts
-google.charts.load("current", { packages: ["corechart"] });
+google.charts.load('current', { packages: ['corechart'] });
 
-const chartType = getParams()["type"];
+const chartType = getParams()['type'];
 issueGetRequest();

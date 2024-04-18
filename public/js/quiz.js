@@ -1,19 +1,19 @@
-const questionsEndpoint = "../../api/quiz/questions";
-const questionsCheckEndpoint = "../../api/quiz/questions/check";
-const quizStartEndpoint = "../../api/quiz/start";
-const quizStopEndpoint = "../../api/quiz/stop";
+const questionsEndpoint = '../../api/quiz/questions';
+const questionsCheckEndpoint = '../../api/quiz/questions/check';
+const quizStartEndpoint = '../../api/quiz/start';
+const quizStopEndpoint = '../../api/quiz/stop';
 
 let questionsData = [];
 
-const questionContainer = document.getElementById("question-container");
-const startButton = document.getElementById("start-button");
-const quizContainer = document.getElementById("quiz-container");
-const questionText = document.getElementById("question-text");
-const optionCheckboxes = document.querySelectorAll(".option-checkbox");
-const optionTexts = document.querySelectorAll(".option-text");
-const scoreElement = document.getElementById("score");
-const currentQuestionElement = document.getElementById("current-question");
-const totalQuestionsElement = document.getElementById("total-questions");
+const questionContainer = document.getElementById('question-container');
+const startButton = document.getElementById('start-button');
+const quizContainer = document.getElementById('quiz-container');
+const questionText = document.getElementById('question-text');
+const optionCheckboxes = document.querySelectorAll('.option-checkbox');
+const optionTexts = document.querySelectorAll('.option-text');
+const scoreElement = document.getElementById('score');
+const currentQuestionElement = document.getElementById('current-question');
+const totalQuestionsElement = document.getElementById('total-questions');
 
 function shuffleArray(array) {
   const shuffledArray = [...array];
@@ -45,12 +45,12 @@ async function issueGetRequest() {
             status: r.status,
           };
         });
-      })
-    )
+      }),
+    ),
   );
   questionsData = questionsData[0];
   if (questionsData.status !== 200) {
-    quizContainer.innerHTML = "<strong>⛔ Please log in and return to this page ⛔</strong>";
+    quizContainer.innerHTML = '<strong>⛔ Please log in and return to this page ⛔</strong>';
   } else {
     questionsData = questionsData.json;
     showQuestion();
@@ -59,7 +59,7 @@ async function issueGetRequest() {
 
 async function issueStartRequest() {
   fetch(quizStartEndpoint, {
-    method: "GET",
+    method: 'GET',
     headers: {
       Authorization: getBearerToken(),
     },
@@ -68,7 +68,7 @@ async function issueStartRequest() {
 
 async function issueStopRequest() {
   fetch(quizStopEndpoint, {
-    method: "GET",
+    method: 'GET',
     headers: {
       Authorization: getBearerToken(),
     },
@@ -102,11 +102,11 @@ async function checkAnswer() {
     selectedAnswers,
   };
   fetch(questionsCheckEndpoint, {
-    method: "post",
+    method: 'post',
     body: JSON.stringify(data),
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
   }).then((response) => {
@@ -121,7 +121,7 @@ async function checkAnswer() {
       //   score++;
       //   scoreElement.textContent = score;
       // }
-      score = json["score"];
+      score = json['score'];
       scoreElement.textContent = score;
       currentQuestionIndex++;
       if (currentQuestionIndex < questionsData.length) {
@@ -150,11 +150,11 @@ function displayFinalScore(score) {
   }
 }
 
-questionContainer.style.visibility = "collapse";
+questionContainer.style.visibility = 'collapse';
 
 async function startQuiz() {
   await issueStartRequest();
   await issueGetRequest();
-  questionContainer.style.visibility = "visible";
-  startButton.style.visibility = "collapse";
+  questionContainer.style.visibility = 'visible';
+  startButton.style.visibility = 'collapse';
 }

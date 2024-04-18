@@ -1,8 +1,8 @@
-const { request, expect, baseLabelsUrl, sleepTime } = require("../config.js");
-const { authUser } = require("../helpers/data.helpers.js");
-const { setupEnv, gracefulQuit, sleep } = require("../helpers/helpers.js");
+const { request, expect, baseLabelsUrl, sleepTime } = require('../config.js');
+const { authUser } = require('../helpers/data.helpers.js');
+const { setupEnv, gracefulQuit, sleep } = require('../helpers/helpers.js');
 
-describe("Endpoint /labels", () => {
+describe('Endpoint /labels', () => {
   const baseUrl = baseLabelsUrl;
 
   before(async () => {
@@ -13,8 +13,8 @@ describe("Endpoint /labels", () => {
     gracefulQuit();
   });
 
-  describe("Without auth", () => {
-    it("GET /labels", async () => {
+  describe('Without auth', () => {
+    it('GET /labels', async () => {
       // Act:
       const response = await request.get(baseUrl);
 
@@ -22,35 +22,35 @@ describe("Endpoint /labels", () => {
       expect(response.status).to.equal(200);
     });
 
-    it("POST /labels", () => {
+    it('POST /labels', () => {
       return request.post(baseUrl).send({}).expect(422);
     });
 
-    it("PUT /labels", () => {
+    it('PUT /labels', () => {
       return request.put(baseUrl).send({}).expect(404);
     });
 
-    it("PUT /labels/:id", () => {
+    it('PUT /labels/:id', () => {
       return request.put(`${baseUrl}/1`).send({}).expect(200);
     });
 
-    it("PATCH /labels", () => {
+    it('PATCH /labels', () => {
       return request.patch(baseUrl).send({}).expect(404);
     });
 
-    it("PATCH /labels/:id", () => {
+    it('PATCH /labels/:id', () => {
       return request.patch(`${baseUrl}/1`).send({}).expect(200);
     });
 
-    it("DELETE /labels", () => {
+    it('DELETE /labels', () => {
       return request.delete(baseUrl).expect(405);
     });
 
-    it("DELETE /labels/:id", () => {
+    it('DELETE /labels/:id', () => {
       return request.delete(`${baseUrl}/1`).expect(200);
     });
 
-    it("HEAD /labels", () => {
+    it('HEAD /labels', () => {
       return request.head(`${baseUrl}/2`).expect(200);
     });
   });

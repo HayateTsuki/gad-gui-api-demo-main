@@ -1,5 +1,5 @@
-const usersEndpoint = "../../api/users";
-let alertElement = document.querySelector(".alert");
+const usersEndpoint = '../../api/users';
+let alertElement = document.querySelector('.alert');
 let usersData;
 
 async function issueGetRequest(user_id) {
@@ -14,15 +14,15 @@ async function issueGetRequest(user_id) {
 
 const showResponseOnDelete = (response) => {
   if (response.status === 200) {
-    showMessage("User was deleted", false);
+    showMessage('User was deleted', false);
   } else {
-    showMessage("User was not deleted", true);
+    showMessage('User was not deleted', true);
   }
 };
 
 const showResponseOnUpdate = (response) => {
   if (response.status === 200) {
-    showMessage("User was updated. Please loggin again", false);
+    showMessage('User was updated. Please loggin again', false);
 
     // if(getId() !== "admin" ) {
     //   setTimeout(function() {
@@ -30,17 +30,17 @@ const showResponseOnUpdate = (response) => {
     //   }, 1000);
     // }
   } else {
-    showMessage("User was not updated", true);
+    showMessage('User was not updated', true);
   }
 };
 
 const showMessage = (message, isError = false) => {
   alertElement.innerHTML = message;
-  alertElement.classList.remove("alert-error", "alert-success");
+  alertElement.classList.remove('alert-error', 'alert-success');
   if (isError) {
-    alertElement.classList.add("alert-error");
+    alertElement.classList.add('alert-error');
   } else {
-    alertElement.classList.add("alert-success");
+    alertElement.classList.add('alert-success');
   }
   var newMessageElement = alertElement.cloneNode(true);
   alertElement.parentNode.replaceChild(newMessageElement, alertElement);
@@ -49,12 +49,12 @@ const showMessage = (message, isError = false) => {
 
 const issuePutRequest = (id, data, responseHandler) => {
   // update data on the server:
-  const url = usersEndpoint + "/" + id;
+  const url = usersEndpoint + '/' + id;
   fetch(url, {
-    method: "put",
+    method: 'put',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
@@ -68,12 +68,12 @@ const issuePutRequest = (id, data, responseHandler) => {
 
 const issuePatchRequest = (id, data, responseHandler) => {
   // update data on the server:
-  const url = usersEndpoint + "/" + id;
+  const url = usersEndpoint + '/' + id;
   fetch(url, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
@@ -87,17 +87,17 @@ const issuePatchRequest = (id, data, responseHandler) => {
 
 const issueDeleteRequest = (id, responseHandler) => {
   // delete data on the server:
-  const url = usersEndpoint + "/" + id;
-  fetch(url, { method: "delete", headers: formatHeaders() }).then(responseHandler);
+  const url = usersEndpoint + '/' + id;
+  fetch(url, { method: 'delete', headers: formatHeaders() }).then(responseHandler);
 };
 
 const issuePostRequest = (data, responseHandler) => {
   // create data on the server:
   fetch(usersEndpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
@@ -105,22 +105,22 @@ const issuePostRequest = (data, responseHandler) => {
 };
 
 const handleUpdate = (ev) => {
-  const passwordInput = document.querySelector("#password");
-  if (passwordInput && passwordInput.value === "") {
-    passwordInput.style.borderColor = "red";
-    passwordInput.insertAdjacentHTML("afterend", `<span style="color:red;">This field is required</span>`);
+  const passwordInput = document.querySelector('#password');
+  if (passwordInput && passwordInput.value === '') {
+    passwordInput.style.borderColor = 'red';
+    passwordInput.insertAdjacentHTML('afterend', `<span style="color:red;">This field is required</span>`);
   } else {
-    const id = ev.target.getAttribute("data-id");
+    const id = ev.target.getAttribute('data-id');
     const container = ev.target.parentElement.parentElement;
     let data = {
-      firstname: container.querySelector("#firstname").value,
-      lastname: container.querySelector("#lastname").value,
-      email: container.querySelector("#email").value,
-      avatar: container.querySelector("#avatar").value,
+      firstname: container.querySelector('#firstname').value,
+      lastname: container.querySelector('#lastname').value,
+      email: container.querySelector('#email').value,
+      avatar: container.querySelector('#avatar').value,
     };
-    if (passwordInput) data.password = container.querySelector("#password").value;
+    if (passwordInput) data.password = container.querySelector('#password').value;
     const callback = (item) => {
-      if (item["error"] === undefined) {
+      if (item['error'] === undefined) {
         container.innerHTML = getItemHTML(item);
       }
       attachEventHandlers(id);
@@ -131,13 +131,13 @@ const handleUpdate = (ev) => {
 };
 
 const handlePartialUpdate = (ev) => {
-  const id = ev.target.getAttribute("data-id");
+  const id = ev.target.getAttribute('data-id');
   const container = ev.target.parentElement.parentElement;
   const data = {
-    email: container.querySelector("#email").value,
+    email: container.querySelector('#email').value,
   };
   const callback = (item) => {
-    if (item["error"] === undefined) {
+    if (item['error'] === undefined) {
       container.innerHTML = getItemHTML(item);
     }
     attachEventHandlers(id);
@@ -147,20 +147,20 @@ const handlePartialUpdate = (ev) => {
 };
 
 const handleCreate = () => {
-  const container = document.querySelector(".add-new-panel");
+  const container = document.querySelector('.add-new-panel');
   let data = {
-    firstname: container.querySelector(".firstname").value,
-    lastname: container.querySelector(".lastname").value,
-    email: container.querySelector(".email").value,
-    avatar: container.querySelector(".avatar").value,
+    firstname: container.querySelector('.firstname').value,
+    lastname: container.querySelector('.lastname').value,
+    email: container.querySelector('.email').value,
+    avatar: container.querySelector('.avatar').value,
   };
   issuePostRequest(data, issueGetRequest);
-  document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.add-new-panel').classList.remove('active');
 };
 
 const handleDelete = (ev) => {
   const id = ev.target.id;
-  const areYouSure = confirm("Are you sure that you want to delete item #" + id + "?");
+  const areYouSure = confirm('Are you sure that you want to delete item #' + id + '?');
   if (!areYouSure) {
     return;
   }
@@ -168,41 +168,41 @@ const handleDelete = (ev) => {
 };
 
 const actionAfterDelete = () => {
-  showMessage("User deleted", false);
+  showMessage('User deleted', false);
   setTimeout(function () {
-    if (getId() === "admin") location.href = "./users.html";
-    else location.href = "/logout";
+    if (getId() === 'admin') location.href = './users.html';
+    else location.href = '/logout';
   }, 1000);
 };
 
-const attachEventHandlers = (id = "") => {
+const attachEventHandlers = (id = '') => {
   if (!isAuthorized(id)) {
     // TODO: remove icons and methods if user is not logged
-    for (let elem of document.querySelectorAll(".editName")) {
+    for (let elem of document.querySelectorAll('.editName')) {
       elem.disabled = true;
-      elem.style.visibility = "hidden";
+      elem.style.visibility = 'hidden';
     }
-    for (let elem of document.querySelectorAll(".delete")) {
+    for (let elem of document.querySelectorAll('.delete')) {
       elem.disabled = true;
-      elem.style.visibility = "hidden";
+      elem.style.visibility = 'hidden';
     }
-    for (let elem of document.querySelectorAll(".edit")) {
+    for (let elem of document.querySelectorAll('.edit')) {
       elem.disabled = true;
-      elem.style.visibility = "hidden";
+      elem.style.visibility = 'hidden';
     }
-    for (let elem of document.querySelectorAll(".emailEdit")) {
+    for (let elem of document.querySelectorAll('.emailEdit')) {
       elem.disabled = true;
-      elem.style.visibility = "hidden";
+      elem.style.visibility = 'hidden';
     }
     return;
   }
-  for (let elem of document.querySelectorAll(".delete")) {
+  for (let elem of document.querySelectorAll('.delete')) {
     elem.onclick = handleDelete;
   }
-  for (let elem of document.querySelectorAll(".edit")) {
+  for (let elem of document.querySelectorAll('.edit')) {
     elem.onclick = showEditForm;
   }
-  for (let elem of document.querySelectorAll(".emailEdit")) {
+  for (let elem of document.querySelectorAll('.emailEdit')) {
     elem.onclick = showEmailEditForm;
   }
   //    document.querySelector('#add-new').onclick = () => {
@@ -211,37 +211,37 @@ const attachEventHandlers = (id = "") => {
   //        container.querySelector('.firstname').value = '';
   //        container.classList.add('active');
   //    };
-  document.querySelector(".close").onclick = () => {
-    document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.close').onclick = () => {
+    document.querySelector('.add-new-panel').classList.remove('active');
     removeConfirmExitPage();
   };
-  document.querySelector(".add-new-panel .cancel").onclick = () => {
-    document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.add-new-panel .cancel').onclick = () => {
+    document.querySelector('.add-new-panel').classList.remove('active');
     removeConfirmExitPage();
   };
-  document.querySelector(".update.save").onclick = handleCreate;
+  document.querySelector('.update.save').onclick = handleCreate;
 
-  document.querySelector("#btnDownloadCsv").onclick = () => {
-    download("user_data.csv");
+  document.querySelector('#btnDownloadCsv').onclick = () => {
+    download('user_data.csv');
   };
-  document.querySelector("#btnDownloadCsv").disabled = false;
+  document.querySelector('#btnDownloadCsv').disabled = false;
 };
 
 const download = (filename) => {
   const text = jsonToCSV(usersData);
 
-  var element = document.createElement("a");
-  element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
-  element.setAttribute("download", filename);
-  element.style.display = "none";
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
 };
 
 const attachFormEventHandlers = (item, container, id) => {
-  container.querySelector(".update").onclick = handleUpdate;
-  container.querySelector(".cancel").onclick = () => {
+  container.querySelector('.update').onclick = handleUpdate;
+  container.querySelector('.cancel').onclick = () => {
     container.innerHTML = getItemHTML(item);
     attachEventHandlers(id);
     removeConfirmExitPage();
@@ -249,8 +249,8 @@ const attachFormEventHandlers = (item, container, id) => {
 };
 
 const attachEmailFormEventHandlers = (item, container, id) => {
-  container.querySelector(".partialUpdate").onclick = handlePartialUpdate;
-  container.querySelector(".cancel").onclick = () => {
+  container.querySelector('.partialUpdate').onclick = handlePartialUpdate;
+  container.querySelector('.cancel').onclick = () => {
     container.innerHTML = getItemHTML(item);
     attachEventHandlers(id);
     removeConfirmExitPage();
@@ -259,7 +259,7 @@ const attachEmailFormEventHandlers = (item, container, id) => {
 
 const showEditForm = (ev) => {
   const id = ev.target.id;
-  const url = usersEndpoint + "/" + id;
+  const url = usersEndpoint + '/' + id;
   const cardElement = ev.target.parentElement.parentElement;
   attachConfirmExitPage();
 
@@ -275,7 +275,7 @@ const showEditForm = (ev) => {
 
 const showEmailEditForm = (ev) => {
   const id = ev.target.id;
-  const url = usersEndpoint + "/" + id;
+  const url = usersEndpoint + '/' + id;
   const cardElement = ev.target.parentElement.parentElement;
   attachConfirmExitPage();
   fetch(url, { headers: formatHeaders() })
@@ -288,24 +288,24 @@ const showEmailEditForm = (ev) => {
 };
 
 function confirmation(e) {
-  var confirmationMessage = "Confirm!";
+  var confirmationMessage = 'Confirm!';
 
   (e || window.event).returnValue = confirmationMessage; //Gecko + IE
   return confirmationMessage; //Webkit, Safari, Chrome
 }
 
 function attachConfirmExitPage() {
-  window.addEventListener("beforeunload", confirmation);
+  window.addEventListener('beforeunload', confirmation);
 }
 function removeConfirmExitPage() {
-  window.removeEventListener("beforeunload", confirmation);
+  window.removeEventListener('beforeunload', confirmation);
 }
 
 {
   /* <input type="text" id="email" value="${item.email}"><br> */
 }
 const displayForm = (item, container) => {
-  const userEmail = getId() === "admin" ? item.email : getCookieEmail();
+  const userEmail = getId() === 'admin' ? item.email : getCookieEmail();
   container.innerHTML = `
         <div style="margin-top:7px;">
             <label>id:</label><span>${item.id}</span><br>
@@ -326,26 +326,26 @@ const displayForm = (item, container) => {
             <button type="button" data-id="${item.id}" data-testid="update-user" class="update button-primary" style="margin:20px;">Update</button>
         </div>
     `;
-  const editPasswordCheckbox = document.querySelector("#editPassword");
-  editPasswordCheckbox.addEventListener("click", function () {
+  const editPasswordCheckbox = document.querySelector('#editPassword');
+  editPasswordCheckbox.addEventListener('click', function () {
     if (editPasswordCheckbox.checked) {
       editPasswordCheckbox.insertAdjacentHTML(
-        "afterend",
+        'afterend',
         `
         <div id="passBox">
         <label>password:</label>
         <input type="password" id="password" required><br>
         </div>
-        `
+        `,
       );
     } else {
-      document.querySelector("#passBox").remove();
+      document.querySelector('#passBox').remove();
     }
   });
 };
 
 const displayEmailForm = (item, container) => {
-  const userEmail = getId() === "admin" ? item.email : getCookieEmail();
+  const userEmail = getId() === 'admin' ? item.email : getCookieEmail();
   container.innerHTML = `
         <div style="margin-top:7px;">
             <label>id:</label><span>${item.id}</span><br>
@@ -363,9 +363,9 @@ const displayEmailForm = (item, container) => {
 };
 
 const getItemHTML = (item) => {
-  let controls = "";
+  let controls = '';
 
-  if (item.id !== undefined && item.id !== "undefined") {
+  if (item.id !== undefined && item.id !== 'undefined') {
     controls = `<div class="controls" >
             <i class="fas fa-edit edit" id="${item.id}"></i>
             <i class="fas fa-trash delete" id="${item.id}"></i>
@@ -396,8 +396,8 @@ const displayItem = (item, container) => {
 };
 
 const displayUserData = (data) => {
-  const container = document.querySelector("#container");
-  container.innerHTML = "";
+  const container = document.querySelector('#container');
+  container.innerHTML = '';
 
   if (data === undefined || data.id === undefined) {
     container.innerHTML =
@@ -409,5 +409,5 @@ const displayUserData = (data) => {
   return true;
 };
 
-const user_id = getParams()["id"];
+const user_id = getParams()['id'];
 issueGetRequest(user_id);

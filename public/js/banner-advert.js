@@ -102,16 +102,16 @@ const listOfBanners = [
 ];
 
 function wasAccepted() {
-  return checkCookie() === "1";
+  return checkCookie() === '1';
 }
 
 function checkCookie() {
-  var name = "advertCookie=";
-  var cookies = document.cookie.split(";");
+  var name = 'advertCookie=';
+  var cookies = document.cookie.split(';');
 
   for (var i = 0; i < cookies.length; i++) {
     var cookie = cookies[i];
-    while (cookie.charAt(0) == " ") {
+    while (cookie.charAt(0) == ' ') {
       cookie = cookie.substring(1);
     }
 
@@ -119,7 +119,7 @@ function checkCookie() {
       return cookie.substring(name.length, cookie.length);
     }
   }
-  return "";
+  return '';
 }
 
 function saveAdvertAcceptInCookies(daysOfValidity) {
@@ -127,29 +127,29 @@ function saveAdvertAcceptInCookies(daysOfValidity) {
   var time = now.getTime() + daysOfValidity * 24 * 60 * 60 * 1000;
   var newTime = new Date(now.setTime(time));
   newTime = newTime.toUTCString();
-  document.cookie = "advertCookie=1; expires=" + newTime + "; SameSite=Lax; path=/";
+  document.cookie = 'advertCookie=1; expires=' + newTime + '; SameSite=Lax; path=/';
 }
 
 const showAd = () => {
-  const skipButton = document.querySelector(".popup-container .skip-button");
-  const popupOverlay = document.querySelector(".popup-overlay");
+  const skipButton = document.querySelector('.popup-container .skip-button');
+  const popupOverlay = document.querySelector('.popup-overlay');
 
-  popupOverlay.classList.add("active");
+  popupOverlay.classList.add('active');
   popupTimer = setInterval(() => {
     skipButton.innerHTML = `Skip in ${remainingTime}s`;
     remainingTime--;
 
     if (remainingTime < 0) {
       allowedToSkip = true;
-      skipButton.innerHTML = "Skip";
+      skipButton.innerHTML = 'Skip';
       clearInterval(popupTimer);
     }
   }, 1000);
 };
 
 const skipAd = () => {
-  const popupOverlay = document.querySelector(".popup-overlay");
-  popupOverlay.classList.remove("active");
+  const popupOverlay = document.querySelector('.popup-overlay');
+  popupOverlay.classList.remove('active');
   popupOverlay.remove();
   saveAdvertAcceptInCookies(0.01);
 };
@@ -162,10 +162,10 @@ function displayAd() {
   if (wasAccepted() === true) {
     return;
   }
-  document.body.insertAdjacentHTML("beforeend", getRandomBanner());
+  document.body.insertAdjacentHTML('beforeend', getRandomBanner());
   showAd();
-  const skipButton = document.querySelector(".popup-container .skip-button");
-  skipButton.addEventListener("click", () => {
+  const skipButton = document.querySelector('.popup-container .skip-button');
+  skipButton.addEventListener('click', () => {
     if (allowedToSkip === true) {
       skipAd();
     }

@@ -1,21 +1,21 @@
-const { getFeatureFlagConfigValue, isBugEnabled } = require("../config/config-manager");
-const { FeatureFlagConfigKeys, BugConfigKeys } = require("../config/enums");
-const { isUndefined } = require("../helpers/compare.helpers");
+const { getFeatureFlagConfigValue, isBugEnabled } = require('../config/config-manager');
+const { FeatureFlagConfigKeys, BugConfigKeys } = require('../config/enums');
+const { isUndefined } = require('../helpers/compare.helpers');
 const {
   searchForUserWithOnlyToken,
   checkIfArticlesAlreadyInBookmarks,
   findUserBookmarks,
   searchForArticle,
-} = require("../helpers/db-operation.helpers");
-const { formatInvalidTokenErrorResponse, formatInvalidEntityErrorResponse } = require("../helpers/helpers");
-const { logTrace } = require("../helpers/logger-api");
+} = require('../helpers/db-operation.helpers');
+const { formatInvalidTokenErrorResponse, formatInvalidEntityErrorResponse } = require('../helpers/helpers');
+const { logTrace } = require('../helpers/logger-api');
 const {
   HTTP_NOT_FOUND,
   HTTP_UNAUTHORIZED,
   HTTP_OK,
   HTTP_UNPROCESSABLE_ENTITY,
-} = require("../helpers/response.helpers");
-const { verifyAccessToken } = require("../helpers/validation.helpers");
+} = require('../helpers/response.helpers');
+const { verifyAccessToken } = require('../helpers/validation.helpers');
 
 function handleBookmarks(req, res, isAdmin) {
   const isFeatureEnabled = getFeatureFlagConfigValue(FeatureFlagConfigKeys.FEATURE_USER_BOOKMARK_ARTICLES);
@@ -24,20 +24,20 @@ function handleBookmarks(req, res, isAdmin) {
     return;
   }
 
-  const verifyTokenResult = verifyAccessToken(req, res, "bookmarks", req.url);
+  const verifyTokenResult = verifyAccessToken(req, res, 'bookmarks', req.url);
 
-  const urlEnds = req.url.replace(/\/\/+/g, "/");
+  const urlEnds = req.url.replace(/\/\/+/g, '/');
 
-  if (req.method === "POST" && req.url.includes("/api/bookmarks/articles")) {
+  if (req.method === 'POST' && req.url.includes('/api/bookmarks/articles')) {
     const foundUser = searchForUserWithOnlyToken(verifyTokenResult);
-    logTrace("handleArticleLabels: foundUser:", { method: req.method, urlEnds, foundUser });
+    logTrace('handleArticleLabels: foundUser:', { method: req.method, urlEnds, foundUser });
 
     if (isUndefined(foundUser)) {
       res.status(HTTP_UNAUTHORIZED).send(formatInvalidTokenErrorResponse());
       return false;
     }
 
-    const articleId = req.body["article_id"];
+    const articleId = req.body['article_id'];
 
     let foundArticle = searchForArticle(articleId);
 
@@ -49,7 +49,7 @@ function handleBookmarks(req, res, isAdmin) {
     }
 
     if (isUndefined(foundArticle)) {
-      res.status(HTTP_UNPROCESSABLE_ENTITY).send(formatInvalidEntityErrorResponse("article_id"));
+      res.status(HTTP_UNPROCESSABLE_ENTITY).send(formatInvalidEntityErrorResponse('article_id'));
       return false;
     }
 
@@ -71,13 +71,13 @@ function handleBookmarks(req, res, isAdmin) {
 
     if (isUndefined(bookmark) && bookmarked === false) {
       req.url = `/api/bookmarks`;
-      req.method = "POST";
+      req.method = 'POST';
       bookmark = {
         user_id: foundUser.id,
         article_ids: [articleId],
       };
       req.body = bookmark;
-      logTrace("handleBookmark: create a bookmark via POST:", {
+      logTrace('handleBookmark: create a bookmark via POST:', {
         method: req.method,
         url: req.url,
         body: bookmark,
@@ -85,7 +85,7 @@ function handleBookmarks(req, res, isAdmin) {
       return;
     }
 
-    req.method = "PUT";
+    req.method = 'PUT';
     req.url = `/api/bookmarks/${bookmark.id}`;
     if (bookmarked === true) {
       // already bookmarked -> remove bookmark
@@ -97,7 +97,7 @@ function handleBookmarks(req, res, isAdmin) {
       bookmark.article_ids.push(articleId);
       req.body = bookmark;
     }
-    logTrace("handleBookmark: add bookmark - POST -> PUT:", {
+    logTrace('handleBookmark: add bookmark - POST -> PUT:', {
       method: req.method,
       url: req.url,
       body: bookmarks,
@@ -105,9 +105,9 @@ function handleBookmarks(req, res, isAdmin) {
     return;
   }
 
-  if (req.method === "GET" && req.url.includes("/api/bookmarks/articles")) {
+  if (req.method === 'GET' && req.url.includes('/api/bookmarks/articles')) {
     const foundUser = searchForUserWithOnlyToken(verifyTokenResult);
-    logTrace("handleArticleLabels: foundUser:", { method: req.method, urlEnds, foundUser });
+    logTrace('handleArticleLabels: foundUser:', { method: req.method, urlEnds, foundUser });
 
     if (isUndefined(foundUser)) {
       res.status(HTTP_UNAUTHORIZED).send(formatInvalidTokenErrorResponse());
@@ -120,7 +120,7 @@ function handleBookmarks(req, res, isAdmin) {
     return;
   }
 
-  if (req.url.includes("/api/bookmarks")) {
+  if (req.url.includes('/api/bookmarks')) {
     res.status(HTTP_NOT_FOUND).json({});
   }
 

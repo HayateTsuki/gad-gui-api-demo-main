@@ -1,18 +1,18 @@
-const startButton = document.getElementById("start-button");
-const cells = document.querySelectorAll(".cell");
-const playerXScore = document.getElementById("player-x-score");
-const playerOScore = document.getElementById("player-o-score");
-const messageLbl = document.getElementById("messageLbl");
-let currentPlayer = "X";
+const startButton = document.getElementById('start-button');
+const cells = document.querySelectorAll('.cell');
+const playerXScore = document.getElementById('player-x-score');
+const playerOScore = document.getElementById('player-o-score');
+const messageLbl = document.getElementById('messageLbl');
+let currentPlayer = 'X';
 let playerXScoreValue = 0;
 let playerOScoreValue = 0;
 
 function startGame() {
   cells.forEach((cell) => {
-    cell.textContent = "";
-    cell.addEventListener("click", handleCellClick, { once: true });
+    cell.textContent = '';
+    cell.addEventListener('click', handleCellClick, { once: true });
   });
-  currentPlayer = "X";
+  currentPlayer = 'X';
   startButton.disabled = true;
   messageLbl.textContent = `${currentPlayer}'s turn`;
 }
@@ -21,7 +21,7 @@ function handleCellClick(event) {
   const cell = event.target;
   cell.textContent = currentPlayer;
   if (checkWin()) {
-    if (currentPlayer === "X") {
+    if (currentPlayer === 'X') {
       playerXScoreValue++;
       playerXScore.textContent = playerXScoreValue;
     } else {
@@ -32,7 +32,7 @@ function handleCellClick(event) {
   } else if (checkDraw()) {
     resetGame();
   } else {
-    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     messageLbl.textContent = `${currentPlayer}'s turn`;
   }
 }
@@ -60,15 +60,15 @@ function checkWin() {
 }
 
 function checkDraw() {
-  return Array.from(cells).every((cell) => cell.textContent !== "");
+  return Array.from(cells).every((cell) => cell.textContent !== '');
 }
 
 function resetGame() {
   cells.forEach((cell) => {
-    cell.removeEventListener("click", handleCellClick);
+    cell.removeEventListener('click', handleCellClick);
   });
   startButton.disabled = false;
-  messageLbl.textContent = "Click start to play again";
+  messageLbl.textContent = 'Click start to play again';
 }
 
-startButton.addEventListener("click", startGame);
+startButton.addEventListener('click', startGame);

@@ -7,7 +7,7 @@ function areIdsEqual(id1, id2) {
 }
 
 function isNumber(value) {
-  return typeof value === "number";
+  return typeof value === 'number';
 }
 
 function isUndefined(value) {
@@ -17,7 +17,7 @@ function isUndefined(value) {
 function isEmptyOrUndefined(value) {
   return (
     value === undefined ||
-    value === "" ||
+    value === '' ||
     value === null ||
     value === 0 ||
     value === false ||
@@ -54,7 +54,7 @@ function compareDbObjects(baseDb, currentDb) {
 
   const invalidObjects = [];
   for (const key of missingKeysInCurrentDb) {
-    const parts = key.split(".");
+    const parts = key.split('.');
 
     if (currentDb[parts[0]] === undefined) {
       break;
@@ -104,7 +104,7 @@ function getAllDbKeys(database) {
 
   for (let table in database) {
     keys.push(table);
-    if (typeof database[table] === "object") {
+    if (typeof database[table] === 'object') {
       if (database[table].length > 0) {
         let newKeys = [];
         for (let item of database[table]) {

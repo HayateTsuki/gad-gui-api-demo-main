@@ -7,37 +7,37 @@ const {
   setBugConfigValue,
   getFeatureFlagConfigValue,
   setFeatureFlagConfigValue,
-} = require("../config/config-manager");
-const { isUndefined } = require("../helpers/compare.helpers");
-const { visitsData } = require("../helpers/db.helpers");
-const { logDebug, logTrace } = require("../helpers/logger-api");
-const { HTTP_OK, HTTP_UNPROCESSABLE_ENTITY } = require("../helpers/response.helpers");
+} = require('../config/config-manager');
+const { isUndefined } = require('../helpers/compare.helpers');
+const { visitsData } = require('../helpers/db.helpers');
+const { logDebug, logTrace } = require('../helpers/logger-api');
+const { HTTP_OK, HTTP_UNPROCESSABLE_ENTITY } = require('../helpers/response.helpers');
 
 function handleConfig(req, res) {
-  if (req.url.includes("api/config/bugs")) {
+  if (req.url.includes('api/config/bugs')) {
     handleGenericConfig(
       req,
       res,
-      "api/config/bugs",
+      'api/config/bugs',
       getBugConfigValue,
       setBugConfigValue,
-      configInstance.bugConfigCopy
+      configInstance.bugConfigCopy,
     );
-  } else if (req.url.includes("api/config/features")) {
+  } else if (req.url.includes('api/config/features')) {
     handleGenericConfig(
       req,
       res,
-      "api/config/features",
+      'api/config/features',
       getFeatureFlagConfigValue,
       setFeatureFlagConfigValue,
-      configInstance.featureFlagConfigCopy
+      configInstance.featureFlagConfigCopy,
     );
-  } else if (req.url.includes("api/config/all")) {
-    handleGenericConfig(req, res, "api/config/all", getConfigValue, setConfigValue, configInstance);
-  } else if (req.method === "GET" && req.url.includes("api/config/reset")) {
+  } else if (req.url.includes('api/config/all')) {
+    handleGenericConfig(req, res, 'api/config/all', getConfigValue, setConfigValue, configInstance);
+  } else if (req.method === 'GET' && req.url.includes('api/config/reset')) {
     resetConfig();
     res.status(HTTP_OK).json({});
-  } else if (req.method === "POST" && req.url.includes("api/config/checkfeature")) {
+  } else if (req.method === 'POST' && req.url.includes('api/config/checkfeature')) {
     const featureName = req.body.name;
     const featureEnabled = getFeatureFlagConfigValue(featureName) ?? false;
     res.status(HTTP_OK).json({ name: featureName, enabled: featureEnabled });
@@ -46,9 +46,9 @@ function handleConfig(req, res) {
 }
 
 function handleGenericConfig(req, res, endpoint, getConfigValue, setConfigValue, config) {
-  if (req.method === "GET" && req.url.endsWith(endpoint)) {
+  if (req.method === 'GET' && req.url.endsWith(endpoint)) {
     res.status(HTTP_OK).json({ config: config });
-  } else if (req.method === "POST" && req.url.endsWith(endpoint)) {
+  } else if (req.method === 'POST' && req.url.endsWith(endpoint)) {
     const invalidKeys = [];
 
     // check if key is correct:
@@ -68,9 +68,9 @@ function handleGenericConfig(req, res, endpoint, getConfigValue, setConfigValue,
         logDebug(`Setting "${key}": from "${currentValue}" to "${req.body[key]}"`);
         setConfigValue(key, req.body[key]);
 
-        if (key.toLowerCase().includes("randomvisitsfor")) {
+        if (key.toLowerCase().includes('randomvisitsfor')) {
           visitsData.generateVisits();
-          logTrace("handleGenericConfig: regenerated random visits");
+          logTrace('handleGenericConfig: regenerated random visits');
         }
       }
       res.status(HTTP_OK).json({});

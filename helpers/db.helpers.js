@@ -1,11 +1,11 @@
-const fs = require("fs");
-const { getConfigValue } = require("../config/config-manager");
-const { ConfigKeys } = require("../config/enums");
-const path = require("path");
-const { checkFileName } = require("./file-upload.helper");
-const { logTrace, logDebug } = require("./logger-api");
-const { isUndefined } = require("./compare.helpers");
-const { getSeededRandomVisitsForEntities } = require("./generators/random-data.generator");
+const fs = require('fs');
+const { getConfigValue } = require('../config/config-manager');
+const { ConfigKeys } = require('../config/enums');
+const path = require('path');
+const { checkFileName } = require('./file-upload.helper');
+const { logTrace, logDebug } = require('./logger-api');
+const { isUndefined } = require('./compare.helpers');
+const { getSeededRandomVisitsForEntities } = require('./generators/random-data.generator');
 
 const visits = (function () {
   let instance;
@@ -51,22 +51,22 @@ const visits = (function () {
       visitsPerArticle = getSeededRandomVisitsForEntities(
         articlesDb(),
         getConfigValue(ConfigKeys.MIN_RANDOM_VISITS_FOR_ARTICLES),
-        getConfigValue(ConfigKeys.MAX_RANDOM_VISITS_FOR_ARTICLES)
+        getConfigValue(ConfigKeys.MAX_RANDOM_VISITS_FOR_ARTICLES),
       );
 
       visitsPerComment = getSeededRandomVisitsForEntities(
         commentsDb(),
         getConfigValue(ConfigKeys.MIN_RANDOM_VISITS_FOR_COMMENTS),
-        getConfigValue(ConfigKeys.MAX_RANDOM_VISITS_FOR_COMMENTS)
+        getConfigValue(ConfigKeys.MAX_RANDOM_VISITS_FOR_COMMENTS),
       );
 
       visitsPerUsers = getSeededRandomVisitsForEntities(
         userDb(),
         getConfigValue(ConfigKeys.MIN_RANDOM_VISITS_FOR_USERS),
-        getConfigValue(ConfigKeys.MAX_RANDOM_VISITS_FOR_USERS)
+        getConfigValue(ConfigKeys.MAX_RANDOM_VISITS_FOR_USERS),
       );
 
-      logDebug("Visits: generated for articles, comments and users");
+      logDebug('Visits: generated for articles, comments and users');
     }
     return {
       visitsPerArticle,
@@ -98,28 +98,28 @@ function initVisits() {
 }
 
 function getDbPath(dbPath) {
-  return path.resolve(__dirname, "..", dbPath);
+  return path.resolve(__dirname, '..', dbPath);
 }
 
 function fullDb() {
-  const db = JSON.parse(fs.readFileSync(path.join(__dirname, "..", getConfigValue(ConfigKeys.DB_PATH)), "utf8"));
+  const db = JSON.parse(fs.readFileSync(path.join(__dirname, '..', getConfigValue(ConfigKeys.DB_PATH)), 'utf8'));
   return db;
 }
 
 function fullBaseDb() {
   const db = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "..", getConfigValue(ConfigKeys.DB_RESTORE_PATH)), "utf8")
+    fs.readFileSync(path.join(__dirname, '..', getConfigValue(ConfigKeys.DB_RESTORE_PATH)), 'utf8'),
   );
   return db;
 }
 
 function gamesDb() {
-  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.GAMES_DB)), "UTF-8"));
-  return db["games"];
+  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.GAMES_DB)), 'UTF-8'));
+  return db['games'];
 }
 
 function translationsDb() {
-  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.TRANSLATIONS_DB)), "UTF-8"));
+  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.TRANSLATIONS_DB)), 'UTF-8'));
   return db;
 }
 
@@ -127,55 +127,55 @@ function getLanguages() {
   const translations = translationsDb();
   const keys = Object.keys(translations);
   const keyNamePair = keys.reduce((acc, key) => {
-    acc[key] = translations[key]["_name"];
+    acc[key] = translations[key]['_name'];
     return acc;
   }, {});
   return keyNamePair;
 }
 
 function userDb() {
-  return fullDb()["users"];
+  return fullDb()['users'];
 }
 
 function articlesDb() {
-  return fullDb()["articles"];
+  return fullDb()['articles'];
 }
 
 function commentsDb() {
-  return fullDb()["comments"];
+  return fullDb()['comments'];
 }
 
 function likesDb() {
-  return fullDb()["likes"];
+  return fullDb()['likes'];
 }
 
 function labelsDb() {
-  return fullDb()["labels"];
+  return fullDb()['labels'];
 }
 
 function scoresDb() {
-  return fullDb()["scores"];
+  return fullDb()['scores'];
 }
 
 function articleLabelsDb() {
-  return fullDb()["article-labels"];
+  return fullDb()['article-labels'];
 }
 
 function surveyResponsesDb() {
-  return fullDb()["survey-responses"];
+  return fullDb()['survey-responses'];
 }
 
 function bookmarksDb() {
-  return fullDb()["bookmarks"];
+  return fullDb()['bookmarks'];
 }
 
 function quizQuestionsDb() {
-  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.QUIZ_QUESTIONS_PATH), "UTF-8")));
+  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.QUIZ_QUESTIONS_PATH), 'UTF-8')));
   return db;
 }
 
 function hangmanDb() {
-  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.HANGMAN_DATA_PATH), "UTF-8")));
+  const db = JSON.parse(fs.readFileSync(getDbPath(getConfigValue(ConfigKeys.HANGMAN_DATA_PATH), 'UTF-8')));
   return db;
 }
 
@@ -185,19 +185,19 @@ function randomDbEntry(db) {
 
 function getUserAvatars() {
   let files = fs.readdirSync(path.join(__dirname, getConfigValue(ConfigKeys.USER_AVATAR_PATH)));
-  files = files.filter((file) => !file.startsWith("face_"));
+  files = files.filter((file) => !file.startsWith('face_'));
   return files;
 }
 
 function getImagesForArticles() {
   let files = fs.readdirSync(path.join(__dirname, getConfigValue(ConfigKeys.ARTICLE_IMAGE_PATH)));
-  files = files.filter((file) => file.toLowerCase().endsWith(".jpg") || file.toLowerCase().endsWith(".jpeg"));
+  files = files.filter((file) => file.toLowerCase().endsWith('.jpg') || file.toLowerCase().endsWith('.jpeg'));
   return files;
 }
 
 function getUploadedFileList() {
   let files = fs.readdirSync(path.join(__dirname, getConfigValue(ConfigKeys.UPLOADS_PATH)));
-  files = files.filter((file) => file.endsWith(".json"));
+  files = files.filter((file) => file.endsWith('.json'));
 
   const foundFiles = [];
 
@@ -215,7 +215,7 @@ function getUploadedFileList() {
 function getAndFilterUploadedFileList(userIds, isPublic = true) {
   let files = getUploadedFileList();
 
-  logTrace("getAndFilterUploadedFileList:", { userIds, isPublic });
+  logTrace('getAndFilterUploadedFileList:', { userIds, isPublic });
   const foundFiles = [];
   files.forEach((file) => {
     if (isUndefined(userIds) || userIds.length === 0) {
@@ -236,11 +236,11 @@ function getAndFilterUploadedFileList(userIds, isPublic = true) {
 
 function getUploadedFilePath(fileName) {
   const filesPath = path.join(__dirname, getConfigValue(ConfigKeys.UPLOADS_PATH));
-  logTrace("getUploadedFilePath:", { filesPath });
+  logTrace('getUploadedFilePath:', { filesPath });
 
   let files = fs.readdirSync(filesPath);
   const foundFile = files.find((file) => file === fileName);
-  logTrace("getUploadedFilePath:", { fileName, files, foundFile });
+  logTrace('getUploadedFilePath:', { fileName, files, foundFile });
 
   if (isUndefined(foundFile)) return foundFile;
 
@@ -250,7 +250,7 @@ function getUploadedFilePath(fileName) {
 function getUploadedFile(fileName) {
   const foundFile = getUploadedFilePath(fileName);
   if (isUndefined(foundFile)) return foundFile;
-  const fileContent = JSON.parse(fs.readFileSync(foundFile, "UTF-8"));
+  const fileContent = JSON.parse(fs.readFileSync(foundFile, 'UTF-8'));
   return fileContent;
 }
 

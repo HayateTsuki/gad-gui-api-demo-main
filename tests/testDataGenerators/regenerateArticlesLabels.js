@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 const dbPath = `./db/db-base-big.json`;
 
-const fs = require("fs");
-const { getRandomInt } = require("../../helpers/helpers");
+const fs = require('fs');
+const { getRandomInt } = require('../../helpers/helpers');
 
 const db = JSON.parse(fs.readFileSync(dbPath));
 const articles = db.articles;
@@ -38,5 +38,5 @@ articles.forEach((article) => {
   articleLabelsAll.push(articleLabels);
 });
 
-db["article-labels"] = articleLabelsAll;
+db['article-labels'] = articleLabelsAll;
 fs.writeFileSync(dbPath, JSON.stringify(db));

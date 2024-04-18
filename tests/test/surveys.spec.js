@@ -1,6 +1,6 @@
-const { request, expect, baseSurveysUrl } = require("../config.js");
-const { authUser, generateSurveyBody, authUser2 } = require("../helpers/data.helpers.js");
-const { setupEnv, gracefulQuit, sleep } = require("../helpers/helpers.js");
+const { request, expect, baseSurveysUrl } = require('../config.js');
+const { authUser, generateSurveyBody, authUser2 } = require('../helpers/data.helpers.js');
+const { setupEnv, gracefulQuit, sleep } = require('../helpers/helpers.js');
 
 describe(`Endpoint ${baseSurveysUrl}`, () => {
   const baseUrl = baseSurveysUrl;
@@ -15,7 +15,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
 
   describe(`Without auth`, () => {
     const rootUrl = baseUrl;
-    [""].forEach((endpoint) => {
+    [''].forEach((endpoint) => {
       let baseUrl = rootUrl + endpoint;
 
       describe(`${baseUrl}`, () => {
@@ -60,7 +60,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
         });
       });
     });
-    ["/responses"].forEach((endpoint) => {
+    ['/responses'].forEach((endpoint) => {
       let baseUrl = rootUrl + endpoint;
 
       describe(`${baseUrl}`, () => {
@@ -112,7 +112,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
         });
       });
     });
-    ["/survey-responses"].forEach((endpoint) => {
+    ['/survey-responses'].forEach((endpoint) => {
       let baseUrl = rootUrl + endpoint;
 
       describe(`${baseUrl}`, () => {
@@ -157,7 +157,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
         });
       });
     });
-    ["/statistics"].forEach((endpoint) => {
+    ['/statistics'].forEach((endpoint) => {
       let baseUrl = rootUrl + endpoint;
 
       describe(`${baseUrl}`, () => {
@@ -214,87 +214,87 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
       const data1 = await authUser();
       headers1 = data1.headers;
       userId1 = data1.userId;
-      headers1["userid"] = userId1;
+      headers1['userid'] = userId1;
 
       const data2 = await authUser2();
       headers2 = data2.headers;
       userId2 = data2.userId;
-      headers2["userid"] = userId2;
+      headers2['userid'] = userId2;
     });
 
-    describe("/questions", () => {
-      describe("GET", () => {
+    describe('/questions', () => {
+      describe('GET', () => {
         it(`GET ${baseUrl}/1/questions/1 - should return existing question`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/1/questions/1").set(headers1);
+          const response = await request.get(baseUrl + '/1/questions/1').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(200);
         });
         it(`GET ${baseUrl}/1/questions/0000 - should not return not existing question`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/1/questions/0000").set(headers1);
+          const response = await request.get(baseUrl + '/1/questions/0000').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
         it(`GET ${baseUrl}/1/questions/ - should not return anything`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/1/questions/").set(headers1);
+          const response = await request.get(baseUrl + '/1/questions/').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
         it(`GET ${baseUrl}/questions/1 - should not return not existing question`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/questions/1").set(headers1);
+          const response = await request.get(baseUrl + '/questions/1').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
         it(`GET ${baseUrl}/questions/0000 - should not return not existing question`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/questions/0000").set(headers1);
+          const response = await request.get(baseUrl + '/questions/0000').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
         it(`GET ${baseUrl}/questions/ - should not return anything`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/questions/").set(headers1);
+          const response = await request.get(baseUrl + '/questions/').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
         it(`GET ${baseUrl}/0000/questions/1 - should not return not existing question`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/0000/questions/1").set(headers1);
+          const response = await request.get(baseUrl + '/0000/questions/1').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
         it(`GET ${baseUrl}/0000/questions/0000 - should not return not existing question`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/0000/questions/0000").set(headers1);
+          const response = await request.get(baseUrl + '/0000/questions/0000').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
         it(`GET ${baseUrl}/0000/questions/ - should not return anything`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/0000/questions/").set(headers1);
+          const response = await request.get(baseUrl + '/0000/questions/').set(headers1);
 
           // Assert:
           expect(response.status).to.equal(404);
         });
       });
     });
-    describe("/responses", () => {
-      describe("POST", () => {
+    describe('/responses', () => {
+      describe('POST', () => {
         it(`POST ${baseUrl} - should not create a survey response with empty body`, async () => {
           // Act:
           const response = await request
-            .post(baseUrl + "/responses")
+            .post(baseUrl + '/responses')
             .set(headers1)
             .send({});
 
@@ -307,7 +307,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
 
           // Act:
           const response = await request
-            .post(baseUrl + "/responses")
+            .post(baseUrl + '/responses')
             .set(headers1)
             .send(survey);
 
@@ -320,7 +320,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
 
           // Act:
           const response = await request
-            .post(baseUrl + "/responses")
+            .post(baseUrl + '/responses')
             .set(headers1)
             .send(survey);
 
@@ -334,7 +334,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
 
           // Act:
           const response1 = await request
-            .post(baseUrl + "/responses")
+            .post(baseUrl + '/responses')
             .set(headers2)
             .send(survey1);
 
@@ -345,7 +345,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
 
           // Act:
           const response2 = await request
-            .post(baseUrl + "/responses")
+            .post(baseUrl + '/responses')
             .set(headers2)
             .send(survey2);
 
@@ -353,31 +353,31 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
           expect(response2.status).to.equal(200);
         });
       });
-      describe("GET", () => {
+      describe('GET', () => {
         it(`GET ${baseUrl} - should not get a not existing survey response`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/responses/1123").set(headers1);
+          const response = await request.get(baseUrl + '/responses/1123').set(headers1);
 
           // Assert:
           expect(response.status, JSON.stringify(response.body)).to.equal(404);
         });
         it(`GET ${baseUrl} - should not get a survey response of another user`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/responses/1").set(headers1);
+          const response = await request.get(baseUrl + '/responses/1').set(headers1);
 
           // Assert:
           expect(response.status, JSON.stringify(response.body)).to.equal(404);
         });
         it(`GET ${baseUrl} - should get users survey response`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/responses/5").set(headers1);
+          const response = await request.get(baseUrl + '/responses/5').set(headers1);
 
           // Assert:
           expect(response.status, JSON.stringify(response.body)).to.equal(200);
         });
         it(`GET ${baseUrl} - should get all users survey responses`, async () => {
           // Act:
-          const response = await request.get(baseUrl + "/responses").set(headers1);
+          const response = await request.get(baseUrl + '/responses').set(headers1);
 
           // Assert:
           expect(response.status, JSON.stringify(response.body)).to.equal(200);
@@ -386,7 +386,7 @@ describe(`Endpoint ${baseSurveysUrl}`, () => {
       });
     });
 
-    ["/statistics"].forEach((endpoint) => {
+    ['/statistics'].forEach((endpoint) => {
       describe(endpoint, () => {
         let baseUrl = rootUrl + endpoint;
 

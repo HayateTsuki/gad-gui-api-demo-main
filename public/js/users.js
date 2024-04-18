@@ -1,5 +1,5 @@
-const endpoint = "../../api/users";
-const pictureListEndpoint = "../../api/images/user";
+const endpoint = '../../api/users';
+const pictureListEndpoint = '../../api/images/user';
 let picList = [];
 
 const issueGetRequest = () => {
@@ -49,8 +49,8 @@ const issueGetRequest = () => {
 
 const issueDeleteRequest = (id, responseHandler) => {
   // delete data on the server:
-  const url = endpoint + "/" + id;
-  fetch(url, { method: "delete", headers: formatHeaders() })
+  const url = endpoint + '/' + id;
+  fetch(url, { method: 'delete', headers: formatHeaders() })
     .then((response) => {
       showResponseOnDelete(response);
       return response.json();
@@ -61,10 +61,10 @@ const issueDeleteRequest = (id, responseHandler) => {
 const issuePostRequest = (data, responseHandler) => {
   // create data on the server:
   fetch(endpoint, {
-    method: "post",
+    method: 'post',
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: getBearerToken(),
     },
     body: JSON.stringify(data),
@@ -73,13 +73,13 @@ const issuePostRequest = (data, responseHandler) => {
     .then(responseHandler);
 };
 
-let alertElement = document.querySelector(".alert");
+let alertElement = document.querySelector('.alert');
 
 const showResponseOnDelete = (response) => {
   if (response.status === 200) {
-    showMessage("User was deleted", false);
+    showMessage('User was deleted', false);
   } else {
-    showMessage("User was not deleted", true);
+    showMessage('User was not deleted', true);
   }
 };
 
@@ -93,19 +93,19 @@ const showResponseOnDelete = (response) => {
 
 const showResponse = (response) => {
   if (response.status === 201) {
-    showMessage("User was created", false);
+    showMessage('User was created', false);
   } else {
-    showMessage("User was not created", true);
+    showMessage('User was not created', true);
   }
 };
 
 const showMessage = (message, isError = false) => {
   alertElement.innerHTML = message;
-  alertElement.classList.remove("alert-error", "alert-success");
+  alertElement.classList.remove('alert-error', 'alert-success');
   if (isError) {
-    alertElement.classList.add("alert-error");
+    alertElement.classList.add('alert-error');
   } else {
-    alertElement.classList.add("alert-success");
+    alertElement.classList.add('alert-success');
   }
   var newMessageElement = alertElement.cloneNode(true);
   alertElement.parentNode.replaceChild(newMessageElement, alertElement);
@@ -146,31 +146,31 @@ const showMessage = (message, isError = false) => {
 // };
 
 const handleCreate = () => {
-  const container = document.querySelector(".add-new-panel");
-  let birthdate = container.querySelector(".datepicker").value;
-  birthdate = `${new Date(birthdate).toISOString()}`.split(".")[0] + "Z";
+  const container = document.querySelector('.add-new-panel');
+  let birthdate = container.querySelector('.datepicker').value;
+  birthdate = `${new Date(birthdate).toISOString()}`.split('.')[0] + 'Z';
   let data = {
-    firstname: container.querySelector(".firstname").value,
-    lastname: container.querySelector(".lastname").value,
-    email: container.querySelector(".email").value,
-    password: container.querySelector(".password").value,
+    firstname: container.querySelector('.firstname').value,
+    lastname: container.querySelector('.lastname').value,
+    email: container.querySelector('.email').value,
+    password: container.querySelector('.password').value,
     birthdate,
-    avatar: `.\\data\\users\\${container.querySelector(".avatar").value}`,
+    avatar: `.\\data\\users\\${container.querySelector('.avatar').value}`,
   };
   issuePostRequest(data, issueGetRequest);
-  document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.add-new-panel').classList.remove('active');
 };
 
 const handleDelete = (ev) => {
   const id = ev.target.id;
-  const areYouSure = confirm("Are you sure that you want to delete item #" + id + "?");
+  const areYouSure = confirm('Are you sure that you want to delete item #' + id + '?');
   if (!areYouSure) {
     return;
   }
   issueDeleteRequest(id, issueGetRequest);
 };
 
-const attachEventHandlers = (id = "") => {
+const attachEventHandlers = (id = '') => {
   // document.querySelector("#add-new").onclick = () => {
   //   window.scrollTo(0, 0);
   //   const container = document.querySelector(".add-new-panel");
@@ -188,11 +188,11 @@ const attachEventHandlers = (id = "") => {
   //   }
   //   container.classList.add("active");
   // };
-  document.querySelector(".close").onclick = () => {
-    document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.close').onclick = () => {
+    document.querySelector('.add-new-panel').classList.remove('active');
   };
-  document.querySelector(".add-new-panel .cancel").onclick = () => {
-    document.querySelector(".add-new-panel").classList.remove("active");
+  document.querySelector('.add-new-panel .cancel').onclick = () => {
+    document.querySelector('.add-new-panel').classList.remove('active');
   };
 
   if (!isAuthorized(id)) {
@@ -200,20 +200,20 @@ const attachEventHandlers = (id = "") => {
     // document.querySelector(".update.save").onclick = handleCreate;
     return;
   }
-  for (let elem of document.querySelectorAll(".delete")) {
+  for (let elem of document.querySelectorAll('.delete')) {
     elem.onclick = handleDelete;
   }
-  for (let elem of document.querySelectorAll(".edit")) {
+  for (let elem of document.querySelectorAll('.edit')) {
     elem.onclick = showEditForm;
   }
-  for (let elem of document.querySelectorAll(".emailEdit")) {
+  for (let elem of document.querySelectorAll('.emailEdit')) {
     elem.onclick = showEmailEditForm;
   }
 
-  document.querySelector(".update.save").onclick = handleCreate;
+  document.querySelector('.update.save').onclick = handleCreate;
   // document.querySelector('.partialUpdate.save').onclick = handlePartialUpdate;
   // document.querySelector("#add-new").disabled = false;
-  if (getId() == "admin") appendMenu(userAdditionalMenu);
+  if (getId() == 'admin') appendMenu(userAdditionalMenu);
 };
 
 const attachFormEventHandlers = (item, container) => {
@@ -237,7 +237,7 @@ const attachEmailFormEventHandlers = (item, container) => {
 
 const showEditForm = (ev) => {
   const id = ev.target.id;
-  const url = endpoint + "/" + id;
+  const url = endpoint + '/' + id;
   const cardElement = ev.target.parentElement.parentElement;
   fetch(url, { headers: formatHeaders() })
     .then((response) => response.json())
@@ -249,7 +249,7 @@ const showEditForm = (ev) => {
 };
 const showEmailEditForm = (ev) => {
   const id = ev.target.id;
-  const url = endpoint + "/" + id;
+  const url = endpoint + '/' + id;
   const cardElement = ev.target.parentElement.parentElement;
   fetch(url, { headers: formatHeaders() })
     .then((response) => response.json())
@@ -325,8 +325,8 @@ const displayItem = (item, container) => {
 };
 
 const displayData = (data) => {
-  const container = document.querySelector("#container");
-  container.innerHTML = "";
+  const container = document.querySelector('#container');
+  container.innerHTML = '';
   for (let item of data) {
     displayItem(item, container);
   }
@@ -339,11 +339,11 @@ const displayData = (data) => {
 
 async function getPictureList() {
   picList = await Promise.all(
-    [pictureListEndpoint].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json()))
+    [pictureListEndpoint].map((url) => fetch(url, { headers: formatHeaders() }).then((r) => r.json())),
   );
   picList = picList[0];
 }
 
 getPictureList();
 issueGetRequest();
-menuButtonDisable("btnUsers");
+menuButtonDisable('btnUsers');

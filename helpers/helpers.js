@@ -1,16 +1,16 @@
-const { logDebug } = require("./logger-api");
-const { getConfigValue, isBugDisabled } = require("../config/config-manager");
-const { ConfigKeys, BugConfigKeys } = require("../config/enums");
-const { areStringsEqualIgnoringCase, isUndefined } = require("./compare.helpers");
+const { logDebug } = require('./logger-api');
+const { getConfigValue, isBugDisabled } = require('../config/config-manager');
+const { ConfigKeys, BugConfigKeys } = require('../config/enums');
+const { areStringsEqualIgnoringCase, isUndefined } = require('./compare.helpers');
 
 function formatErrorResponse(message, details = undefined, id = undefined) {
   const body = { error: { message: message, details: details }, id };
-  logDebug("formatErrorResponse:", body);
+  logDebug('formatErrorResponse:', body);
   return body;
 }
 
 function formatInvalidTokenErrorResponse() {
-  return formatErrorResponse("Access token for given user is invalid!");
+  return formatErrorResponse('Access token for given user is invalid!');
 }
 
 function formatTooManyValuesErrorResponse(valueType) {
@@ -24,7 +24,7 @@ function formatInvalidEntityErrorResponse(valueType) {
 function formatInvalidFieldErrorResponse(isValid, all_fields) {
   return formatErrorResponse(
     `One of field is invalid (empty, invalid or too long) or there are some additional fields: ${isValid.error}`,
-    all_fields
+    all_fields,
   );
 }
 
@@ -32,20 +32,20 @@ function formatInvalidFieldValueErrorResponse(isValid, field) {
   return formatErrorResponse(`Field value is invalid: ${isValid?.error}`, field);
 }
 
-function formatInvalidDateFieldErrorResponse(isValid, fields = ["date"]) {
+function formatInvalidDateFieldErrorResponse(isValid, fields = ['date']) {
   return formatErrorResponse(`Date field is invalid: ${isValid.error}`, fields);
 }
 
 function formatMissingFieldErrorResponse(all_fields) {
-  return formatErrorResponse("One of mandatory field is missing", all_fields);
+  return formatErrorResponse('One of mandatory field is missing', all_fields);
 }
 
 function formatOnlyOneFieldPossibleErrorResponse(all_fields) {
-  return formatErrorResponse("Only one field must not be empty!", all_fields);
+  return formatErrorResponse('Only one field must not be empty!', all_fields);
 }
 
 function getIdFromUrl(urlEnds) {
-  const urlParts = urlEnds.split("/");
+  const urlParts = urlEnds.split('/');
   let id = urlParts[urlParts.length - 1];
   return id;
 }
@@ -80,14 +80,14 @@ function isAnyAdminUser(email, pass) {
 
 function pad(num, size = 2) {
   num = num.toString();
-  while (num.length < size) num = "0" + num;
+  while (num.length < size) num = '0' + num;
   return num;
 }
 
 function parseUserStats(dbDataJson, dataType) {
-  const articlesData = dbDataJson["articles"];
-  const usersData = dbDataJson["users"];
-  const commentsData = dbDataJson["comments"];
+  const articlesData = dbDataJson['articles'];
+  const usersData = dbDataJson['users'];
+  const commentsData = dbDataJson['comments'];
 
   const articlesPerUser = {};
   const commentsPerUser = {};
@@ -111,8 +111,8 @@ function parseUserStats(dbDataJson, dataType) {
     commentsPerUser[commentsData[j].user_id]++;
   }
 
-  let articlesDataForChart = [["User", "Articles"]];
-  let commentsDataForChart = [["User", "Comments"]];
+  let articlesDataForChart = [['User', 'Articles']];
+  let commentsDataForChart = [['User', 'Comments']];
 
   for (const user_id in articlesPerUser) {
     articlesDataForChart.push([userIdToName[user_id], articlesPerUser[user_id]]);
@@ -136,7 +136,7 @@ function parseUserStats(dbDataJson, dataType) {
     }
   }
 
-  if (dataType.includes("table")) {
+  if (dataType.includes('table')) {
     return {
       articlesDataForChart: undefined,
       commentsDataForChart: undefined,
@@ -156,8 +156,8 @@ function parseUserStats(dbDataJson, dataType) {
 }
 
 function parseArticleStats(dbDataJson, dataType) {
-  const articlesData = dbDataJson["articles"];
-  const commentsData = dbDataJson["comments"];
+  const articlesData = dbDataJson['articles'];
+  const commentsData = dbDataJson['comments'];
 
   const commentsPerArticle = {};
   const articleIdToTitle = {};
@@ -173,13 +173,13 @@ function parseArticleStats(dbDataJson, dataType) {
     commentsPerArticle[commentsData[j].article_id]++;
   }
 
-  const articlesDataForChart = [["Article", "Number of comments"]];
+  const articlesDataForChart = [['Article', 'Number of comments']];
 
   for (const article_id in commentsPerArticle) {
     articlesDataForChart.push([articleIdToTitle[article_id], commentsPerArticle[article_id]]);
   }
 
-  if (dataType.includes("table")) {
+  if (dataType.includes('table')) {
     return {
       articlesDataForChart: undefined,
       articleIdToTitle,
@@ -194,17 +194,17 @@ function parseArticleStats(dbDataJson, dataType) {
   }
 }
 
-function parsePublishStats(dbDataJson, type = "comments") {
+function parsePublishStats(dbDataJson, type = 'comments') {
   const yearly = {};
   const monthly = {};
   const daily = {};
   let entriesData;
 
-  if (type === "articles") {
-    entriesData = dbDataJson["articles"];
+  if (type === 'articles') {
+    entriesData = dbDataJson['articles'];
   }
-  if (type === "comments") {
-    entriesData = dbDataJson["comments"];
+  if (type === 'comments') {
+    entriesData = dbDataJson['comments'];
   }
 
   if (isUndefined(entriesData)) {
@@ -261,7 +261,7 @@ function shuffleArray(array) {
 function getTodayDate() {
   const today = new Date();
   const date = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}T${pad(
-    today.getHours()
+    today.getHours(),
   )}:${pad(today.getMinutes())}:${pad(today.getSeconds())}Z`;
   return date;
 }
@@ -269,7 +269,7 @@ function getTodayDate() {
 function getTodayDateForFileName() {
   const today = new Date();
   const date = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}T${pad(
-    today.getHours()
+    today.getHours(),
   )}-${pad(today.getMinutes())}-${pad(today.getSeconds())}Z`;
   return date;
 }
@@ -303,8 +303,8 @@ function filterSelectedKeys(obj, selectedKeys) {
 }
 
 function generateRandomString(length) {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let result = "";
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     result += characters.charAt(randomIndex);

@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-const { config, configToModify } = require("./config-general");
-const { bugConfig } = require("./config-bugs");
-const { featureFlagConfig } = require("./config-features");
-const { ConfigKeys, BugConfigKeys, FeatureFlagConfigKeys } = require("./enums");
+const { config, configToModify } = require('./config-general');
+const { bugConfig } = require('./config-bugs');
+const { featureFlagConfig } = require('./config-features');
+const { ConfigKeys, BugConfigKeys, FeatureFlagConfigKeys } = require('./enums');
 
 const ConfigManager = (function () {
   let instance;
@@ -69,9 +69,9 @@ const ConfigManager = (function () {
 
     function fullSelfCheck() {
       const tmpConfig = { ...configToModifyCopy, ...configCopy };
-      selfCheck(ConfigKeys, tmpConfig, "Config");
-      selfCheck(BugConfigKeys, bugConfigCopy, "BugConfig");
-      selfCheck(FeatureFlagConfigKeys, featureFlagConfigCopy, "FeatureFlagConfig");
+      selfCheck(ConfigKeys, tmpConfig, 'Config');
+      selfCheck(BugConfigKeys, bugConfigCopy, 'BugConfig');
+      selfCheck(FeatureFlagConfigKeys, featureFlagConfigCopy, 'FeatureFlagConfig');
     }
 
     function selfCheck(configKeys, configCopy, msg) {
@@ -104,7 +104,7 @@ const ConfigManager = (function () {
     function displayAdditionInfo() {
       const readOnlyMode = getConfigValue(ConfigKeys.READ_ONLY);
       if (readOnlyMode === true) {
-        console.log("--> Config: READ ONLY MODE is enabled");
+        console.log('--> Config: READ ONLY MODE is enabled');
       }
     }
 

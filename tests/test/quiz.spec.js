@@ -1,8 +1,8 @@
-const { expect, request, baseQuizUrl } = require("../config");
-const { authUser } = require("../helpers/data.helpers");
-const { gracefulQuit, setupEnv } = require("../helpers/helpers");
+const { expect, request, baseQuizUrl } = require('../config');
+const { authUser } = require('../helpers/data.helpers');
+const { gracefulQuit, setupEnv } = require('../helpers/helpers');
 
-describe("Endpoint /quiz", () => {
+describe('Endpoint /quiz', () => {
   const baseUrl = baseQuizUrl;
 
   before(async () => {
@@ -13,24 +13,24 @@ describe("Endpoint /quiz", () => {
     gracefulQuit();
   });
 
-  describe("Without auth", () => {
-    it("start", () => {
+  describe('Without auth', () => {
+    it('start', () => {
       return request.get(`${baseUrl}/start`).expect(401);
     });
 
-    it("stop", () => {
+    it('stop', () => {
       return request.get(`${baseUrl}/stop`).expect(401);
     });
 
-    it("highscores", () => {
+    it('highscores', () => {
       return request.get(`${baseUrl}/highscores`).expect(200);
     });
 
-    it("questions", () => {
+    it('questions', () => {
       return request.get(`${baseUrl}/questions`).expect(401);
     });
 
-    it("questions/count", async () => {
+    it('questions/count', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/questions/count`);
 
@@ -39,35 +39,35 @@ describe("Endpoint /quiz", () => {
       expect(response.body.count).to.be.greaterThan(1);
     });
 
-    it("questions/check", () => {
+    it('questions/check', () => {
       return request.post(`${baseUrl}/questions/check`).send({}).expect(401);
     });
   });
 
-  describe("With auth", () => {
+  describe('With auth', () => {
     let headers;
     before(async () => {
       const data = await authUser();
       headers = data.headers;
     });
 
-    it("start", () => {
+    it('start', () => {
       return request.get(`${baseUrl}/start`).set(headers).expect(200);
     });
 
-    it("stop", () => {
+    it('stop', () => {
       return request.get(`${baseUrl}/stop`).set(headers).expect(201);
     });
 
-    it("highscores", () => {
+    it('highscores', () => {
       return request.get(`${baseUrl}/highscores`).set(headers).expect(200);
     });
 
-    it("questions", () => {
+    it('questions', () => {
       return request.get(`${baseUrl}/questions`).set(headers).expect(200);
     });
 
-    it("questions/count", async () => {
+    it('questions/count', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/questions/count`).set(headers);
 
@@ -76,11 +76,11 @@ describe("Endpoint /quiz", () => {
       expect(response.body.count).to.be.greaterThan(1);
     });
 
-    it("questions/check - incorrect", async () => {
+    it('questions/check - incorrect', async () => {
       // Arrange:
       const requestBody = {
-        questionText: "string",
-        selectedAnswers: ["string"],
+        questionText: 'string',
+        selectedAnswers: ['string'],
       };
       const expectedBody = {
         isCorrect: false,
@@ -94,11 +94,11 @@ describe("Endpoint /quiz", () => {
       expect(response.body).to.deep.equal(expectedBody);
     });
 
-    it("questions/check - correct", async () => {
+    it('questions/check - correct', async () => {
       // Arrange:
       const requestBody = {
-        questionText: "What does HTML stand for?",
-        selectedAnswers: ["Hyper Text Markup Language"],
+        questionText: 'What does HTML stand for?',
+        selectedAnswers: ['Hyper Text Markup Language'],
       };
       const expectedBody = {
         isCorrect: true,

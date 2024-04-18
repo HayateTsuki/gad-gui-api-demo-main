@@ -57,7 +57,10 @@ button {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
 }
 
@@ -74,7 +77,10 @@ input.button-primary {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
 }
 
@@ -91,7 +97,10 @@ input.button-secondary {
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
 }
 
@@ -606,11 +615,11 @@ s .container-mobile {
 }
 
 #toggleCheckbox:checked ~ label::before {
-  content: "Hide ";
+  content: 'Hide ';
 }
 
 #toggleCheckbox ~ label::before {
-  content: "Show ";
+  content: 'Show ';
 }
 
 #toggleCheckbox:checked ~ #hiddenContentSection {
@@ -740,7 +749,7 @@ s .container-mobile {
 
 .separator::before,
 .separator::after {
-  content: "";
+  content: '';
   flex: 1;
   border-bottom: 1px solid #000;
 }
@@ -760,7 +769,7 @@ s .container-mobile {
 }
 
 .tooltip::after {
-  content: "?";
+  content: '?';
   position: absolute;
   top: -16px;
   right: -30px;
@@ -785,7 +794,7 @@ s .container-mobile {
   border-radius: 5px;
   font-size: 12px;
   opacity: 0.8;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   font-weight: normal;
 
   text-align: center;

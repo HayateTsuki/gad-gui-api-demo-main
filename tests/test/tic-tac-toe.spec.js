@@ -1,8 +1,8 @@
-const { expect, request, baseTicTacToeUrl } = require("../config");
-const { authUser, authUser2 } = require("../helpers/data.helpers");
-const { gracefulQuit, setupEnv } = require("../helpers/helpers");
+const { expect, request, baseTicTacToeUrl } = require('../config');
+const { authUser, authUser2 } = require('../helpers/data.helpers');
+const { gracefulQuit, setupEnv } = require('../helpers/helpers');
 
-describe("Endpoint /tic-tac-toe", () => {
+describe('Endpoint /tic-tac-toe', () => {
   const baseUrl = baseTicTacToeUrl;
 
   before(async () => {
@@ -65,12 +65,12 @@ describe("Endpoint /tic-tac-toe", () => {
       const data1 = await authUser();
       headers1 = data1.headers;
       userId1 = data1.userId;
-      headers1["userid"] = userId1;
+      headers1['userid'] = userId1;
 
       const data2 = await authUser2();
       headers2 = data2.headers;
       userId2 = data2.userId;
-      headers2["userid"] = userId2;
+      headers2['userid'] = userId2;
     });
 
     describe(`${baseUrl}`, () => {

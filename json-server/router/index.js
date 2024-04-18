@@ -1,20 +1,20 @@
-"use strict";
+'use strict';
 
-var express = require("express");
-var methodOverride = require("method-override");
-var _ = require("lodash");
-var lodashId = require("lodash-id");
-var low = require("lowdb");
-var fileAsync = require("lowdb/lib/storages/file-async");
-var bodyParser = require("../body-parser");
-var validateData = require("./validate-data");
-var plural = require("./plural");
-var nested = require("./nested");
-var singular = require("./singular");
-var mixins = require("../mixins");
+var express = require('express');
+var methodOverride = require('method-override');
+var _ = require('lodash');
+var lodashId = require('lodash-id');
+var low = require('lowdb');
+var fileAsync = require('lowdb/lib/storages/file-async');
+var bodyParser = require('../body-parser');
+var validateData = require('./validate-data');
+var plural = require('./plural');
+var nested = require('./nested');
+var singular = require('./singular');
+var mixins = require('../mixins');
 
 module.exports = function (source) {
-  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { foreignKeySuffix: "Id" };
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { foreignKeySuffix: 'Id' };
 
   // Create router
   var router = express.Router();
@@ -49,7 +49,7 @@ module.exports = function (source) {
   };
 
   // GET /db
-  router.get("/api/db", function (req, res) {
+  router.get('/api/db', function (req, res) {
     res.jsonp(db.getState());
   });
 
@@ -69,7 +69,7 @@ module.exports = function (source) {
       return;
     }
 
-    var sourceMessage = "";
+    var sourceMessage = '';
     if (!_.isObject(source)) {
       sourceMessage = `in ${source}`;
     }

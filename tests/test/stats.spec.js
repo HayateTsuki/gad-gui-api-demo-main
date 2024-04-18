@@ -1,8 +1,8 @@
-const { expect, request, baseStatsUrl } = require("../config");
-const { authUser } = require("../helpers/data.helpers");
-const { gracefulQuit, setupEnv } = require("../helpers/helpers");
+const { expect, request, baseStatsUrl } = require('../config');
+const { authUser } = require('../helpers/data.helpers');
+const { gracefulQuit, setupEnv } = require('../helpers/helpers');
 
-describe("Endpoint /stats", () => {
+describe('Endpoint /stats', () => {
   const baseUrl = baseStatsUrl;
 
   before(async () => {
@@ -13,9 +13,9 @@ describe("Endpoint /stats", () => {
     gracefulQuit();
   });
 
-  describe("Without auth", async () => {
-    describe("/users", async () => {
-      it("GET /users", async () => {
+  describe('Without auth', async () => {
+    describe('/users', async () => {
+      it('GET /users', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users`);
 
@@ -26,7 +26,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.commentsDataForChart).to.not.be.undefined;
       });
 
-      it("GET /users chartType=table", async () => {
+      it('GET /users chartType=table', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users?chartType=table`);
 
@@ -37,7 +37,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.commentsPerUser).to.not.be.undefined;
       });
 
-      it("GET /users chartType=pie", async () => {
+      it('GET /users chartType=pie', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users?chartType=pie`);
 
@@ -48,7 +48,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.userIdToName).to.not.be.undefined;
       });
 
-      it("GET /users chartType=chart", async () => {
+      it('GET /users chartType=chart', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users?chartType=chart`);
 
@@ -59,8 +59,8 @@ describe("Endpoint /stats", () => {
         expect(response.body.userIdToName).to.not.be.undefined;
       });
     });
-    describe("/articles", () => {
-      it("GET /articles", async () => {
+    describe('/articles', () => {
+      it('GET /articles', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles`);
 
@@ -69,7 +69,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.articlesDataForChart).to.not.be.undefined;
       });
 
-      it("GET /articles chartType=table", async () => {
+      it('GET /articles chartType=table', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles?chartType=table`);
 
@@ -79,7 +79,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.commentsPerArticle).to.not.be.undefined;
       });
 
-      it("GET /articles chartType=pie", async () => {
+      it('GET /articles chartType=pie', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles?chartType=pie`);
 
@@ -88,7 +88,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.articlesDataForChart).to.not.be.undefined;
       });
 
-      it("GET /articles chartType=chart", async () => {
+      it('GET /articles chartType=chart', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles?chartType=chart`);
 
@@ -97,8 +97,8 @@ describe("Endpoint /stats", () => {
         expect(response.body.articlesDataForChart).to.not.be.undefined;
       });
     });
-    describe("/publish/articles", () => {
-      it("GET /publish/articles", async () => {
+    describe('/publish/articles', () => {
+      it('GET /publish/articles', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/publish/articles`);
 
@@ -109,8 +109,8 @@ describe("Endpoint /stats", () => {
         expect(response.body.daily).to.not.be.undefined;
       });
     });
-    describe("/publish/comments", () => {
-      it("GET /publish/comments", async () => {
+    describe('/publish/comments', () => {
+      it('GET /publish/comments', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/publish/comments`);
 
@@ -121,7 +121,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.daily).to.not.be.undefined;
       });
     });
-    it("GET /api calls", async () => {
+    it('GET /api calls', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/api`);
 
@@ -130,7 +130,7 @@ describe("Endpoint /stats", () => {
     });
   });
 
-  describe("With auth", () => {
+  describe('With auth', () => {
     let headers;
 
     beforeEach(async () => {
@@ -138,8 +138,8 @@ describe("Endpoint /stats", () => {
       headers = data.headers;
     });
 
-    describe("/users", async () => {
-      it("GET /users", async () => {
+    describe('/users', async () => {
+      it('GET /users', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users`).set(headers);
 
@@ -150,7 +150,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.commentsDataForChart).to.not.be.undefined;
       });
 
-      it("GET /users chartType=table", async () => {
+      it('GET /users chartType=table', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users?chartType=table`).set(headers);
 
@@ -161,7 +161,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.commentsPerUser).to.not.be.undefined;
       });
 
-      it("GET /users chartType=pie", async () => {
+      it('GET /users chartType=pie', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users?chartType=pie`).set(headers);
 
@@ -172,7 +172,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.userIdToName).to.not.be.undefined;
       });
 
-      it("GET /users chartType=chart", async () => {
+      it('GET /users chartType=chart', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/users?chartType=chart`).set(headers);
 
@@ -183,8 +183,8 @@ describe("Endpoint /stats", () => {
         expect(response.body.userIdToName).to.not.be.undefined;
       });
     });
-    describe("/articles", () => {
-      it("GET /articles", async () => {
+    describe('/articles', () => {
+      it('GET /articles', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles`).set(headers);
 
@@ -193,7 +193,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.articlesDataForChart).to.not.be.undefined;
       });
 
-      it("GET /articles chartType=table", async () => {
+      it('GET /articles chartType=table', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles?chartType=table`).set(headers);
 
@@ -203,7 +203,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.commentsPerArticle).to.not.be.undefined;
       });
 
-      it("GET /articles chartType=pie", async () => {
+      it('GET /articles chartType=pie', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles?chartType=pie`).set(headers);
 
@@ -212,7 +212,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.articlesDataForChart).to.not.be.undefined;
       });
 
-      it("GET /articles chartType=chart", async () => {
+      it('GET /articles chartType=chart', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/articles?chartType=chart`).set(headers);
 
@@ -221,8 +221,8 @@ describe("Endpoint /stats", () => {
         expect(response.body.articlesDataForChart).to.not.be.undefined;
       });
     });
-    describe("/publish/articles", () => {
-      it("GET /publish/articles", async () => {
+    describe('/publish/articles', () => {
+      it('GET /publish/articles', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/publish/articles`).set(headers);
 
@@ -233,8 +233,8 @@ describe("Endpoint /stats", () => {
         expect(response.body.daily).to.not.be.undefined;
       });
     });
-    describe("/publish/comments", () => {
-      it("GET /publish/comments", async () => {
+    describe('/publish/comments', () => {
+      it('GET /publish/comments', async () => {
         // Act:
         const response = await request.get(`${baseUrl}/publish/comments`).set(headers);
 
@@ -245,7 +245,7 @@ describe("Endpoint /stats", () => {
         expect(response.body.daily).to.not.be.undefined;
       });
     });
-    it("GET /api calls", async () => {
+    it('GET /api calls', async () => {
       // Act:
       const response = await request.get(`${baseUrl}/api`).set(headers);
 

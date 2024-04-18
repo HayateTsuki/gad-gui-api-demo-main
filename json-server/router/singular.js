@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-var express = require("express");
-var write = require("./write");
-var getFullURL = require("./get-full-url");
-var delay = require("./delay");
+var express = require('express');
+var write = require('./write');
+var getFullURL = require('./get-full-url');
+var delay = require('./delay');
 
 module.exports = (db, name) => {
   var router = express.Router();
@@ -20,7 +20,7 @@ module.exports = (db, name) => {
     db.set(name, req.body).value();
     res.locals.data = db.get(name).value();
 
-    res.setHeader("Access-Control-Expose-Headers", "Location");
+    res.setHeader('Access-Control-Expose-Headers', 'Location');
     res.location(`${getFullURL(req)}`);
 
     res.status(201);
@@ -28,7 +28,7 @@ module.exports = (db, name) => {
   }
 
   function update(req, res, next) {
-    if (req.method === "PUT") {
+    if (req.method === 'PUT') {
       db.set(name, req.body).value();
     } else {
       db.get(name).assign(req.body).value();
@@ -40,7 +40,7 @@ module.exports = (db, name) => {
 
   var w = write(db);
 
-  router.route("/").get(show).post(create, w).put(update, w).patch(update, w);
+  router.route('/').get(show).post(create, w).put(update, w).patch(update, w);
 
   return router;
 };

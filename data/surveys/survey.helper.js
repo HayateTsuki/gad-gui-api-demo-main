@@ -1,5 +1,5 @@
-const manualApiSurvey = require("./manual-api.survey");
-const automationSurvey = require("./automation.survey");
+const manualApiSurvey = require('./manual-api.survey');
+const automationSurvey = require('./automation.survey');
 
 function extractValueFromQuestions(questions) {
   const values = [];

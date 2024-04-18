@@ -1,9 +1,9 @@
-const devHero = document.getElementById("devHero");
-const gameContainer = document.getElementById("game-container");
-const scoreDisplay = document.getElementById("score");
-const startButton = document.getElementById("start-button");
-const reloadButton = document.getElementById("reload-button");
-const finalScoreContainer = document.getElementById("final-score-container");
+const devHero = document.getElementById('devHero');
+const gameContainer = document.getElementById('game-container');
+const scoreDisplay = document.getElementById('score');
+const startButton = document.getElementById('start-button');
+const reloadButton = document.getElementById('reload-button');
+const finalScoreContainer = document.getElementById('final-score-container');
 
 let isJumping = false;
 let isGameOver = false;
@@ -23,20 +23,20 @@ function jump() {
             clearInterval(fallInterval);
             isJumping = false;
             playerPositionY = 0;
-            devHero.style.bottom = "0px";
+            devHero.style.bottom = '0px';
           } else {
             playerPositionY -= 5;
-            devHero.style.bottom = playerPositionY + "px";
+            devHero.style.bottom = playerPositionY + 'px';
           }
         }, 20);
       }
       playerPositionY += 5;
-      devHero.style.bottom = playerPositionY + "px";
+      devHero.style.bottom = playerPositionY + 'px';
     }, 20);
   }
 }
 
-document.addEventListener("keydown", (event) => {
+document.addEventListener('keydown', (event) => {
   if (event.keyCode === 32 && !isJumping && !isGameOver) {
     jump();
   }
@@ -45,23 +45,23 @@ document.addEventListener("keydown", (event) => {
 function createBug() {
   if (isGameOver) return;
 
-  const bug = document.createElement("div");
-  bug.classList.add("bug");
-  const bugIcon = document.createElement("div");
-  bugIcon.innerHTML = "🐛";
-  bugIcon.classList.add("bugIcon");
+  const bug = document.createElement('div');
+  bug.classList.add('bug');
+  const bugIcon = document.createElement('div');
+  bugIcon.innerHTML = '🐛';
+  bugIcon.classList.add('bugIcon');
   bug.appendChild(bugIcon);
   gameContainer.appendChild(bug);
 
   let bugPosition = 500;
-  bug.style.left = bugPosition + "px";
+  bug.style.left = bugPosition + 'px';
 
   const moveBugInterval = setInterval(() => {
     if (bugPosition < -10) {
       clearInterval(moveBugInterval);
       gameContainer.removeChild(bug);
       score += 10;
-      scoreDisplay.textContent = "Score: " + score;
+      scoreDisplay.textContent = 'Score: ' + score;
     } else if (
       bugPosition > playerFixedPositionXMin &&
       bugPosition < playerFixedPositionXMax &&
@@ -71,10 +71,10 @@ function createBug() {
       clearInterval(moveBugInterval);
       isGameOver = true;
       finalScoreContainer.innerHTML = `<strong>Game Over! Your Score: ${score}</strong><br>`;
-      reloadButton.style.visibility = "visible";
+      reloadButton.style.visibility = 'visible';
     } else {
       bugPosition -= 10;
-      bug.style.left = bugPosition + "px";
+      bug.style.left = bugPosition + 'px';
     }
   }, 20);
 
@@ -89,8 +89,8 @@ function reload() {
 
 function startDevRun() {
   isGameOver = false;
-  finalScoreContainer.innerHTML = "";
-  startButton.style.visibility = "collapse";
-  reloadButton.style.visibility = "collapse";
+  finalScoreContainer.innerHTML = '';
+  startButton.style.visibility = 'collapse';
+  reloadButton.style.visibility = 'collapse';
   createBug();
 }

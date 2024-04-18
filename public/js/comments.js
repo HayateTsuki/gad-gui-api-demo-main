@@ -1,6 +1,6 @@
-const articlesEndpoint = "../../api/articles";
-const usersEndpoint = "../../api/users";
-const commentsEndpoint = "../../api/comments";
+const articlesEndpoint = '../../api/articles';
+const usersEndpoint = '../../api/users';
+const commentsEndpoint = '../../api/comments';
 let allComments = [];
 let articlesData = [];
 let usersData = [];
@@ -8,20 +8,20 @@ let userComments = [];
 let totalElementCount = 0;
 let searchPhrase = undefined;
 
-const loaderContainer = document.querySelector(".loader-container");
+const loaderContainer = document.querySelector('.loader-container');
 const displayLoading = () => {
-  loaderContainer.style.display = "block";
+  loaderContainer.style.display = 'block';
 };
 
 const hideLoading = () => {
-  loaderContainer.style.display = "none";
+  loaderContainer.style.display = 'none';
 };
 
 const fetchData = {
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
-  credentials: "include",
+  credentials: 'include',
 };
 
 async function issueGetRequest(
@@ -30,8 +30,8 @@ async function issueGetRequest(
   searchPhrase = undefined,
   onlyDisplay = false,
   displayDelay = 0,
-  sortingType = "date",
-  sortingOrder = "desc"
+  sortingType = 'date',
+  sortingOrder = 'desc',
 ) {
   displayLoading();
   // get data from the server:
@@ -45,10 +45,10 @@ async function issueGetRequest(
     const results = await Promise.all(
       [commentsEndpointPaged].map((url) =>
         fetch(url, { headers: formatHeaders() }).then((r) => {
-          totalElementCount = r.headers.get("X-Total-Count");
+          totalElementCount = r.headers.get('X-Total-Count');
           return r.json();
-        })
-      )
+        }),
+      ),
     );
 
     userComments = results[0];
@@ -72,11 +72,11 @@ async function processCommentsData(userComments) {
       articleIds.push(userComments[i].article_id);
     }
   }
-  const articlesQueryId = `${articleIds.join("&id=")}`;
+  const articlesQueryId = `${articleIds.join('&id=')}`;
   const articlesUrlQuery = `${articlesEndpoint}?id=${articlesQueryId}`;
 
   const articleResults = await Promise.all(
-    [articlesUrlQuery].map((url) => fetch(url, { headers: formatHeaders() }, fetchData).then((r) => r.json()))
+    [articlesUrlQuery].map((url) => fetch(url, { headers: formatHeaders() }, fetchData).then((r) => r.json())),
   );
   articlesData = articleResults[0];
 
@@ -88,11 +88,11 @@ async function processCommentsData(userComments) {
   }
   userIds.push(getId());
 
-  const userQueryId = `${userIds.join("&id=")}`;
+  const userQueryId = `${userIds.join('&id=')}`;
   const userUrlQuery = `${usersEndpoint}?id=${userQueryId}`;
 
   const userResults = await Promise.all(
-    [userUrlQuery].map((url) => fetch(url, { headers: formatHeaders() }, fetchData).then((r) => r.json()))
+    [userUrlQuery].map((url) => fetch(url, { headers: formatHeaders() }, fetchData).then((r) => r.json())),
   );
   usersData = userResults[0];
 
@@ -114,7 +114,7 @@ async function processCommentsData(userComments) {
     if (user_id !== undefined && tempUserData[user_id.toString()] !== undefined) {
       userComments[j].user_name = tempUserData[user_id.toString()];
     } else {
-      userComments[j].user_name = "[Unknown]";
+      userComments[j].user_name = '[Unknown]';
     }
     userComments[j].article = tempArticleData[article_id.toString()];
   }
@@ -137,32 +137,32 @@ async function processCommentsData(userComments) {
 
 const getCommentHTML = (comment) => {
   if (comment.body === undefined || comment.body.length === 0) {
-    comment.body = "<i>[Comment was removed]</i>";
+    comment.body = '<i>[Comment was removed]</i>';
   }
   return `<div>
         <label>article:</label></br><span><a href="article.html?id=${comment.article?.id}" data-testid="article-${
-    comment.article?.id
-  }-title" id="gotoArticle${comment.article?.id}">${comment.article?.title?.substring(0, 50)} (...)</a></span><br>
+          comment.article?.id
+        }-title" id="gotoArticle${comment.article?.id}">${comment.article?.title?.substring(0, 50)} (...)</a></span><br>
         <label>user:</label><span><a href="user.html?id=${comment.user_id}" data-testid="comment${
-    comment.id
-  }-user" data-testid="article-${comment.id}-title" id="gotoUser${comment.user_id}-${comment.id}">${
-    comment.user_name
-  }</a></span><br>
+          comment.id
+        }-user" data-testid="article-${comment.id}-title" id="gotoUser${comment.user_id}-${comment.id}">${
+          comment.user_name
+        }</a></span><br>
         <label>date:</label><span data-testid="comment${comment.id}-date">${comment.date
-    .replace("T", " ")
-    .replace("Z", "")}</span><br>
+          .replace('T', ' ')
+          .replace('Z', '')}</span><br>
         <label>comment:</label><span data-testid="comment${comment.id}-body">${comment.body}</span><br>
         <span><strong><a href="comment.html?id=${comment.id}" id="gotoComment${
-    comment.id
-  }">See comment...</a></strong></span><br>
+          comment.id
+        }">See comment...</a></strong></span><br>
     </div>`;
 };
 
 const sleep = (time) => new Promise((res) => setTimeout(res, time));
 
 async function displayCommentsData(data, delay = 0) {
-  const container = document.querySelector("#container");
-  container.innerHTML = "";
+  const container = document.querySelector('#container');
+  container.innerHTML = '';
   for (let item of data) {
     displayItem(item, container);
 
@@ -188,7 +188,7 @@ const displayItem = (item, container) => {
 };
 
 function updatePerPage() {
-  let options = document.getElementById("perPage");
+  let options = document.getElementById('perPage');
   records_per_page = options.value;
 }
 
@@ -213,17 +213,17 @@ function nextPage() {
 }
 
 function changePage(page, onlyDisplay = false) {
-  let btnNext = document.getElementById("btnNext");
-  let btnPrev = document.getElementById("btnPrev");
-  let container = document.getElementById("container");
-  let pageSpan = document.getElementById("page");
-  let pagesTotal = document.getElementById("pagesTotal");
+  let btnNext = document.getElementById('btnNext');
+  let btnPrev = document.getElementById('btnPrev');
+  let container = document.getElementById('container');
+  let pageSpan = document.getElementById('page');
+  let pagesTotal = document.getElementById('pagesTotal');
 
   // Validate page
   if (page < 1) page = 1;
   if (page > numPages()) page = numPages();
 
-  container.innerHTML = "";
+  container.innerHTML = '';
 
   pageSpan.innerHTML = page;
   pagesTotal.innerHTML = numPages();
@@ -231,21 +231,21 @@ function changePage(page, onlyDisplay = false) {
   if (page == 1) {
     // btnPrev.style.visibility = "hidden";
     btnPrev.disabled = true;
-    btnPrev.style.color = "grey";
+    btnPrev.style.color = 'grey';
   } else {
     // btnPrev.style.visibility = "visible";
     btnPrev.disabled = false;
-    btnPrev.style.color = "#0275d8";
+    btnPrev.style.color = '#0275d8';
   }
 
   if (page == numPages()) {
     // btnNext.style.visibility = "hidden";
     btnNext.disabled = true;
-    btnNext.style.color = "grey";
+    btnNext.style.color = 'grey';
   } else {
     // btnNext.style.visibility = "visible";
     btnNext.disabled = false;
-    btnNext.style.color = "#0275d8";
+    btnNext.style.color = '#0275d8';
   }
   issueGetRequest(records_per_page, page, searchPhrase, onlyDisplay, displayDelay, sortingType, sortingOrder);
 }
@@ -256,8 +256,8 @@ function numPages() {
 
 let current_page = 1;
 let records_per_page = 12;
-let sortingType = "date";
-let sortingOrder = "desc";
+let sortingType = 'date';
+let sortingOrder = 'desc';
 
 // TODO:INVOKE_BUG: stability issue - change this to slowly display new comments // issue on front-end
 const displayDelay = 0; // [ms]
@@ -265,12 +265,12 @@ const displayDelay = 0; // [ms]
 updatePerPage();
 updateSorting();
 issueGetRequest(records_per_page, current_page, searchPhrase, false, displayDelay, sortingType, sortingOrder).then(() =>
-  changePage(current_page, true)
+  changePage(current_page, true),
 );
-menuButtonDisable("btnComments");
+menuButtonDisable('btnComments');
 
 function seachByText() {
-  let searchInput = document.getElementById("search-input");
+  let searchInput = document.getElementById('search-input');
   searchPhrase = searchInput.value;
   issueGetRequest(
     records_per_page,
@@ -279,15 +279,15 @@ function seachByText() {
     undefined,
     displayDelay,
     sortingType,
-    sortingOrder
+    sortingOrder,
   ).then(() => changePage(current_page, true));
 }
 
 // sorting:
 function updateSorting() {
-  let options = document.getElementById("sorting");
-  sortingType = options.value.split(" ")[0];
-  sortingOrder = options.value.split(" ")[1];
+  let options = document.getElementById('sorting');
+  sortingType = options.value.split(' ')[0];
+  sortingOrder = options.value.split(' ')[1];
 }
 
 function changeSorting() {

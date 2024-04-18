@@ -1,24 +1,24 @@
-const dbEndpoint = "./api/db";
+const dbEndpoint = './api/db';
 
-const refreshBtn = document.getElementById("refreshBtn");
-const statsLbl = document.getElementById("statsLbl");
-const queryInfoLbl = document.getElementById("queryInfo");
+const refreshBtn = document.getElementById('refreshBtn');
+const statsLbl = document.getElementById('statsLbl');
+const queryInfoLbl = document.getElementById('queryInfo');
 
-const floatingBox = document.getElementById("floatingBox");
-const resizeBtn = document.getElementById("resizeBtn");
-const sqlQuery = document.getElementById("sqlQuery");
+const floatingBox = document.getElementById('floatingBox');
+const resizeBtn = document.getElementById('resizeBtn');
+const sqlQuery = document.getElementById('sqlQuery');
 let isExpanded = false;
 
-let simpleSuccessBox = "simpleSuccessBox";
-let simpleErrorBox = "simpleErrorBox";
-let simpleInfoBox = "simpleInfoBox";
+let simpleSuccessBox = 'simpleSuccessBox';
+let simpleErrorBox = 'simpleErrorBox';
+let simpleInfoBox = 'simpleInfoBox';
 
 const maxFieldLength = 70;
 
 const sampleQueries = {
-  0: "> Pick a query...",
-  1: "-- Users:",
-  2: "SELECT * FROM users",
+  0: '> Pick a query...',
+  1: '-- Users:',
+  2: 'SELECT * FROM users',
   3: `SELECT *
   FROM users
   WHERE id = 1`,
@@ -29,7 +29,7 @@ const sampleQueries = {
   5: `SELECT email, firstname, lastname
   FROM users`,
   6: `Insert into users (email, firstname, lastname) values ('xyz@test.test', 'John', 'Doe')`,
-  10: "-- Articles:",
+  10: '-- Articles:',
   11: `SELECT *
   FROM articles
   WHERE title
@@ -42,12 +42,12 @@ const sampleQueries = {
   FROM articles
   WHERE body
   LIKE '%playwright%'`,
-  20: "-- Comments:",
+  20: '-- Comments:',
   21: `SELECT *
   FROM comments
   WHERE body
   LIKE '%automation%'`,
-  50: "-- Joins:",
+  50: '-- Joins:',
   51: `SELECT a.id, a.title, a.date, u.firstname, u.lastname
   FROM articles a
   INNER JOIN users u ON a.user_id = u.id;`,
@@ -66,14 +66,14 @@ const sampleQueries = {
   FROM articles a
   LEFT JOIN comments c ON a.id = c.article_id 
   GROUP BY a.id, a.title;`,
-  900: "-- Advanced:",
+  900: '-- Advanced:',
   901: `SHOW TABLES`,
 };
 
-const sampleQuerySelect = document.getElementById("sampleQuerySelect");
+const sampleQuerySelect = document.getElementById('sampleQuerySelect');
 
 Object.keys(sampleQueries).forEach((key) => {
-  const option = document.createElement("option");
+  const option = document.createElement('option');
   option.value = key;
   option.text = sampleQueries[key];
   sampleQuerySelect.appendChild(option);
@@ -90,25 +90,25 @@ function setMessage(msg, className) {
 
 // Function to generate table from JSON data
 function generateTable(data, tableName, addLinks = true) {
-  var table = document.createElement("table");
-  var thead = document.createElement("thead");
-  var tbody = document.createElement("tbody");
+  var table = document.createElement('table');
+  var thead = document.createElement('thead');
+  var tbody = document.createElement('tbody');
 
   // Create table header
-  var headerRow = document.createElement("tr");
+  var headerRow = document.createElement('tr');
 
   if (data.length > 0) {
     Object.keys(data[0]).forEach(function (key) {
-      var th = document.createElement("th");
+      var th = document.createElement('th');
       th.textContent = key;
 
-      if (key === "id") {
-        th.classList.add("primary-key");
-        th.textContent = key + " (PK)";
+      if (key === 'id') {
+        th.classList.add('primary-key');
+        th.textContent = key + ' (PK)';
       }
-      if (key.includes("_id")) {
-        th.classList.add("foreign-key");
-        th.textContent = key + " (FK)";
+      if (key.includes('_id')) {
+        th.classList.add('foreign-key');
+        th.textContent = key + ' (FK)';
       }
       headerRow.appendChild(th);
     });
@@ -118,29 +118,29 @@ function generateTable(data, tableName, addLinks = true) {
 
   // Create table rows
   data.forEach(function (item) {
-    var row = document.createElement("tr");
+    var row = document.createElement('tr');
     Object.entries(item).forEach(function ([key, value]) {
-      var td = document.createElement("td");
+      var td = document.createElement('td');
       let cellValue = value;
 
       if (cellValue !== null && cellValue !== undefined) {
-        cellValue = `${value}`.slice(0, maxFieldLength) + (value.length > maxFieldLength ? "(...)" : "");
+        cellValue = `${value}`.slice(0, maxFieldLength) + (value.length > maxFieldLength ? '(...)' : '');
       } else {
-        cellValue = "";
+        cellValue = '';
       }
-      if (key === "id" && isNotNullNorUndefined(value)) {
+      if (key === 'id' && isNotNullNorUndefined(value)) {
         const singularTableName = tableName.slice(0, -1);
-        row.setAttribute("id", `${singularTableName}_${value}`);
+        row.setAttribute('id', `${singularTableName}_${value}`);
         td.textContent = cellValue;
 
-        var spanAnchor = document.createElement("span");
-        spanAnchor.setAttribute("id", `anchor_${singularTableName}_${value}`);
-        spanAnchor.classList.add("anchor");
+        var spanAnchor = document.createElement('span');
+        spanAnchor.setAttribute('id', `anchor_${singularTableName}_${value}`);
+        spanAnchor.classList.add('anchor');
         td.appendChild(spanAnchor);
-      } else if (key?.includes("_ids") && isNotNullNorUndefined(value)) {
-        const foreignTable = key.split("_")[0];
+      } else if (key?.includes('_ids') && isNotNullNorUndefined(value)) {
+        const foreignTable = key.split('_')[0];
 
-        cellValue.split(",").forEach((id) => {
+        cellValue.split(',').forEach((id) => {
           const fullId = `${foreignTable}_${id}`;
           if (addLinks === true) {
             td.innerHTML += `<a href="#anchor_${fullId}" onclick="highlightRow('${fullId}')" >${id}</a> `;
@@ -148,8 +148,8 @@ function generateTable(data, tableName, addLinks = true) {
             td.innerHTML += `${id} `;
           }
         });
-      } else if (key?.includes("_id") && isNotNullNorUndefined(value)) {
-        const foreignTable = key.split("_")[0];
+      } else if (key?.includes('_id') && isNotNullNorUndefined(value)) {
+        const foreignTable = key.split('_')[0];
         const fullId = `${foreignTable}_${value}`;
         if (addLinks === true) {
           td.innerHTML = `<a href="#anchor_${fullId}" onclick="highlightRow('${fullId}')" >${value}</a>`;
@@ -167,7 +167,7 @@ function generateTable(data, tableName, addLinks = true) {
   table.appendChild(tbody);
 
   // Add table name as h2 element
-  const tableNameHeading = document.createElement("h2");
+  const tableNameHeading = document.createElement('h2');
   tableNameHeading.textContent = tableName;
   jsonTable.appendChild(tableNameHeading);
 
@@ -175,16 +175,16 @@ function generateTable(data, tableName, addLinks = true) {
 }
 
 function isNotNullNorUndefined(value) {
-  return value !== null && value !== undefined && value !== "null" && value !== "undefined";
+  return value !== null && value !== undefined && value !== 'null' && value !== 'undefined';
 }
 
 // Function to highlight destination row
 function highlightRow(rowId) {
   const row = document.getElementById(rowId);
   if (row) {
-    row.classList.add("highlight");
+    row.classList.add('highlight');
     setTimeout(() => {
-      row.classList.remove("highlight");
+      row.classList.remove('highlight');
     }, 5000);
   }
 }
@@ -216,12 +216,12 @@ function normalizeObjects(data) {
 }
 
 // Render JSON data as table
-const jsonTable = document.getElementById("jsonTable");
+const jsonTable = document.getElementById('jsonTable');
 let databaseAsJson = {};
 
 async function refreshData() {
   refreshBtn.disable = true;
-  jsonTable.innerHTML = "";
+  jsonTable.innerHTML = '';
   return issueGetDb().then((data) => {
     displayResults(data);
   });
@@ -229,7 +229,7 @@ async function refreshData() {
 
 function displayResults(data) {
   databaseAsJson = data;
-  let status = "";
+  let status = '';
   Object.keys(data).forEach((tableName) => {
     const normalizedData = normalizeObjects(data[tableName]);
     jsonTable.appendChild(generateTable(normalizedData, tableName));
@@ -240,12 +240,12 @@ function displayResults(data) {
 }
 
 function executeSqlQuery(sqlQuery) {
-  const DB_NAME = "gaddb";
+  const DB_NAME = 'gaddb';
   try {
     try {
       alasql(`CREATE DATABASE IF NOT EXISTS ${DB_NAME};`);
     } catch (error) {
-      if (!error.message.includes("already exists")) {
+      if (!error.message.includes('already exists')) {
         console.error(`${error.message} but proceeding...`);
       }
     }
@@ -259,11 +259,11 @@ function executeSqlQuery(sqlQuery) {
 
     if (res.length >= 0) {
       const normalizedData = normalizeObjects(res);
-      jsonTable.innerHTML = "";
-      jsonTable.appendChild(generateTable(normalizedData, "Results:", false));
+      jsonTable.innerHTML = '';
+      jsonTable.appendChild(generateTable(normalizedData, 'Results:', false));
       setMessage(`Found: ${normalizedData?.length} records`, simpleSuccessBox);
     } else if (res === 1) {
-      setMessage("Query executed successfully (but READ-ONLY MODE!)", simpleInfoBox);
+      setMessage('Query executed successfully (but READ-ONLY MODE!)', simpleInfoBox);
     } else {
       setMessage(res, simpleErrorBox);
     }
@@ -277,11 +277,11 @@ function runQuery() {
   // https://github.com/AlaSQL/alasql
   //   const sqlQuery = document.getElementById("sqlQuery").value;
   const sqlQuery = inputQueryArea.getValue();
-  const checkbox = document.getElementById("refreshRequest");
+  const checkbox = document.getElementById('refreshRequest');
   const checkboxValue = checkbox.checked;
 
-  if (sqlQuery === "") {
-    setMessage("Please provide query", simpleInfoBox);
+  if (sqlQuery === '') {
+    setMessage('Please provide query', simpleInfoBox);
     return;
   }
 
@@ -295,48 +295,48 @@ function runQuery() {
 }
 
 function selectSampleQuery() {
-  const sqlQueryId = document.getElementById("sampleQuerySelect").value;
+  const sqlQueryId = document.getElementById('sampleQuerySelect').value;
   const query = sampleQueries[sqlQueryId];
-  if (query === undefined || query.startsWith("> ") || query.startsWith("-- ")) {
+  if (query === undefined || query.startsWith('> ') || query.startsWith('-- ')) {
     // document.getElementById("sqlQuery").value = "";
-    inputQueryArea.setValue("");
-    setMessage("", "");
+    inputQueryArea.setValue('');
+    setMessage('', '');
     return;
   }
   // document.getElementById("sqlQuery").value = sampleQueries[sqlQueryId];
   inputQueryArea.setValue(sampleQueries[sqlQueryId]);
 }
 
-resizeBtn.addEventListener("click", function () {
+resizeBtn.addEventListener('click', function () {
   if (isExpanded) {
-    floatingBox.style.width = "400px";
+    floatingBox.style.width = '400px';
     isExpanded = false;
     sqlQuery.rows = 5;
-    inputQueryArea.setSize("100%", 50);
+    inputQueryArea.setSize('100%', 50);
   } else {
-    floatingBox.style.width = "600px";
+    floatingBox.style.width = '600px';
     isExpanded = true;
     sqlQuery.rows = 8;
-    inputQueryArea.setSize("100%", 210);
+    inputQueryArea.setSize('100%', 210);
   }
 });
 
-var inputQueryArea = CodeMirror.fromTextArea(document.getElementById("sqlQuery"), {
-  mode: "sql",
+var inputQueryArea = CodeMirror.fromTextArea(document.getElementById('sqlQuery'), {
+  mode: 'sql',
   indentWithTabs: true,
   smartIndent: true,
   lineNumbers: true,
   autofocus: true,
   styleActiveLine: true,
-  extraKeys: { "Ctrl-Space": "autocomplete" },
+  extraKeys: { 'Ctrl-Space': 'autocomplete' },
   hint: CodeMirror.hint.sql,
 });
 
-const menu = document.querySelector(".floating-menu");
+const menu = document.querySelector('.floating-menu');
 
-document.addEventListener("scroll", () => {
-  if (document.documentElement.scrollTop > 120) menu.classList.add("transparent");
-  else menu.classList.remove("transparent");
+document.addEventListener('scroll', () => {
+  if (document.documentElement.scrollTop > 120) menu.classList.add('transparent');
+  else menu.classList.remove('transparent');
 });
 
 refreshData();

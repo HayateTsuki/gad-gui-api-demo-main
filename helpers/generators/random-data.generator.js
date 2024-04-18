@@ -1,8 +1,8 @@
-const { getConfigValue } = require("../../config/config-manager");
-const { ConfigKeys } = require("../../config/enums");
-const { isUndefined } = require("../compare.helpers");
-const { formatYmd } = require("../datetime.helpers");
-const seedrandom = require("seedrandom");
+const { getConfigValue } = require('../../config/config-manager');
+const { ConfigKeys } = require('../../config/enums');
+const { isUndefined } = require('../compare.helpers');
+const { formatYmd } = require('../datetime.helpers');
+const seedrandom = require('seedrandom');
 
 const generatorBasedOnCurrentDay = seedrandom(formatYmd(new Date()));
 
@@ -25,7 +25,7 @@ function getSeededRandomVisitsForEntities(dataSet, min = 0, max = 10) {
 }
 
 function getRandomIdBasedOnDay(length = 32) {
-  var result = "";
+  var result = '';
   var charactersLength = getConfigValue(ConfigKeys.CHARACTERS).length;
   for (var i = 0; i < length; i++) {
     result += getConfigValue(ConfigKeys.CHARACTERS).charAt(Math.floor(generatorBasedOnCurrentDay() * charactersLength));

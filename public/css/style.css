@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: 'Open Sans', Helvetica, sans-serif;
   background: #f0f0f0;
   color: #444;
 }
@@ -21,11 +21,13 @@ header {
   width: 100vw;
   /* background-image: -webkit-linear-gradient(top, #666, #111); */
   background: #202020;
-  box-shadow: 6px 4px 8px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow:
+    6px 4px 8px 3px rgba(0, 0, 0, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 h1,
 h2 {
-  font-family: "Roboto";
+  font-family: 'Roboto';
 }
 
 h2,
@@ -184,7 +186,7 @@ header h1 {
 #containerComments input,
 .add-new-panel input {
   width: 200px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 1em;
 }
 #containerComments span,
@@ -207,7 +209,7 @@ containerComments span {
 #container input,
 .add-new-panel input {
   width: 200px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-size: 1em;
 }
 #container span,
@@ -244,7 +246,7 @@ input.search {
   box-sizing: border-box;
 }
 
-input[type="text"],
+input[type='text'],
 select {
   width: 100%;
   display: inline-block;
@@ -253,7 +255,7 @@ select {
   box-sizing: border-box;
 }
 
-input[type="password"],
+input[type='password'],
 select {
   width: 100%;
   display: inline-block;
@@ -262,7 +264,7 @@ select {
   box-sizing: border-box;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   width: 100%;
   background-color: #4caf50;
   color: white;
@@ -273,7 +275,7 @@ input[type="submit"] {
   cursor: pointer;
 }
 
-input[type="submit"]:hover {
+input[type='submit']:hover {
   background-color: #45a049;
 }
 
@@ -394,7 +396,7 @@ input[type="submit"]:hover {
   width: 100%;
   height: 100vh;
   position: fixed;
-  background: url("./../data/giphy.webp") center no-repeat;
+  background: url('./../data/giphy.webp') center no-repeat;
   z-index: 1;
 }
 
@@ -574,4 +576,3 @@ h3 {
   font-size: 64px;
   cursor: pointer;
 }
-

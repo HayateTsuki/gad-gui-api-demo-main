@@ -1,4 +1,4 @@
-const fullName = "Experience in REST API Testing";
+const fullName = 'Experience in REST API Testing';
 const type = 1;
 const description = {
   base: `This survey is about experience in REST API testing.`,
