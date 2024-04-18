@@ -35,7 +35,6 @@
     "nanoid": "^1.0.1",
     "object-assign": "^4.0.1",
     "pluralize": "^7.0.0",
-    "prettier": "2.8.4",
     "seedrandom": "^3.0.5"
   },
   "engines": {
@@ -45,6 +44,7 @@
     "@playwright/test": "^1.43.1",
     "@types/node": "^20.12.7",
     "eslint": "^8.48.0",
-    "eslint-plugin-html": "^7.1.0"
+    "eslint-plugin-html": "^7.1.0",
+    "prettier": "3.2.5"
   }
 }
